@@ -21,6 +21,69 @@ import { getCourses } from '../data/courses.js'
 import { instructorCourses, instructorPractices } from '../data/instructor.js'
 
 config({ path: path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
+// The `makhraj` field in data/alphabet.js is a plain English string. The DB
+// stores it as JSONB { en, ar, zh }, so this map supplies the translations
+// for the ~12 unique descriptions used across all 28 letters.
+const MAKHRAJ = {
+  'Al-Jawf (The empty space in the mouth and throat)': {
+    ar: 'الجوف (الفراغ في الفم والحلق)',
+    zh: '口腔和喉咙的空腔',
+  },
+  'Ash-Shafataan (The two lips)': {
+    ar: 'الشفتان',
+    zh: '双唇',
+  },
+  'Al-Lisan (The tip of the tongue and the roots of the upper front teeth)': {
+    ar: 'اللسان (طرف اللسان وأصول الثنايا العليا)',
+    zh: '舌尖与上门牙根部',
+  },
+  'Al-Lisan (The tip of the tongue and the edge of the upper incisors)': {
+    ar: 'اللسان (طرف اللسان وحافة الثنايا العليا)',
+    zh: '舌尖与上门牙边缘',
+  },
+  'Al-Lisan (The middle of the tongue touching the hard palate)': {
+    ar: 'اللسان (وسط اللسان مع الحنك الصلب)',
+    zh: '舌中部与硬腭',
+  },
+  'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)': {
+    ar: 'اللسان (طرف اللسان ولثة الثنايا العليا)',
+    zh: '舌尖与上门牙牙龈',
+  },
+  'Al-Lisan (The tip of the tongue and the gums of the lower front teeth)': {
+    ar: 'اللسان (طرف اللسان ولثة الثنايا السفلى)',
+    zh: '舌尖与下门牙牙龈',
+  },
+  'Al-Lisan (The side of the tongue touching the upper molars)': {
+    ar: 'اللسان (حافة اللسان مع الأضراس العليا)',
+    zh: '舌侧与上臼齿',
+  },
+  'Al-Lisan (The deepest part of the tongue touching the soft palate)': {
+    ar: 'اللسان (أقصى اللسان مع الحنك اللين)',
+    zh: '舌根与软腭',
+  },
+  'Al-Halq (The middle of the throat)': {
+    ar: 'الحلق (وسط الحلق)',
+    zh: '喉咙中部',
+  },
+  'Al-Halq (The lowest part of the throat, closest to the chest)': {
+    ar: 'الحلق (أدنى الحلق مما يلي الصدر)',
+    zh: '喉咙最下部，靠近胸部',
+  },
+  'Al-Halq (The lowest part of the throat)': {
+    ar: 'الحلق (أدنى الحلق)',
+    zh: '喉咙最下部',
+  },
+}
+
+function makhrajJson(englishText) {
+  if (!englishText) return null
+  const extra = MAKHRAJ[englishText]
+  return {
+    en: englishText,
+    ar: extra?.ar || englishText,
+    zh: extra?.zh || englishText,
+  }
+}
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -96,7 +159,7 @@ async function seedLetters() {
     arabic: l.arabic,
     name: l.name,
     transliteration: l.transliteration,
-    makhraj: l.makhraj || null,
+    makhraj: makhrajJson(l.makhraj),
     video_id: l.videoId || null,
     start_time: l.startTime || 0,
     mouth_image: l.mouthImage || null,

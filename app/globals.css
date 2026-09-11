@@ -2237,3 +2237,18 @@ padding: 24px 22px 22px;
 .footer-legal a:hover {
   color: var(--gold-light);
 }
+
+.letter-diagram-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 24px;
+  background: var(--bg-soft);
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--grey);
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+}
