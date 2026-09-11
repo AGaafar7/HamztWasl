@@ -2,6 +2,7 @@
 import { fetchCourses } from '../../lib/queries/courses'
 import { fetchEnrolledCourseIds, fetchCompletedCountMap } from '../../lib/queries/user'
 import PortalCoursesClient from './PortalCoursesClient'
+import { createClient } from '../../lib/supabase/server'
 
 export default async function PortalCoursesPage() {
   const [courses, enrolledIds, completedMap] = await Promise.all([
