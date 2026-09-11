@@ -2393,3 +2393,25 @@ padding: 24px 22px 22px;
   font-size: 13.5px;
 }
 .course-lesson-hint { font-size: 12.5px; color: var(--grey); margin-top: 4px; }
+
+.line-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1.4fr 1.2fr auto;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.word-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.4fr auto;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+@media (max-width: 760px) {
+  .line-row,
+  .word-row { grid-template-columns: 1fr; }
+}
+.lesson-subhead {
+  font-size: 13.5px;
+  color: var(--navy-ink);
+  margin: 4px 0 8px;
+}

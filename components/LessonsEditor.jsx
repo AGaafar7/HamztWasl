@@ -17,7 +17,8 @@ const KIND_LABELS = {
   speaking: 'Speaking',
 }
 
-const COMING_SOON = new Set(['video', 'listening', 'reading', 'speaking'])
+// Only video still needs the dedicated pipeline (Piece 3).
+const COMING_SOON = new Set(['video'])
 
 export default function LessonsEditor({ courseId = null, initialLessons = [] }) {
   const [lessons, setLessons] = useState(initialLessons)
@@ -33,13 +34,7 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
         const { id } = await createLessonAction({ courseId, kind })
         setLessons((prev) => [
           ...prev,
-          {
-            id,
-            courseId,
-            sortOrder: prev.length,
-            kind,
-            content: {},
-          },
+          { id, courseId, sortOrder: prev.length, kind, content: {} },
         ])
         setExpanded(id)
       } catch (err) {
@@ -62,9 +57,7 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
   }
 
   const saveContent = (id, content) => {
-    setLessons((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, content } : l))
-    )
+    setLessons((prev) => prev.map((l) => (l.id === id ? { ...l, content } : l)))
     startTransition(async () => {
       try {
         await updateLessonAction(id, content)
@@ -192,6 +185,12 @@ function LessonCard({
             <TextLessonForm content={lesson.content} onSave={onSave} />
           ) : lesson.kind === 'tested' ? (
             <TestedLessonForm content={lesson.content} onSave={onSave} />
+          ) : lesson.kind === 'listening' ? (
+            <ListeningLessonForm content={lesson.content} onSave={onSave} />
+          ) : lesson.kind === 'reading' ? (
+            <ReadingLessonForm content={lesson.content} onSave={onSave} />
+          ) : lesson.kind === 'speaking' ? (
+            <SpeakingLessonForm content={lesson.content} onSave={onSave} />
           ) : null}
         </div>
       )}
@@ -199,30 +198,51 @@ function LessonCard({
   )
 }
 
+/* ============================================================
+   Shared helpers
+   ============================================================ */
+
+function TitleFields({ title, onChange }) {
+  return (
+    <div className="lesson-lang-grid">
+      <input className="form-input" placeholder="Title (EN)"
+        value={title.en || ''} onChange={(e) => onChange('en', e.target.value)} />
+      <input className="form-input arabic" dir="rtl" placeholder="العنوان"
+        value={title.ar || ''} onChange={(e) => onChange('ar', e.target.value)} />
+      <input className="form-input" placeholder="标题"
+        value={title.zh || ''} onChange={(e) => onChange('zh', e.target.value)} />
+    </div>
+  )
+}
+
+function BodyFields({ body, onChange, arRows = 4 }) {
+  return (
+    <>
+      <textarea className="form-input" rows="4" placeholder="Body (EN)"
+        value={body.en || ''} onChange={(e) => onChange('en', e.target.value)} />
+      <textarea className="form-input arabic" dir="rtl" rows={arRows} placeholder="النص"
+        value={body.ar || ''} onChange={(e) => onChange('ar', e.target.value)} />
+      <textarea className="form-input" rows="4" placeholder="正文"
+        value={body.zh || ''} onChange={(e) => onChange('zh', e.target.value)} />
+    </>
+  )
+}
+
+/* ============================================================
+   Text & Tested — unchanged from the previous turn
+   ============================================================ */
+
 function TextLessonForm({ content, onSave }) {
   const [local, setLocal] = useState({
     title: content.title || { en: '', ar: '', zh: '' },
     body: content.body || { en: '', ar: '', zh: '' },
   })
-  const setT = (lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))
-  const setB = (lang, v) => setLocal((c) => ({ ...c, body:  { ...c.body,  [lang]: v } }))
-
   return (
     <div className="lesson-form">
-      <div className="lesson-lang-grid">
-        <input className="form-input" placeholder="Title (EN)"
-          value={local.title.en} onChange={(e) => setT('en', e.target.value)} />
-        <input className="form-input arabic" dir="rtl" placeholder="العنوان"
-          value={local.title.ar} onChange={(e) => setT('ar', e.target.value)} />
-        <input className="form-input" placeholder="标题"
-          value={local.title.zh} onChange={(e) => setT('zh', e.target.value)} />
-      </div>
-      <textarea className="form-input" rows="4" placeholder="Body (EN)"
-        value={local.body.en} onChange={(e) => setB('en', e.target.value)} />
-      <textarea className="form-input arabic" dir="rtl" rows="4" placeholder="النص"
-        value={local.body.ar} onChange={(e) => setB('ar', e.target.value)} />
-      <textarea className="form-input" rows="4" placeholder="正文"
-        value={local.body.zh} onChange={(e) => setB('zh', e.target.value)} />
+      <TitleFields title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
+      <BodyFields body={local.body}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, body: { ...c.body, [lang]: v } }))} />
       <button type="button" className="btn btn-primary btn-small"
         onClick={() => onSave(local)}>
         Save lesson
@@ -237,38 +257,24 @@ function TestedLessonForm({ content, onSave }) {
     body: content.body || { en: '', ar: '', zh: '' },
     questions: content.questions || [],
   })
-  const setT = (lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))
-  const setB = (lang, v) => setLocal((c) => ({ ...c, body:  { ...c.body,  [lang]: v } }))
-
-  const addQuestion = () =>
-    setLocal((c) => ({
-      ...c,
-      questions: [...c.questions, { id: `q${Date.now()}`, prompt: '', answer: '', hint: '' }],
-    }))
-  const updateQ = (id, key, value) =>
-    setLocal((c) => ({
-      ...c,
-      questions: c.questions.map((q) => (q.id === id ? { ...q, [key]: value } : q)),
-    }))
-  const removeQ = (id) =>
-    setLocal((c) => ({ ...c, questions: c.questions.filter((q) => q.id !== id) }))
+  const addQ = () => setLocal((c) => ({
+    ...c,
+    questions: [...c.questions, { id: `q${Date.now()}`, prompt: '', answer: '', hint: '' }],
+  }))
+  const updateQ = (id, key, value) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => (q.id === id ? { ...q, [key]: value } : q)),
+  }))
+  const removeQ = (id) => setLocal((c) => ({
+    ...c, questions: c.questions.filter((q) => q.id !== id),
+  }))
 
   return (
     <div className="lesson-form">
-      <div className="lesson-lang-grid">
-        <input className="form-input" placeholder="Title (EN)"
-          value={local.title.en} onChange={(e) => setT('en', e.target.value)} />
-        <input className="form-input arabic" dir="rtl" placeholder="العنوان"
-          value={local.title.ar} onChange={(e) => setT('ar', e.target.value)} />
-        <input className="form-input" placeholder="标题"
-          value={local.title.zh} onChange={(e) => setT('zh', e.target.value)} />
-      </div>
-      <textarea className="form-input" rows="4" placeholder="Body (EN)"
-        value={local.body.en} onChange={(e) => setB('en', e.target.value)} />
-      <textarea className="form-input arabic" dir="rtl" rows="4" placeholder="النص"
-        value={local.body.ar} onChange={(e) => setB('ar', e.target.value)} />
-      <textarea className="form-input" rows="4" placeholder="正文"
-        value={local.body.zh} onChange={(e) => setB('zh', e.target.value)} />
+      <TitleFields title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
+      <BodyFields body={local.body}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, body: { ...c.body, [lang]: v } }))} />
 
       <div className="question-list">
         <h4>Questions</h4>
@@ -284,8 +290,190 @@ function TestedLessonForm({ content, onSave }) {
               onClick={() => removeQ(q.id)}>✕</button>
           </div>
         ))}
-        <button type="button" className="btn btn-ghost btn-small" onClick={addQuestion}>
+        <button type="button" className="btn btn-ghost btn-small" onClick={addQ}>
           + Add question
+        </button>
+      </div>
+
+      <button type="button" className="btn btn-primary btn-small"
+        onClick={() => onSave(local)}>
+        Save lesson
+      </button>
+    </div>
+  )
+}
+
+/* ============================================================
+   Listening — title + list of lines (Arabic + gloss)
+   ============================================================ */
+
+function ListeningLessonForm({ content, onSave }) {
+  const [local, setLocal] = useState({
+    title: content.title || { en: '', ar: '', zh: '' },
+    lines: content.lines || [],
+  })
+
+  const addLine = () => setLocal((c) => ({
+    ...c,
+    lines: [...c.lines, { id: `l${Date.now()}`, arabic: '', gloss: { en: '', zh: '' } }],
+  }))
+  const updateLine = (id, key, value) => setLocal((c) => ({
+    ...c,
+    lines: c.lines.map((l) => {
+      if (l.id !== id) return l
+      if (key === 'arabic') return { ...l, arabic: value }
+      return { ...l, gloss: { ...l.gloss, [key]: value } }
+    }),
+  }))
+  const removeLine = (id) => setLocal((c) => ({
+    ...c, lines: c.lines.filter((l) => l.id !== id),
+  }))
+
+  return (
+    <div className="lesson-form">
+      <TitleFields title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
+
+      <div className="question-list">
+        <h4>Lines the student will hear and type</h4>
+        {local.lines.map((l) => (
+          <div className="line-row" key={l.id}>
+            <input
+              className="form-input arabic" dir="rtl"
+              placeholder="الجملة العربية"
+              value={l.arabic}
+              onChange={(e) => updateLine(l.id, 'arabic', e.target.value)}
+            />
+            <input className="form-input" placeholder="English gloss"
+              value={l.gloss.en || ''}
+              onChange={(e) => updateLine(l.id, 'en', e.target.value)} />
+            <input className="form-input" placeholder="中文翻译"
+              value={l.gloss.zh || ''}
+              onChange={(e) => updateLine(l.id, 'zh', e.target.value)} />
+            <button type="button" className="mini-play"
+              onClick={() => removeLine(l.id)}>✕</button>
+          </div>
+        ))}
+        <button type="button" className="btn btn-ghost btn-small" onClick={addLine}>
+          + Add line
+        </button>
+      </div>
+
+      <button type="button" className="btn btn-primary btn-small"
+        onClick={() => onSave(local)}>
+        Save lesson
+      </button>
+    </div>
+  )
+}
+
+/* ============================================================
+   Reading — title + passage + questions
+   ============================================================ */
+
+function ReadingLessonForm({ content, onSave }) {
+  const [local, setLocal] = useState({
+    title: content.title || { en: '', ar: '', zh: '' },
+    passage: content.passage || { en: '', ar: '', zh: '' },
+    questions: content.questions || [],
+  })
+
+  const addQ = () => setLocal((c) => ({
+    ...c,
+    questions: [...c.questions, { id: `q${Date.now()}`, prompt: '', answer: '', hint: '' }],
+  }))
+  const updateQ = (id, key, value) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => (q.id === id ? { ...q, [key]: value } : q)),
+  }))
+  const removeQ = (id) => setLocal((c) => ({
+    ...c, questions: c.questions.filter((q) => q.id !== id),
+  }))
+
+  return (
+    <div className="lesson-form">
+      <TitleFields title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
+
+      <h4 className="lesson-subhead">Passage</h4>
+      <BodyFields body={local.passage} arRows={5}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, passage: { ...c.passage, [lang]: v } }))} />
+
+      <div className="question-list">
+        <h4>Comprehension questions</h4>
+        {local.questions.map((q) => (
+          <div className="question-row" key={q.id}>
+            <input className="form-input" placeholder="Question"
+              value={q.prompt} onChange={(e) => updateQ(q.id, 'prompt', e.target.value)} />
+            <input className="form-input" placeholder="Expected answer"
+              value={q.answer} onChange={(e) => updateQ(q.id, 'answer', e.target.value)} />
+            <input className="form-input" placeholder="Hint (optional)"
+              value={q.hint} onChange={(e) => updateQ(q.id, 'hint', e.target.value)} />
+            <button type="button" className="mini-play"
+              onClick={() => removeQ(q.id)}>✕</button>
+          </div>
+        ))}
+        <button type="button" className="btn btn-ghost btn-small" onClick={addQ}>
+          + Add question
+        </button>
+      </div>
+
+      <button type="button" className="btn btn-primary btn-small"
+        onClick={() => onSave(local)}>
+        Save lesson
+      </button>
+    </div>
+  )
+}
+
+/* ============================================================
+   Speaking — title + list of words
+   ============================================================ */
+
+function SpeakingLessonForm({ content, onSave }) {
+  const [local, setLocal] = useState({
+    title: content.title || { en: '', ar: '', zh: '' },
+    words: content.words || [],
+  })
+
+  const addWord = () => setLocal((c) => ({
+    ...c,
+    words: [...c.words, {
+      id: `w${Date.now()}`, arabic: '', transliteration: '', meaning: '',
+    }],
+  }))
+  const updateWord = (id, key, value) => setLocal((c) => ({
+    ...c,
+    words: c.words.map((w) => (w.id === id ? { ...w, [key]: value } : w)),
+  }))
+  const removeWord = (id) => setLocal((c) => ({
+    ...c, words: c.words.filter((w) => w.id !== id),
+  }))
+
+  return (
+    <div className="lesson-form">
+      <TitleFields title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
+
+      <div className="question-list">
+        <h4>Words the student will pronounce</h4>
+        {local.words.map((w) => (
+          <div className="word-row" key={w.id}>
+            <input className="form-input arabic" dir="rtl" placeholder="الكلمة"
+              value={w.arabic}
+              onChange={(e) => updateWord(w.id, 'arabic', e.target.value)} />
+            <input className="form-input" placeholder="transliteration"
+              value={w.transliteration}
+              onChange={(e) => updateWord(w.id, 'transliteration', e.target.value)} />
+            <input className="form-input" placeholder="meaning"
+              value={w.meaning}
+              onChange={(e) => updateWord(w.id, 'meaning', e.target.value)} />
+            <button type="button" className="mini-play"
+              onClick={() => removeWord(w.id)}>✕</button>
+          </div>
+        ))}
+        <button type="button" className="btn btn-ghost btn-small" onClick={addWord}>
+          + Add word
         </button>
       </div>
 
