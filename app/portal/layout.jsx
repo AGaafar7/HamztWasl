@@ -36,7 +36,7 @@ export default function PortalLayout({ children }) {
             <span className="sidebar-dot" /> {s.listening}
           </Link>
           <Link href="/portal/reading" className={linkClass('/portal/reading')}>
-            <span className="sidebar-dot" /> Reading Practice
+            <span className="sidebar-dot" /> {s.reading}
           </Link>
           <Link href="/portal/speaking" className={linkClass('/portal/speaking')}>
             <span className="sidebar-dot" /> {s.speaking}
