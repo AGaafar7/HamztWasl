@@ -9,6 +9,7 @@ const NAV = [
   { href: '/instructor/courses', label: 'My Courses', icon: '📚' },
   { href: '/instructor/practices', label: 'Practices', icon: '🎯' },
   { href: '/instructor/earnings', label: 'Earnings', icon: '💰' },
+  { href: '/instructor/lessons', label: 'Lessons', icon: '📝' },
 ]
 
 export default function InstructorLayout({ children }) {

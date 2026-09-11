@@ -8,8 +8,9 @@ import {
   publishCourseAction,
   deleteCourseAction,
 } from '../../../actions/courses'
+import LessonsEditor from '../../../../components/LessonsEditor'
 
-export default function EditCourseClient({ course }) {
+export default function EditCourseClient({ course, initialLessons = [] }) {
   const router = useRouter()
   const [form, setForm] = useState({
     titleEn: course.title?.en || '',
@@ -249,6 +250,10 @@ export default function EditCourseClient({ course }) {
               </select>
             </div>
           </div>
+        </fieldset>
+                <fieldset className="instructor-fieldset">
+          <legend>Lessons</legend>
+          <LessonsEditor courseId={course.id} initialLessons={initialLessons} />
         </fieldset>
 
         {error && <p className="form-error">{error}</p>}
