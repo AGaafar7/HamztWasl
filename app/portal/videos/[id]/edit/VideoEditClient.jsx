@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '../../../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../../../i18n/gloss.js'
@@ -170,6 +170,7 @@ export default function VideoEditClient({ video }) {
                       {line.words.map((w, wi) => {
                         const isPlaying = currentTime >= w.startSec && currentTime < w.endSec
                         return (
+                          <Fragment key={wi}>
                           <span
                             key={wi}
                             className={`transcript-word ${isPlaying ? 'now-playing' : ''}`}
@@ -181,6 +182,8 @@ export default function VideoEditClient({ video }) {
                           >
                             {w.arabic}
                           </span>
+                          {wi < line.words.length - 1 ? ' ' : ''}
+                          </Fragment>
                         )
                       })}
                       <button type="button" className="line-play" onClick={() => speak(line.arabic)}>🔊</button>
@@ -231,7 +234,8 @@ export default function VideoEditClient({ video }) {
                   className={`transcript-arabic arabic ${calibrating ? 'calibrate-target' : ''}`}
                   onClick={calibrating ? () => handleLineMark(i) : undefined}
                 >
-                  {line.words.map((w, wi) => <span key={wi} className="transcript-word">{w.arabic}</span>)}
+                  {line.words.map((w, wi) => (<Fragment key={wi}> <span key={wi} className="transcript-word">{w.arabic}</span> {wi < line.words.length - 1 ? ' ' : ''}
+  </Fragment>))}
                   {calibrating && (
                     <span className="calibrate-badge">
                       {start != null ? `${start}s` : '—'} → {end != null ? `${end}s` : '—'}

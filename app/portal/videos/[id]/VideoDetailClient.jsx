@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useLanguage } from '../../../../i18n/LanguageContext.jsx'
@@ -84,6 +84,7 @@ export default function VideoDetailClient({ video, moreVideos }) {
     line.words.map((w, wi) => {
       const key = `${lineIdx}-${wi}`
       return (
+        <Fragment key={wi}>
         <span
           key={wi}
           className={`transcript-word ${activeWord === key ? 'active' : ''} ${isWordNowPlaying(w) ? 'now-playing' : ''}`}
@@ -102,6 +103,8 @@ export default function VideoDetailClient({ video, moreVideos }) {
             </span>
           )}
         </span>
+        {wi < line.words.length - 1 ? ' ' : ''}
+        </Fragment>
       )
     })
 

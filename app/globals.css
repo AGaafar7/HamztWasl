@@ -1069,7 +1069,15 @@ html[dir="rtl"] .letter-card::after { background: radial-gradient(circle at 20% 
   background: rgba(196,149,46,0.16);
   box-shadow: 0 0 0 2px rgba(196,149,46,0.35);
 }
-.transcript-word { position: relative; cursor: pointer; border-radius: 4px; padding: 0 2px; transition: background 0.15s ease, color 0.15s ease; }
+
+.transcript-word {
+  position: relative;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0 2px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
 .transcript-word.now-playing {
   background: var(--gold);
   color: #fff;
@@ -2252,3 +2260,4 @@ padding: 24px 22px 22px;
   font-style: italic;
   text-align: center;
 }
+
