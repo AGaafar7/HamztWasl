@@ -2,10 +2,10 @@
 
 import { useRef, useState, useTransition } from 'react'
 import Link from 'next/link'
-import { useLanguage } from '../../../../../../i18n/LanguageContext.jsx'
-import { gloss } from '../../../../../../i18n/gloss.js'
-import { speak } from '../../../../../../utils/speak.js'
-import { toggleLessonCompleteAction } from '../../../../../actions/progress'
+import { useLanguage } from '../i18n/LanguageContext.jsx'
+import { gloss } from '../i18n/gloss.js'
+import { speak } from '../utils/speak.js'
+import { toggleLessonCompleteAction } from '../app/actions/progress'
 
 /* -------- similarity helper (used by listening lesson) -------- */
 function normalizeArabic(str) {
@@ -67,17 +67,23 @@ const KIND_LABEL = {
   speaking: 'Speaking',
 }
 
-export default function LessonPageClient({
-  course, lesson, siblings, isCompleted: initialCompleted, videoData,
+export default function LessonRenderer({
+  course = null,
+  lesson,
+  siblings = null,
+  isCompleted: initialCompleted = false,
+  videoData = null,
 }) {
   const { t, lang } = useLanguage()
   const [completed, setCompleted] = useState(initialCompleted)
   const [, startTransition] = useTransition()
 
   const title =
-    gloss(lesson.content?.title, lang) || `Lesson ${siblings.index + 1}`
+    gloss(lesson.content?.title, lang) ||
+    (siblings ? `Lesson ${siblings.index + 1}` : 'Lesson')
 
   const onToggleComplete = () => {
+    if (!course) return
     const next = !completed
     setCompleted(next)
     startTransition(async () => {
@@ -90,18 +96,26 @@ export default function LessonPageClient({
     })
   }
 
+  const backHref = course ? `/portal/courses/${course.id}` : '/portal'
+  const backLabel = course
+    ? gloss(course.title, lang)
+    : 'Back to portal'
+
   return (
     <section className="lesson-page">
-      <Link href={`/portal/courses/${course.id}`} className="back-link">
-        ← {gloss(course.title, lang)}
-      </Link>
+      <Link href={backHref} className="back-link">← {backLabel}</Link>
 
       <div className="lesson-page-head">
         <div className="lesson-page-meta">
           <span className="lesson-kind">{KIND_LABEL[lesson.kind] || lesson.kind}</span>
-          <span className="lesson-page-position">
-            Lesson {siblings.index + 1} of {siblings.total}
-          </span>
+          {siblings && (
+            <span className="lesson-page-position">
+              Lesson {siblings.index + 1} of {siblings.total}
+            </span>
+          )}
+          {!course && (
+            <span className="lesson-page-position">Standalone lesson</span>
+          )}
         </div>
         <h1 className="page-title">{title}</h1>
       </div>
@@ -115,34 +129,40 @@ export default function LessonPageClient({
         {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
       </div>
 
-      <div className="lesson-page-foot">
-        <button
-          type="button"
-          className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
-          onClick={onToggleComplete}
-        >
-          {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
-        </button>
-
-        <div className="lesson-page-nav">
-          {siblings.prev && (
-            <Link
-              href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
-              className="btn btn-ghost btn-small"
+      {(course || (siblings && (siblings.prev || siblings.next))) && (
+        <div className="lesson-page-foot">
+          {course && (
+            <button
+              type="button"
+              className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
+              onClick={onToggleComplete}
             >
-              ← Previous
-            </Link>
+              {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
+            </button>
           )}
-          {siblings.next && (
-            <Link
-              href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
-              className="btn btn-primary btn-small"
-            >
-              Next lesson →
-            </Link>
+
+          {siblings && (
+            <div className="lesson-page-nav">
+              {siblings.prev && (
+                <Link
+                  href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
+                  className="btn btn-ghost btn-small"
+                >
+                  ← Previous
+                </Link>
+              )}
+              {siblings.next && (
+                <Link
+                  href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
+                  className="btn btn-primary btn-small"
+                >
+                  Next lesson →
+                </Link>
+              )}
+            </div>
           )}
         </div>
-      </div>
+      )}
     </section>
   )
 }
@@ -158,7 +178,7 @@ function TextLesson({ lesson }) {
 }
 
 /* ============================================================
-   Tested — body + reveal-answer questions
+   Tested
    ============================================================ */
 function TestedLesson({ lesson }) {
   const { lang } = useLanguage()
@@ -187,7 +207,7 @@ function TestedLesson({ lesson }) {
 }
 
 /* ============================================================
-   Listening — instructor-authored lines; play, type, check
+   Listening
    ============================================================ */
 function ListeningLesson({ lesson }) {
   const { lang } = useLanguage()
@@ -273,7 +293,7 @@ function ListeningLesson({ lesson }) {
 }
 
 /* ============================================================
-   Reading — passage + reveal-answer questions
+   Reading
    ============================================================ */
 function ReadingLesson({ lesson }) {
   const { lang } = useLanguage()
@@ -309,7 +329,7 @@ function ReadingLesson({ lesson }) {
 }
 
 /* ============================================================
-   Speaking — word list, record & check each
+   Speaking
    ============================================================ */
 function SpeakingLesson({ lesson }) {
   const words = lesson.content?.words || []
@@ -494,7 +514,7 @@ function SpeakingLesson({ lesson }) {
 }
 
 /* ============================================================
-   Video — embed + link to full portal page
+   Video
    ============================================================ */
 function VideoLesson({ lesson, videoData }) {
   const { lang } = useLanguage()

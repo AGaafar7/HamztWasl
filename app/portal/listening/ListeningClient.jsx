@@ -5,6 +5,7 @@ import { useLanguage } from '../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../i18n/gloss.js'
 import { speak } from '../../../utils/speak.js'
 import { recordPracticeAttemptAction } from '../../actions/practice'
+import LessonLibraryList from '../../../components/LessonLibraryList'
 
 function normalize(str) {
   return str
@@ -23,7 +24,7 @@ function similarity(a, b) {
   return Math.round((matches / wa.length) * 100)
 }
 
-export default function ListeningClient({ lines, videos }) {
+export default function ListeningClient({ lines, videos, lessons = [] }) {
   const { t, lang } = useLanguage()
   const l = t.learn.listening
   const [videoFilter, setVideoFilter] = useState('all')
@@ -75,6 +76,12 @@ export default function ListeningClient({ lines, videos }) {
         <h1 className="page-title">{l.title}</h1>
         <p>{l.lede}</p>
       </div>
+            {lessons.length > 0 && (
+        <div className="lesson-library-section">
+          <h2 className="lesson-library-heading">From instructor lessons</h2>
+          <LessonLibraryList lessons={lessons} />
+        </div>
+      )}
 
       <div className="listen-picker">
         <span className="filter-label">{l.pickVideo}</span>

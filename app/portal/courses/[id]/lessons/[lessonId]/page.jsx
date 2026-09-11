@@ -1,36 +1,19 @@
-// app/portal/courses/[id]/lessons/[lessonId]/page.jsx
+// app/portal/lessons/[lessonId]/page.jsx
 import { notFound } from 'next/navigation'
-import { fetchCourse } from '../../../../../../lib/queries/courses'
-import { fetchLesson, fetchLessonSiblings } from '../../../../../../lib/queries/lessons'
-import { fetchCompletedLessonKeys } from '../../../../../../lib/queries/user'
-import { fetchVideo } from '../../../../../../lib/queries/videos'
-import LessonPageClient from './LessonPageClient'
+import { createClient } from '../../../../lib/supabase/server'
+import { fetchLesson } from '../../../../lib/queries/lessons'
+import { fetchVideo } from '../../../../lib/queries/videos'
+import LessonRenderer from '../../../../components/LessonRenderer'
 
-export default async function LessonPage({ params }) {
-  const { id, lessonId } = await params
+export default async function StandaloneLessonPage({ params }) {
+  const { lessonId } = await params
+  const lesson = await fetchLesson(lessonId)
+  if (!lesson || lesson.courseId) notFound()
 
-  const [course, lesson, siblings, completedKeys] = await Promise.all([
-    fetchCourse(id),
-    fetchLesson(lessonId),
-    fetchLessonSiblings(id, lessonId),
-    fetchCompletedLessonKeys(id),
-  ])
-
-  if (!course || !lesson || lesson.courseId !== id) notFound()
-
-  // Video lessons point at a videos row via content.videoId.
   let videoData = null
   if (lesson.kind === 'video' && lesson.content?.videoId) {
     videoData = await fetchVideo(lesson.content.videoId)
   }
 
-  return (
-    <LessonPageClient
-      course={course}
-      lesson={lesson}
-      siblings={siblings}
-      isCompleted={completedKeys.includes(`lesson:${lessonId}`)}
-      videoData={videoData}
-    />
-  )
+  return <LessonRenderer course={null} lesson={lesson} videoData={videoData} />
 }

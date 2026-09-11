@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useMemo } from 'react'
 import { useLanguage } from '../../../i18n/LanguageContext.jsx'
 import { speak } from '../../../utils/speak.js'
 import { recordPracticeAttemptAction } from '../../actions/practice'
+import LessonLibraryList from '../../../components/LessonLibraryList'
 
 function buildDecks(letters) {
   const letterDeck = letters.map((l) => ({
@@ -92,7 +93,7 @@ function similarity(a, b) {
   return Math.max(levScore, jaccardScore)
 }
 
-export default function SpeakingClient({ letters }) {
+export default function SpeakingClient({ letters, lessons = [] }) {
   const { t } = useLanguage()
   const sp = t.learn.speaking
   const deck = useMemo(() => buildDecks(letters), [letters])
@@ -219,6 +220,12 @@ export default function SpeakingClient({ letters }) {
         <h1 className="page-title">{sp.title}</h1>
         <p>{sp.lede}</p>
       </div>
+            {lessons.length > 0 && (
+        <div className="lesson-library-section">
+          <h2 className="lesson-library-heading">From instructor lessons</h2>
+          <LessonLibraryList lessons={lessons} />
+        </div>
+      )}
 
       {stats.attempted > 0 && (
         <div className="speaking-stats">

@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { useLanguage } from '../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../i18n/gloss.js'
 import { recordPracticeAttemptAction } from '../../actions/practice'
+import LessonLibraryList from '../../../components/LessonLibraryList'
 
-export default function ReadingClient({ exercises }) {
+export default function ReadingClient({ exercises, lessons = [] }) {
   const { t, lang } = useLanguage()
   const r = t.learn.reading
   const [selectedExercise, setSelectedExercise] = useState(exercises[0] || null)
@@ -87,6 +88,7 @@ export default function ReadingClient({ exercises }) {
           {r.startOver}
         </button>
       </div>
+      
     )
   }
 
@@ -97,7 +99,12 @@ export default function ReadingClient({ exercises }) {
         <h1 className="page-title">{gloss(selectedExercise.title, lang)}</h1>
         <p>{r.title}</p>
       </div>
-
+            {lessons.length > 0 && (
+        <div className="lesson-library-section">
+          <h2 className="lesson-library-heading">From instructor lessons</h2>
+          <LessonLibraryList lessons={lessons} />
+        </div>
+      )}
       <div
         className="passage-box"
         style={{
