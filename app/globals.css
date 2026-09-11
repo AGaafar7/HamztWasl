@@ -2526,3 +2526,205 @@ padding: 24px 22px 22px;
   font-size: 14px;
   margin-inline-start: 4px;
 }
+
+/* ---------------- Lesson page (learner) ---------------- */
+.lesson-page { max-width: 900px; }
+.lesson-page-head { margin: 16px 0 32px; }
+.lesson-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.lesson-page-position {
+  font-size: 12.5px;
+  color: var(--grey);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lesson-page-body { margin-bottom: 40px; }
+
+.lesson-body-text {
+  font-size: 16.5px;
+  line-height: 1.85;
+  color: var(--grey-dark);
+  white-space: pre-wrap;
+}
+.lesson-body-text-body { margin-bottom: 24px; }
+
+.lesson-questions {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--bg-soft);
+  border-radius: 14px;
+}
+.lesson-questions h3 {
+  font-size: 16px;
+  margin-bottom: 14px;
+  color: var(--navy-ink);
+}
+.lesson-q { margin-bottom: 16px; }
+.lesson-q:last-child { margin-bottom: 0; }
+.lesson-q-prompt {
+  font-size: 15px;
+  color: var(--navy-ink);
+  margin-bottom: 6px;
+}
+.lesson-q-answer summary {
+  cursor: pointer;
+  color: var(--orange);
+  font-weight: 700;
+  font-size: 13px;
+}
+.lesson-q-answer p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--grey-dark);
+}
+.lesson-q-hint {
+  font-size: 12.5px;
+  color: var(--grey);
+  font-style: italic;
+}
+
+.lesson-listen-line {
+  padding: 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+.lesson-listen-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.lesson-listen-head .listen-play-btn { margin-bottom: 0; }
+.lesson-listen-index {
+  font-size: 12px;
+  color: var(--grey);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.lesson-speaking-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.lesson-word-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 16px;
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.lesson-word-chip:hover { border-color: var(--navy); }
+.lesson-word-chip.active {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+.lesson-word-chip .arabic { font-size: 20px; font-weight: 700; }
+.lesson-word-translit {
+  font-size: 11px;
+  color: var(--grey);
+}
+.lesson-word-chip.active .lesson-word-translit { color: rgba(255,255,255,0.7); }
+
+.lesson-page-foot {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.lesson-page-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------------- Course lesson list (in course page) ---------------- */
+.lesson-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+.lesson-list-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: all 0.15s ease;
+}
+.lesson-list-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 12px 24px -16px rgba(14,42,71,0.25);
+  transform: translateY(-1px);
+}
+.lesson-list-card-done {
+  background: var(--green-soft);
+  border-color: var(--green);
+}
+.lesson-list-num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lesson-list-card-done .lesson-list-num {
+  background: var(--green);
+}
+.lesson-list-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lesson-list-title {
+  font-size: 15.5px;
+  color: var(--navy-ink);
+  font-weight: 700;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lesson-list-check {
+  font-size: 20px;
+  color: var(--green);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.lesson-list-go {
+  font-size: 18px;
+  color: var(--grey);
+  flex-shrink: 0;
+}

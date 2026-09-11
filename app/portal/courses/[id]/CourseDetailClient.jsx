@@ -5,6 +5,15 @@ import Link from 'next/link'
 import { useLanguage } from '../../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../../i18n/gloss.js'
 
+const KIND_LABEL = {
+  text: 'Text',
+  tested: 'Tested',
+  video: 'Video',
+  listening: 'Listening',
+  reading: 'Reading',
+  speaking: 'Speaking',
+}
+
 export default function CourseDetailClient({ course, letters, lessons, completedKeys }) {
   const { t, lang } = useLanguage()
   const p = t.portal
@@ -15,7 +24,7 @@ export default function CourseDetailClient({ course, letters, lessons, completed
   const levelLabel = t.learn.videos[course.level] || course.level
   const typeLabel = course.type === 'free' ? p.priceFree : `$${course.price}`
 
-  // Special-case: the alphabet course still uses the dedicated letters grid.
+  // Alphabet special-case still uses the letters grid.
   if (course.id === 'alphabet') {
     const total = letters.length
     const done = letters.filter((l) => completedSet.has(`letter:${l.id}`)).length
@@ -64,7 +73,7 @@ export default function CourseDetailClient({ course, letters, lessons, completed
     )
   }
 
-  // Generic course: render its lessons.
+  // Generic course.
   if (lessons.length === 0) {
     return (
       <div>
@@ -80,6 +89,9 @@ export default function CourseDetailClient({ course, letters, lessons, completed
     )
   }
 
+  const done = lessons.filter((l) => completedSet.has(`lesson:${l.id}`)).length
+  const pct = lessons.length ? Math.round((done / lessons.length) * 100) : 0
+
   return (
     <div>
       <div className="section-head">
@@ -90,70 +102,43 @@ export default function CourseDetailClient({ course, letters, lessons, completed
         </p>
       </div>
 
-      <div className="course-lessons">
-        {lessons.map((lesson, i) => (
-          <CourseLessonView key={lesson.id} index={i} lesson={lesson} />
-        ))}
+      {done > 0 && (
+        <div className="portal-progress" style={{ marginBottom: 24, maxWidth: 420 }}>
+          <div className="row">
+            <span>{p.progressLabel}</span>
+            <span>{done} / {lessons.length} · {pct}%</span>
+          </div>
+          <div className="progress-track">
+            <div className="progress-fill" style={{ width: `${pct}%` }} />
+          </div>
+        </div>
+      )}
+
+      <div className="lesson-card-list">
+        {lessons.map((lesson, i) => {
+          const lessonTitle =
+            gloss(lesson.content?.title, lang) || `Lesson ${i + 1}`
+          const isDone = completedSet.has(`lesson:${lesson.id}`)
+          return (
+            <Link
+              key={lesson.id}
+              href={`/portal/courses/${course.id}/lessons/${lesson.id}`}
+              className={`lesson-list-card ${isDone ? 'lesson-list-card-done' : ''}`}
+            >
+              <div className="lesson-list-num">{i + 1}</div>
+              <div className="lesson-list-body">
+                <span className="lesson-kind">{KIND_LABEL[lesson.kind] || lesson.kind}</span>
+                <h3 className="lesson-list-title">{lessonTitle}</h3>
+              </div>
+              {isDone ? (
+                <span className="lesson-list-check">✓</span>
+              ) : (
+                <span className="lesson-list-go">→</span>
+              )}
+            </Link>
+          )
+        })}
       </div>
     </div>
-  )
-}
-
-function CourseLessonView({ index, lesson }) {
-  const { lang } = useLanguage()
-  const c = lesson.content || {}
-
-  if (lesson.kind === 'text') {
-    return (
-      <article className="course-lesson">
-        <div className="course-lesson-index">{index + 1}</div>
-        <div className="course-lesson-body">
-          {c.title && gloss(c.title, lang) && (
-            <h2 className="course-lesson-title">{gloss(c.title, lang)}</h2>
-          )}
-          <p className="course-lesson-text">{gloss(c.body, lang)}</p>
-        </div>
-      </article>
-    )
-  }
-
-  if (lesson.kind === 'tested') {
-    return (
-      <article className="course-lesson">
-        <div className="course-lesson-index">{index + 1}</div>
-        <div className="course-lesson-body">
-          {c.title && gloss(c.title, lang) && (
-            <h2 className="course-lesson-title">{gloss(c.title, lang)}</h2>
-          )}
-          <p className="course-lesson-text">{gloss(c.body, lang)}</p>
-          {c.questions && c.questions.length > 0 && (
-            <ol className="course-lesson-questions">
-              {c.questions.map((q) => (
-                <li key={q.id}>
-                  <p className="course-lesson-q">{q.prompt}</p>
-                  <details className="course-lesson-a">
-                    <summary>Show answer</summary>
-                    <p>{q.answer}</p>
-                    {q.hint && <p className="course-lesson-hint">Hint: {q.hint}</p>}
-                  </details>
-                </li>
-              ))}
-            </ol>
-          )}
-        </div>
-      </article>
-    )
-  }
-
-  // Other kinds render a placeholder for now.
-  return (
-    <article className="course-lesson course-lesson-placeholder">
-      <div className="course-lesson-index">{index + 1}</div>
-      <div className="course-lesson-body">
-        <p className="portal-empty">
-          This lesson ({lesson.kind}) will be rendered here in a future update.
-        </p>
-      </div>
-    </article>
   )
 }
