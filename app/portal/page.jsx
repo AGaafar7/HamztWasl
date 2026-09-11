@@ -5,7 +5,7 @@ import PortalCoursesClient from './PortalCoursesClient'
 
 export default async function PortalCoursesPage() {
   const [courses, enrolledIds, completedMap] = await Promise.all([
-    fetchCourses('en'),
+    fetchCourses(),
     fetchEnrolledCourseIds(),
     fetchCompletedCountMap(),
   ])

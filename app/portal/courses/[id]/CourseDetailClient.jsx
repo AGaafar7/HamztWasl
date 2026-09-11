@@ -2,9 +2,18 @@
 
 import { useMemo } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '../../../../i18n/LanguageContext.jsx'
+import { gloss } from '../../../../i18n/gloss.js'
 
 export default function CourseDetailClient({ course, letters, completedKeys }) {
+  const { t, lang } = useLanguage()
+  const p = t.portal
   const completedSet = useMemo(() => new Set(completedKeys || []), [completedKeys])
+
+  const title = gloss(course.title, lang)
+  const desc = gloss(course.desc, lang)
+  const levelLabel = t.learn.videos[course.level] || course.level
+  const typeLabel = course.type === 'free' ? p.priceFree : `$${course.price}`
 
   if (course.id === 'alphabet') {
     const total = letters.length
@@ -14,19 +23,18 @@ export default function CourseDetailClient({ course, letters, completedKeys }) {
     return (
       <div>
         <div className="section-head">
-          <h1 className="page-title">{course.title}</h1>
-          <p>{course.desc}</p>
+          <h1 className="page-title">{title}</h1>
+          <p>{desc}</p>
           <p>
-            <strong>{course.lessons} lessons</strong> · {course.levelLabel} ·{' '}
-            {course.type === 'free' ? 'Free' : 'Paid'}
+            <strong>{course.lessons} {p.lessonsLabel}</strong> · {levelLabel} · {typeLabel}
           </p>
         </div>
 
         {done > 0 && (
           <div className="portal-progress" style={{ marginBottom: 24, maxWidth: 420 }}>
             <div className="row">
-              <span>Progress</span>
-              <span>{done} / {total} letters · {pct}%</span>
+              <span>{p.progressLabel}</span>
+              <span>{done} / {total} · {pct}%</span>
             </div>
             <div className="progress-track">
               <div className="progress-fill" style={{ width: `${pct}%` }} />
@@ -57,8 +65,8 @@ export default function CourseDetailClient({ course, letters, completedKeys }) {
 
   return (
     <div>
-      <h1 className="page-title">{course.title}</h1>
-      <p>{course.desc}</p>
+      <h1 className="page-title">{title}</h1>
+      <p>{desc}</p>
       <p className="portal-empty">This course is coming soon. Check back later!</p>
     </div>
   )
