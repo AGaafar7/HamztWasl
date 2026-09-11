@@ -1,6 +1,7 @@
 'use client'
 
 import { useLanguage } from '../i18n/LanguageContext.jsx'
+import Link from 'next/link'
 
 export default function Footer() {
   const { t } = useLanguage()
@@ -42,14 +43,19 @@ export default function Footer() {
           <div>
             <h4>{f.support}</h4>
             <ul>
-              <li><a href="#">{f.supportLinks[0]}</a></li>
-              <li><a href="#">{f.supportLinks[1]}</a></li>
+              <li><Link href="/term">{f.supportLinks[0]}</Link></li>
+              <li><Link href="/privacy">{f.supportLinks[1]}</Link>.</li>
               <li><a href="#">{f.supportLinks[2]}</a></li>
             </ul>
           </div>
         </div>
 
         <div className="footer-bottom">
+          <div className="footer-legal">
+  <a href="/terms">Terms</a>
+  <span>·</span>
+  <a href="/privacy">Privacy</a>
+</div>
           <span>{f.rights}</span>
           <span>{f.made}</span>
         </div>

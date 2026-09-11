@@ -93,6 +93,8 @@ function similarity(a, b) {
 }
 
 export default function SpeakingClient({ letters }) {
+  const { t } = useLanguage()
+  const sp = t.learn.speaking
   const deck = useMemo(() => buildDecks(letters), [letters])
   const [index, setIndex] = useState(0)
   const [recording, setRecording] = useState(false)
@@ -114,7 +116,7 @@ export default function SpeakingClient({ letters }) {
   }, [])
 
   if (!current) {
-    return <p className="portal-empty">No letters available yet.</p>
+    return <p className="portal-empty">{sp.noLetters}</p>
   }
 
   const startRecording = async () => {
@@ -151,7 +153,7 @@ export default function SpeakingClient({ letters }) {
       setAudioBlob(null)
     } catch (err) {
       console.error('Mic error:', err)
-      setFeedback({ error: 'Microphone access denied. Please allow it and try again.' })
+      setFeedback({ error: sp.micDenied })
     }
   }
 
@@ -213,24 +215,21 @@ export default function SpeakingClient({ letters }) {
   return (
     <section>
       <div className="section-head">
-        <span className="eyebrow">Speaking Practice</span>
-        <h1 className="page-title">Speak it. We'll tell you how you did.</h1>
-        <p>
-          Record yourself saying the word below. Hakim's speech recognition will
-          transcribe what it heard, and we'll compare it to the target word.
-        </p>
+        <span className="eyebrow">{sp.eyebrow}</span>
+        <h1 className="page-title">{sp.title}</h1>
+        <p>{sp.lede}</p>
       </div>
 
       {stats.attempted > 0 && (
         <div className="speaking-stats">
-          <span><strong>{stats.correct}</strong> / {stats.attempted} correct</span>
-          <span>Session: {progressPct}% accuracy</span>
+          <span><strong>{stats.correct}</strong> / {stats.attempted} {sp.correct}</span>
+          <span>{sp.session}: {progressPct}% {sp.accuracy}</span>
         </div>
       )}
 
       <div className="speaking-card">
         <span className="speaking-type">
-          {current.type === 'letter' ? 'Letter name' : 'Example word'}
+          {current.type === 'letter' ? sp.letterName : sp.exampleWord}
         </span>
         <div className="speaking-arabic arabic">{current.arabic}</div>
         <div className="speaking-translit">{current.transliteration}</div>
@@ -238,7 +237,7 @@ export default function SpeakingClient({ letters }) {
 
         {current.type === 'letter' && (
           <div className="speaking-say-hint">
-            💡 Tip: Say <strong className="arabic">هذا حرف {current.arabic}</strong> for best recognition
+            💡 {sp.letterTip} <strong className="arabic">هذا حرف {current.arabic}</strong> {sp.letterTipEnd}
           </div>
         )}
 
@@ -248,20 +247,20 @@ export default function SpeakingClient({ letters }) {
           onClick={() => speak(current.arabic, 'msa')}
           style={{ marginTop: '12px' }}
         >
-          🔊 Hear it first
+          🔊 {sp.hearFirst}
         </button>
       </div>
 
       <div className="speaking-controls">
         {!recording && !audioBlob && !feedback && (
           <button type="button" className="btn btn-primary" onClick={startRecording}>
-            🎤 Record your pronunciation
+            🎤 {sp.record}
           </button>
         )}
 
         {recording && (
           <button type="button" className="btn btn-primary speaking-recording" onClick={stopRecording}>
-            <span className="recording-dot" /> Stop recording
+            <span className="recording-dot" /> {sp.stop}
           </button>
         )}
 
@@ -270,16 +269,16 @@ export default function SpeakingClient({ letters }) {
             <audio src={URL.createObjectURL(audioBlob)} controls />
             <div className="speaking-actions">
               <button type="button" className="btn btn-primary" onClick={submitRecording}>
-                Check my pronunciation
+                {sp.check}
               </button>
               <button type="button" className="btn btn-ghost" onClick={startRecording}>
-                Re-record
+                {sp.reRecord}
               </button>
             </div>
           </div>
         )}
 
-        {loading && <p className="speaking-loading">🎧 Listening to your recording…</p>}
+        {loading && <p className="speaking-loading">{sp.listening}</p>}
       </div>
 
       {feedback && !feedback.error && (
@@ -287,35 +286,30 @@ export default function SpeakingClient({ letters }) {
           <div className="speaking-feedback-head">
             <span className="speaking-feedback-emoji">{feedback.correct ? '✅' : '❌'}</span>
             <span className="speaking-feedback-title">
-              {feedback.correct ? 'Well pronounced!' : 'Not quite'}
+              {feedback.correct ? sp.wellPronounced : sp.notQuite}
             </span>
-            <span className="speaking-feedback-score">{feedback.score}% match</span>
+            <span className="speaking-feedback-score">{feedback.score}% {sp.match}</span>
           </div>
 
           <div className="speaking-compare">
             <div className="speaking-compare-row">
-              <span className="speaking-compare-label">Expected</span>
+              <span className="speaking-compare-label">{sp.expected}</span>
               <span className="arabic speaking-compare-arabic">{feedback.expected}</span>
             </div>
             <div className="speaking-compare-row">
-              <span className="speaking-compare-label">We heard</span>
+              <span className="speaking-compare-label">{sp.heard}</span>
               <span className="arabic speaking-compare-arabic">{feedback.heard || '—'}</span>
             </div>
           </div>
 
-          {!feedback.correct && (
-            <p className="speaking-hint">
-              Try again — slow down and focus on each sound, especially the
-              letters that don't exist in your native language.
-            </p>
-          )}
+          {!feedback.correct && <p className="speaking-hint">{sp.hint}</p>}
 
           <div className="speaking-actions">
             <button type="button" className="btn btn-primary" onClick={nextWord}>
-              Next word →
+              {sp.nextWord}
             </button>
             <button type="button" className="btn btn-ghost" onClick={tryAgain}>
-              Try this one again
+              {sp.tryAgain}
             </button>
           </div>
         </div>
@@ -325,7 +319,7 @@ export default function SpeakingClient({ letters }) {
         <div className="speaking-feedback wrong">
           <p>{feedback.error}</p>
           <button type="button" className="btn btn-ghost" onClick={tryAgain}>
-            Try again
+            {sp.tryAgain}
           </button>
         </div>
       )}

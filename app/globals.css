@@ -2198,3 +2198,42 @@ padding: 24px 22px 22px;
   align-items: center;
   justify-content: center;
 }
+
+/* ---------------- Legal pages ---------------- */
+.legal-body h2 {
+  font-size: 18px;
+  margin: 32px 0 10px;
+  color: var(--navy-ink);
+}
+.legal-body p,
+.legal-body ul {
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.legal-body ul {
+  padding-inline-start: 22px;
+  list-style: disc;
+}
+.legal-body ul li {
+  margin-bottom: 6px;
+}
+.legal-body a {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* Footer legal line */
+.footer-legal {
+  display: flex;
+  gap: 8px;
+  font-size: 12.5px;
+  margin-inline-end: auto;
+  align-items: center;
+}
+.footer-legal a {
+  color: rgba(255, 255, 255, 0.55);
+}
+.footer-legal a:hover {
+  color: var(--gold-light);
+}

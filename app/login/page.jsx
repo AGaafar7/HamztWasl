@@ -40,7 +40,7 @@ function LoginForm() {
       const { profile } = await signIn({ email, password })
       const dest =
         profile?.role === 'instructor' && next === '/portal' ? '/instructor' : next
-      router.push(dest)
+      router.replace(dest)
       router.refresh()
     } catch (err) {
       setError(err.message || 'Login failed')

@@ -34,7 +34,6 @@ export default function Navbar() {
         <nav className={`nav-links ${open ? 'open' : ''}`}>
           <a href="/#courses" onClick={close}>{t.nav.courses}</a>
           <a href="/#path" onClick={close}>{t.nav.path}</a>
-          <a href="/#instructors" onClick={close}>{t.nav.instructors}</a>
           <a href="/#stories" onClick={close}>{t.nav.stories}</a>
           <div className="nav-links-mobile-actions">
             {!loading && (user ? (

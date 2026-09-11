@@ -6,7 +6,8 @@ import { gloss } from '../../../i18n/gloss.js'
 import { recordPracticeAttemptAction } from '../../actions/practice'
 
 export default function ReadingClient({ exercises }) {
-  const { lang } = useLanguage()
+  const { t, lang } = useLanguage()
+  const r = t.learn.reading
   const [selectedExercise, setSelectedExercise] = useState(exercises[0] || null)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [userAnswer, setUserAnswer] = useState('')
@@ -14,7 +15,7 @@ export default function ReadingClient({ exercises }) {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
 
-  if (!selectedExercise) return <p className="portal-empty">No exercises available yet.</p>
+  if (!selectedExercise) return <p className="portal-empty">{r.noExercises}</p>
 
   const currentQ = selectedExercise.questions[currentQuestionIndex]
   const isLast = currentQuestionIndex === selectedExercise.questions.length - 1
@@ -23,7 +24,6 @@ export default function ReadingClient({ exercises }) {
     if (!userAnswer.trim()) return
     setLoading(true)
     setFeedback(null)
-
     try {
       const res = await fetch('/api/comprehension/check', {
         method: 'POST',
@@ -37,7 +37,7 @@ export default function ReadingClient({ exercises }) {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Check failed')
       setFeedback(data)
-     // Save the attempt.
+
       recordPracticeAttemptAction({
         type: 'reading',
         refId: selectedExercise.id,
@@ -73,8 +73,8 @@ export default function ReadingClient({ exercises }) {
   if (done) {
     return (
       <div className="section-head">
-        <h1 className="page-title">🎉 Reading Practice Complete!</h1>
-        <p>Great job! You've answered all questions for this passage.</p>
+        <h1 className="page-title">{r.completeTitle}</h1>
+        <p>{r.completeBody}</p>
         <button
           className="btn btn-primary"
           onClick={() => {
@@ -84,7 +84,7 @@ export default function ReadingClient({ exercises }) {
             setFeedback(null)
           }}
         >
-          Start Over
+          {r.startOver}
         </button>
       </div>
     )
@@ -93,9 +93,9 @@ export default function ReadingClient({ exercises }) {
   return (
     <section>
       <div className="section-head">
-        <span className="eyebrow">Reading Practice</span>
+        <span className="eyebrow">{r.eyebrow}</span>
         <h1 className="page-title">{gloss(selectedExercise.title, lang)}</h1>
-        <p>Read the passage below and answer the question that follows.</p>
+        <p>{r.title}</p>
       </div>
 
       <div
@@ -114,7 +114,7 @@ export default function ReadingClient({ exercises }) {
 
       <div className="question-box" style={{ marginBottom: '20px' }}>
         <h3 style={{ fontSize: '1.2rem', marginBottom: '8px' }}>
-          Question {currentQuestionIndex + 1} of {selectedExercise.questions.length}
+          {r.question} {currentQuestionIndex + 1} {r.of} {selectedExercise.questions.length}
         </h3>
         <p style={{ fontSize: '1.1rem' }}>
           {currentQ.question[lang] || currentQ.question.en}
@@ -124,7 +124,7 @@ export default function ReadingClient({ exercises }) {
       <textarea
         className="form-input"
         rows="4"
-        placeholder="Type your answer here…"
+        placeholder={r.placeholder}
         value={userAnswer}
         onChange={(e) => setUserAnswer(e.target.value)}
         disabled={loading || feedback?.correct === true}
@@ -137,16 +137,16 @@ export default function ReadingClient({ exercises }) {
           onClick={handleSubmit}
           disabled={loading || !userAnswer.trim() || feedback?.correct === true}
         >
-          {loading ? 'Checking…' : 'Submit Answer'}
+          {loading ? r.checking : r.submit}
         </button>
         {feedback && !feedback.correct && (
           <button className="btn btn-ghost" onClick={handleRetry}>
-            Try Again
+            {r.tryAgain}
           </button>
         )}
         {feedback?.correct && (
           <button className="btn btn-primary" onClick={handleNext}>
-            {isLast ? 'Finish' : 'Next Question'}
+            {isLast ? r.finish : r.next}
           </button>
         )}
       </div>
@@ -162,7 +162,7 @@ export default function ReadingClient({ exercises }) {
           }}
         >
           <p style={{ fontWeight: 'bold', marginBottom: '6px' }}>
-            {feedback.correct ? '✅ Correct!' : '❌ Not quite.'}
+            {feedback.correct ? `✅ ${r.correct}` : `❌ ${r.notQuite}`}
           </p>
           <p>{feedback.feedback}</p>
         </div>

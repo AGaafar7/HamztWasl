@@ -37,7 +37,7 @@ export default function RegisterPage() {
       await signUp({ email, password, fullName: name, role })
       // If email confirmation is OFF (as we set it in step 1), Supabase
       // signs the user in immediately — so route straight to the portal.
-      router.push(role === 'instructor' ? '/instructor' : '/portal')
+      router.replace(role === 'instructor' ? '/instructor' : '/portal')
       router.refresh()
     } catch (err) {
       setError(err.message || 'Registration failed')
@@ -171,7 +171,10 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="auth-demo-note">{a.terms}</p>
+          <p className="auth-demo-note">
+            By creating an account, you agree to our{' '}
+            <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.
+          </p>
 
           <p className="auth-switch">
             {a.haveAccount} <Link href="/login">{a.signIn}</Link>

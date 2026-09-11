@@ -1,6 +1,7 @@
 'use client'
 
 import { useLanguage } from '../i18n/LanguageContext.jsx'
+import Link from 'next/link'
 
 export default function Hero() {
   const { t } = useLanguage()
@@ -18,8 +19,8 @@ export default function Hero() {
           </h1>
           <p className="lede">{h.lede}</p>
           <div className="hero-actions">
-            <a href="#courses" className="btn btn-primary">{h.ctaPrimary}</a>
-            <a href="#path" className="btn btn-ghost">{h.ctaGhost}</a>
+            <Link href="/register" className="btn btn-primary">{h.ctaPrimary}</Link>
+            <Link href="#path" className="btn btn-ghost">{h.ctaGhost}</Link>
           </div>
           <div className="hero-trust">
             <div className="avatars">
