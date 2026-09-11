@@ -94,11 +94,20 @@ export default function VideoDetailClient({ video, moreVideos }) {
           }}
         >
           {w.arabic}
-          {activeWord === key && (
+           {activeWord === key && (
             <span className="word-popup" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
               <span className="word-popup-arabic arabic">{w.arabic}</span>
-              <strong>{gloss(w.gloss, lang)}</strong>
-              <span>{gloss(w.grammar, lang)}</span>
+              {w.gloss && Object.values(w.gloss).some(Boolean) && (
+                <strong>{gloss(w.gloss, lang)}</strong>
+              )}
+              {w.grammar && Object.values(w.grammar).some(Boolean) && (
+                <span>{gloss(w.grammar, lang)}</span>
+              )}
+              {w.root && (
+                <span className="word-popup-root">
+                  Root: <span className="arabic">{w.root}</span>
+                </span>
+              )}
               <span className="word-popup-hint">Double-click for other examples</span>
             </span>
           )}
