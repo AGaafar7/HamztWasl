@@ -1,9 +1,9 @@
 // app/portal/lessons/[lessonId]/page.jsx
 import { notFound } from 'next/navigation'
-import { createClient } from '../../../../lib/supabase/server'
-import { fetchLesson } from '../../../../lib/queries/lessons'
-import { fetchVideo } from '../../../../lib/queries/videos'
-import LessonRenderer from '../../../../components/LessonRenderer'
+import { createClient } from '../../../../../../lib/supabase/server'
+import { fetchLesson } from '../../../../../../lib/queries/lessons'
+import { fetchVideo } from '../../../../../../lib/queries/videos'
+import LessonRenderer from '../../../../../../components/LessonRenderer'
 
 export default async function StandaloneLessonPage({ params }) {
   const { lessonId } = await params
