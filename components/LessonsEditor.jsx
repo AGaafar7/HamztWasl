@@ -58,12 +58,22 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
   }
 
   const saveContent = (id, content) => {
-    setLessons((prev) => prev.map((l) => (l.id === id ? { ...l, content } : l)))
+    setLessons((prev) =>
+      prev.map((l) => (l.id === id ? { ...l, content } : l))
+    )
     startTransition(async () => {
       try {
         await updateLessonAction(id, content)
       } catch (err) {
-        setError(err.message || 'Failed to save')
+        // A Vercel gateway timeout means the request took too long to
+        // respond, but the DB write often succeeded. Tell the user to
+        // refresh and check, rather than losing their work.
+        const msg = err?.message || ''
+        if (msg.includes('timeout') || msg.includes('Gateway')) {
+          setError('Save took too long. Refresh the page to confirm it went through.')
+        } else {
+          setError(msg || 'Failed to save')
+        }
       }
     })
   }

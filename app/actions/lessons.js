@@ -1,19 +1,11 @@
 // app/actions/lessons.js
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { createClient } from '../../lib/supabase/server'
 
 const DEFAULT_CONTENT = {
-  text: {
-    title: { en: '', ar: '', zh: '' },
-    body: { en: '', ar: '', zh: '' },
-  },
-  tested: {
-    title: { en: '', ar: '', zh: '' },
-    body: { en: '', ar: '', zh: '' },
-    questions: [],
-  },
+  text: { title: { en: '', ar: '', zh: '' }, body: { en: '', ar: '', zh: '' } },
+  tested: { title: { en: '', ar: '', zh: '' }, body: { en: '', ar: '', zh: '' }, questions: [] },
   video: { videoId: '' },
   listening: { title: { en: '', ar: '', zh: '' }, lines: [] },
   reading: { title: { en: '', ar: '', zh: '' }, passage: { en: '', ar: '', zh: '' }, questions: [] },
@@ -21,17 +13,12 @@ const DEFAULT_CONTENT = {
   writing: { title: { en: '', ar: '', zh: '' }, items: [] },
 }
 
-/**
- * Creates a new lesson. `courseId` may be null for standalone authoring.
- * Returns { id } so the caller can expand it for editing.
- */
 export async function createLessonAction({ courseId = null, kind }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
   if (!DEFAULT_CONTENT[kind]) throw new Error('Unknown lesson kind')
 
-  // Position at the end of the course (or 0 for standalone).
   let nextOrder = 0
   if (courseId) {
     const { data: last } = await supabase
@@ -57,12 +44,6 @@ export async function createLessonAction({ courseId = null, kind }) {
     .single()
 
   if (error) throw error
-
-  if (courseId) {
-    revalidatePath(`/instructor/courses/${courseId}`)
-    revalidatePath(`/portal/courses/${courseId}`)
-  }
-  revalidatePath('/instructor/lessons')
   return { id: data.id }
 }
 
@@ -71,12 +52,6 @@ export async function updateLessonAction(lessonId, content) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const { data: lesson } = await supabase
-    .from('course_lessons')
-    .select('course_id')
-    .eq('id', lessonId)
-    .maybeSingle()
-
   const { error } = await supabase
     .from('course_lessons')
     .update({ content })
@@ -84,11 +59,6 @@ export async function updateLessonAction(lessonId, content) {
     .eq('instructor_id', user.id)
   if (error) throw error
 
-  if (lesson?.course_id) {
-    revalidatePath(`/instructor/courses/${lesson.course_id}`)
-    revalidatePath(`/portal/courses/${lesson.course_id}`)
-  }
-  revalidatePath('/instructor/lessons')
   return { ok: true }
 }
 
@@ -97,12 +67,6 @@ export async function removeLessonAction(lessonId) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const { data: lesson } = await supabase
-    .from('course_lessons')
-    .select('course_id')
-    .eq('id', lessonId)
-    .maybeSingle()
-
   const { error } = await supabase
     .from('course_lessons')
     .delete()
@@ -110,11 +74,6 @@ export async function removeLessonAction(lessonId) {
     .eq('instructor_id', user.id)
   if (error) throw error
 
-  if (lesson?.course_id) {
-    revalidatePath(`/instructor/courses/${lesson.course_id}`)
-    revalidatePath(`/portal/courses/${lesson.course_id}`)
-  }
-  revalidatePath('/instructor/lessons')
   return { ok: true }
 }
 
@@ -133,7 +92,5 @@ export async function reorderLessonsAction(courseId, orderedIds) {
     if (error) throw error
   }
 
-  revalidatePath(`/instructor/courses/${courseId}`)
-  revalidatePath(`/portal/courses/${courseId}`)
   return { ok: true }
 }
