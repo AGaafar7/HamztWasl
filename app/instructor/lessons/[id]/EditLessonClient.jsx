@@ -4,7 +4,7 @@ import { useTransition, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { updateLessonAction, removeLessonAction } from '../../../actions/lessons'
-import { KIND_LABELS, LessonFormByKind } from '../../../components/LessonForms'
+import { KIND_LABELS, LessonFormByKind } from '../../../../components/LessonForms'
 
 export default function EditLessonClient({ lesson }) {
   const router = useRouter()
