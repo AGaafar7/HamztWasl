@@ -2316,11 +2316,7 @@ padding: 24px 22px 22px;
 @media (max-width: 640px) {
   .lesson-lang-grid { grid-template-columns: 1fr; }
 }
-.lesson-coming-soon {
-  font-size: 13.5px;
-  color: var(--grey);
-  font-style: italic;
-}
+
 .question-list h4 { font-size: 13.5px; margin-bottom: 8px; color: var(--navy-ink); }
 .question-row {
   display: grid;

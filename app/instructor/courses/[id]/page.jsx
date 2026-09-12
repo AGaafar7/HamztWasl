@@ -2,8 +2,8 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '../../../../lib/supabase/server'
 import { fetchCourseLessons } from '../../../../lib/queries/lessons'
+import { fetchVideoChoices } from '../../../../lib/queries/lessons-content'
 import EditCourseClient from './EditCourseClient'
-
 
 export default async function EditCoursePage({ params }) {
   const { id } = await params
@@ -17,7 +17,10 @@ export default async function EditCoursePage({ params }) {
 
   if (!course) notFound()
 
-  const lessons = await fetchCourseLessons(id)
+  const [lessons, videoChoices] = await Promise.all([
+    fetchCourseLessons(id),
+    fetchVideoChoices(),
+  ])
 
   return (
     <EditCourseClient
@@ -34,6 +37,7 @@ export default async function EditCoursePage({ params }) {
         desc: course.desc,
       }}
       initialLessons={lessons}
+      videoChoices={videoChoices}
     />
   )
 }

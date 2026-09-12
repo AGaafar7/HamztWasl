@@ -10,7 +10,7 @@ import {
 } from '../../../actions/courses'
 import LessonsEditor from '../../../../components/LessonsEditor'
 
-export default function EditCourseClient({ course, initialLessons = [] }) {
+export default function EditCourseClient({ course, initialLessons = [], videoChoices = [] }) {
   const router = useRouter()
   const [form, setForm] = useState({
     titleEn: course.title?.en || '',
@@ -253,7 +253,7 @@ export default function EditCourseClient({ course, initialLessons = [] }) {
         </fieldset>
                 <fieldset className="instructor-fieldset">
           <legend>Lessons</legend>
-          <LessonsEditor courseId={course.id} initialLessons={initialLessons} />
+          <LessonsEditor courseId={course.id} initialLessons={initialLessons} videoChoices={videoChoices} />
         </fieldset>
 
         {error && <p className="form-error">{error}</p>}

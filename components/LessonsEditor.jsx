@@ -18,7 +18,16 @@ const KIND_LABELS = {
   writing: 'Writing',
 }
 
-export default function LessonsEditor({ courseId = null, initialLessons = [] }) {
+// Video lessons only make sense inside a course. The video itself already
+// lives in the public video library, so a standalone "video lesson" would
+// have no home. Hide Video from the standalone picker.
+const STANDALONE_HIDDEN = new Set(['video'])
+
+export default function LessonsEditor({
+  courseId = null,
+  initialLessons = [],
+  videoChoices = [],
+}) {
   const [lessons, setLessons] = useState(initialLessons)
   const [expanded, setExpanded] = useState(null)
   const [pickingKind, setPickingKind] = useState(false)
@@ -55,16 +64,11 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
   }
 
   const saveContent = (id, content) => {
-    setLessons((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, content } : l))
-    )
+    setLessons((prev) => prev.map((l) => (l.id === id ? { ...l, content } : l)))
     startTransition(async () => {
       try {
         await updateLessonAction(id, content)
       } catch (err) {
-        // A Vercel gateway timeout means the request took too long to
-        // respond, but the DB write often succeeded. Tell the user to
-        // refresh and check, rather than losing their work.
         const msg = err?.message || ''
         if (msg.includes('timeout') || msg.includes('Gateway')) {
           setError('Save took too long. Refresh the page to confirm it went through.')
@@ -116,6 +120,7 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
               canMoveUp={i > 0}
               canMoveDown={i < lessons.length - 1}
               onSave={(content) => saveContent(lesson.id, content)}
+              videoChoices={videoChoices}
             />
           ))}
         </div>
@@ -123,16 +128,21 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
 
       {pickingKind ? (
         <div className="kind-picker">
-          {Object.entries(KIND_LABELS).map(([kind, label]) => (
-            <button
-              key={kind}
-              type="button"
-              className="chip"
-              onClick={() => addLesson(kind)}
-            >
-              {label}
-            </button>
-          ))}
+          {Object.entries(KIND_LABELS)
+            .filter(([kind]) => {
+              if (courseId) return true
+              return !STANDALONE_HIDDEN.has(kind)
+            })
+            .map(([kind, label]) => (
+              <button
+                key={kind}
+                type="button"
+                className="chip"
+                onClick={() => addLesson(kind)}
+              >
+                {label}
+              </button>
+            ))}
           <button
             type="button"
             className="filter-clear"
@@ -160,6 +170,7 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
 function LessonCard({
   lesson, expanded, onToggle, onRemove,
   onMoveUp, onMoveDown, canMoveUp, canMoveDown, onSave,
+  videoChoices = [],
 }) {
   const title =
     lesson.content?.title?.en ||
@@ -183,7 +194,7 @@ function LessonCard({
 
       {expanded && (
         <div className="lesson-card-body">
-          { lesson.kind === 'text' ? (
+          {lesson.kind === 'text' ? (
             <TextLessonForm content={lesson.content} onSave={onSave} />
           ) : lesson.kind === 'tested' ? (
             <TestedLessonForm content={lesson.content} onSave={onSave} />
@@ -195,6 +206,12 @@ function LessonCard({
             <SpeakingLessonForm content={lesson.content} onSave={onSave} />
           ) : lesson.kind === 'writing' ? (
             <WritingLessonForm content={lesson.content} onSave={onSave} />
+          ) : lesson.kind === 'video' ? (
+            <VideoLessonForm
+              content={lesson.content}
+              videoChoices={videoChoices}
+              onSave={onSave}
+            />
           ) : null}
         </div>
       )}
@@ -233,7 +250,7 @@ function BodyFields({ body, onChange, arRows = 4 }) {
 }
 
 /* ============================================================
-   Text & Tested — unchanged from the previous turn
+   Text
    ============================================================ */
 
 function TextLessonForm({ content, onSave }) {
@@ -254,6 +271,10 @@ function TextLessonForm({ content, onSave }) {
     </div>
   )
 }
+
+/* ============================================================
+   Tested
+   ============================================================ */
 
 function TestedLessonForm({ content, onSave }) {
   const [local, setLocal] = useState({
@@ -308,7 +329,7 @@ function TestedLessonForm({ content, onSave }) {
 }
 
 /* ============================================================
-   Listening — title + list of lines (Arabic + gloss)
+   Listening
    ============================================================ */
 
 function ListeningLessonForm({ content, onSave }) {
@@ -372,7 +393,7 @@ function ListeningLessonForm({ content, onSave }) {
 }
 
 /* ============================================================
-   Reading — title + passage + questions
+   Reading
    ============================================================ */
 
 function ReadingLessonForm({ content, onSave }) {
@@ -431,7 +452,7 @@ function ReadingLessonForm({ content, onSave }) {
 }
 
 /* ============================================================
-   Speaking — title + list of words
+   Speaking
    ============================================================ */
 
 function SpeakingLessonForm({ content, onSave }) {
@@ -490,7 +511,7 @@ function SpeakingLessonForm({ content, onSave }) {
 }
 
 /* ============================================================
-   Writing — title + list of items (letters or words) to trace
+   Writing
    ============================================================ */
 
 function WritingLessonForm({ content, onSave }) {
@@ -542,6 +563,50 @@ function WritingLessonForm({ content, onSave }) {
 
       <button type="button" className="btn btn-primary btn-small"
         onClick={() => onSave(local)}>
+        Save lesson
+      </button>
+    </div>
+  )
+}
+
+/* ============================================================
+   Video — pick one from the library (course lessons only)
+   ============================================================ */
+
+function VideoLessonForm({ content, videoChoices = [], onSave }) {
+  const [selectedId, setSelectedId] = useState(content.videoId || '')
+
+  return (
+    <div className="lesson-form">
+      <div className="form-group">
+        <label className="form-label">Choose a video from your library</label>
+        <select
+          className="form-input"
+          value={selectedId}
+          onChange={(e) => setSelectedId(e.target.value)}
+        >
+          <option value="">— pick one —</option>
+          {videoChoices.map((v) => (
+            <option key={v.id} value={v.id}>
+              {v.title?.en || v.id}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {videoChoices.length === 0 && (
+        <p className="calibrate-hint">
+          Your video library is empty. Add a video first from{' '}
+          <strong>Videos → + Add Video</strong>, then come back here to attach it.
+        </p>
+      )}
+
+      <button
+        type="button"
+        className="btn btn-primary btn-small"
+        onClick={() => onSave({ videoId: selectedId })}
+        disabled={!selectedId}
+      >
         Save lesson
       </button>
     </div>
