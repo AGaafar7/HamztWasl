@@ -18,9 +18,6 @@ const KIND_LABELS = {
   writing: 'Writing',
 }
 
-// Only video still needs the dedicated pipeline (Piece 3).
-const COMING_SOON = new Set(['video'])
-
 export default function LessonsEditor({ courseId = null, initialLessons = [] }) {
   const [lessons, setLessons] = useState(initialLessons)
   const [expanded, setExpanded] = useState(null)
@@ -134,7 +131,6 @@ export default function LessonsEditor({ courseId = null, initialLessons = [] }) 
               onClick={() => addLesson(kind)}
             >
               {label}
-              {COMING_SOON.has(kind) ? ' (soon)' : ''}
             </button>
           ))}
           <button
@@ -187,12 +183,7 @@ function LessonCard({
 
       {expanded && (
         <div className="lesson-card-body">
-          {COMING_SOON.has(lesson.kind) ? (
-            <p className="lesson-coming-soon">
-              The {KIND_LABELS[lesson.kind]} editor is coming in the next update.
-              This placeholder lesson is saved to your account.
-            </p>
-          ) : lesson.kind === 'text' ? (
+          { lesson.kind === 'text' ? (
             <TextLessonForm content={lesson.content} onSave={onSave} />
           ) : lesson.kind === 'tested' ? (
             <TestedLessonForm content={lesson.content} onSave={onSave} />
