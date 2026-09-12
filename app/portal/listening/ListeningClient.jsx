@@ -24,7 +24,7 @@ function similarity(a, b) {
   return Math.round((matches / wa.length) * 100)
 }
 
-export default function ListeningClient({ lines, videos, lessons = [] }) {
+export default function ListeningClient({ lines, videos, lessons = [], completedIds = [] }) {
   const { t, lang } = useLanguage()
   const l = t.learn.listening
   const [videoFilter, setVideoFilter] = useState('all')
@@ -79,7 +79,7 @@ export default function ListeningClient({ lines, videos, lessons = [] }) {
             {lessons.length > 0 && (
         <div className="lesson-library-section">
           <h2 className="lesson-library-heading">From instructor lessons</h2>
-          <LessonLibraryList lessons={lessons} />
+          <LessonLibraryList lessons={lessons} completedIds={completedIds} />
         </div>
       )}
 

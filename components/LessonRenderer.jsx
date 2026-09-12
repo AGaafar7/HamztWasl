@@ -84,7 +84,6 @@ export default function LessonRenderer({
     (siblings ? `Lesson ${siblings.index + 1}` : 'Lesson')
 
   const onToggleComplete = () => {
-    if (!course) return
     const next = !completed
     setCompleted(next)
     startTransition(async () => {
@@ -132,38 +131,36 @@ export default function LessonRenderer({
       </div>
 
       {(course || (siblings && (siblings.prev || siblings.next))) && (
-        <div className="lesson-page-foot">
-          {course && (
-            <button
-              type="button"
-              className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
-              onClick={onToggleComplete}
-            >
-              {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
-            </button>
-          )}
+              <div className="lesson-page-foot">
+        <button
+          type="button"
+          className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
+          onClick={onToggleComplete}
+        >
+          {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
+        </button>
 
-          {siblings && (
-            <div className="lesson-page-nav">
-              {siblings.prev && (
-                <Link
-                  href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
-                  className="btn btn-ghost btn-small"
-                >
-                  ← Previous
-                </Link>
-              )}
-              {siblings.next && (
-                <Link
-                  href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
-                  className="btn btn-primary btn-small"
-                >
-                  Next lesson →
-                </Link>
-              )}
-            </div>
-          )}
-        </div>
+        {siblings && (siblings.prev || siblings.next) && (
+          <div className="lesson-page-nav">
+            {siblings.prev && (
+              <Link
+                href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
+                className="btn btn-ghost btn-small"
+              >
+                ← Previous
+              </Link>
+            )}
+            {siblings.next && (
+              <Link
+                href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
+                className="btn btn-primary btn-small"
+              >
+                Next lesson →
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
       )}
     </section>
   )

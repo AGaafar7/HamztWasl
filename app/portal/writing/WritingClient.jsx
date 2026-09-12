@@ -3,7 +3,7 @@
 import { useLanguage } from '../../../i18n/LanguageContext.jsx'
 import LessonLibraryList from '../../../components/LessonLibraryList'
 
-export default function WritingClient({ lessons = [] }) {
+export default function WritingClient({ lessons = [], completedIds = [] }) {
   const { t } = useLanguage()
   const w = t.learn.writing
 
@@ -18,7 +18,7 @@ export default function WritingClient({ lessons = [] }) {
       {lessons.length === 0 ? (
         <p className="portal-empty">{w.empty}</p>
       ) : (
-        <LessonLibraryList lessons={lessons} />
+        <LessonLibraryList lessons={lessons} completedIds={completedIds} />
       )}
     </section>
   )

@@ -93,7 +93,7 @@ function similarity(a, b) {
   return Math.max(levScore, jaccardScore)
 }
 
-export default function SpeakingClient({ letters, lessons = [] }) {
+export default function SpeakingClient({ letters, lessons = [], completedIds = [] }) {
   const { t } = useLanguage()
   const sp = t.learn.speaking
   const deck = useMemo(() => buildDecks(letters), [letters])
@@ -223,7 +223,7 @@ export default function SpeakingClient({ letters, lessons = [] }) {
             {lessons.length > 0 && (
         <div className="lesson-library-section">
           <h2 className="lesson-library-heading">From instructor lessons</h2>
-          <LessonLibraryList lessons={lessons} />
+          <LessonLibraryList lessons={lessons} completedIds={completedIds}/>
         </div>
       )}
 
