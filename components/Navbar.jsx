@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext.jsx'
 
 export default function Navbar() {
   const { t, lang, setLang } = useLanguage()
-  const { user, loading, signOut } = useAuth()
+  const { user, profile, loading, signOut } = useAuth()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
@@ -19,6 +19,9 @@ export default function Navbar() {
     router.push('/')
     router.refresh()
   }
+
+  const isInstructor = profile?.role === 'instructor' || profile?.role === 'admin'
+  const portalHref = isInstructor ? '/instructor' : '/portal'
 
   return (
     <header className="navbar">
@@ -38,7 +41,7 @@ export default function Navbar() {
           <div className="nav-links-mobile-actions">
             {!loading && (user ? (
               <>
-                <Link href="/portal" className="nav-login" onClick={close}>{t.portal.myPortal}</Link>
+                <Link href={portalHref} className="nav-login" onClick={close}>{t.portal.myPortal}</Link>
                 <button type="button" className="btn btn-primary nav-cta" onClick={handleLogout}>
                   {t.portal.logout}
                 </button>
@@ -61,7 +64,7 @@ export default function Navbar() {
 
           {!loading && (user ? (
             <>
-              <Link href="/portal" className="nav-login">{t.portal.myPortal}</Link>
+              <Link href={portalHref} className="nav-login">{t.portal.myPortal}</Link>
               <button type="button" className="btn btn-primary nav-cta" onClick={handleLogout}>{t.portal.logout}</button>
             </>
           ) : (
