@@ -171,13 +171,20 @@ export function ListeningLessonForm({ content, onSave }) {
 /* ============================================================
    Reading
    ============================================================ */
-
 export function ReadingLessonForm({ content, onSave }) {
   const [local, setLocal] = useState({
     title: content.title || { en: '', ar: '', zh: '' },
     passage: content.passage || { en: '', ar: '', zh: '' },
     questions: content.questions || [],
   })
+
+  // AI question generator state.
+  const [showGen, setShowGen] = useState(false)
+  const [genCount, setGenCount] = useState(3)
+  const [genInstructions, setGenInstructions] = useState('')
+  const [generating, setGenerating] = useState(false)
+  const [genError, setGenError] = useState('')
+
   const addQ = () => setLocal((c) => ({
     ...c,
     questions: [...c.questions, { id: `q${Date.now()}`, prompt: '', answer: '', hint: '' }],
@@ -190,6 +197,42 @@ export function ReadingLessonForm({ content, onSave }) {
     ...c, questions: c.questions.filter((q) => q.id !== id),
   }))
 
+  const onGenerate = async () => {
+    const arabic = (local.passage.ar || '').trim()
+    if (!arabic) {
+      setGenError('Fill in the Arabic passage first — the AI reads it to write questions.')
+      return
+    }
+    setGenerating(true)
+    setGenError('')
+    try {
+      const res = await fetch('/api/generate-questions', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          passage: arabic,
+          count: genCount,
+          instructions: genInstructions,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Generate failed')
+      const generated = data.questions || []
+      setLocal((c) => ({
+        ...c,
+        questions: [...c.questions, ...generated],
+      }))
+      setShowGen(false)
+      setGenInstructions('')
+    } catch (err) {
+      setGenError(err.message || 'Something went wrong')
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  const arabicPassageReady = (local.passage.ar || '').trim().length > 0
+
   return (
     <div className="lesson-form">
       <TitleFields title={local.title}
@@ -200,21 +243,91 @@ export function ReadingLessonForm({ content, onSave }) {
         onChange={(lang, v) => setLocal((c) => ({ ...c, passage: { ...c.passage, [lang]: v } }))} />
 
       <div className="question-list">
-        <h4>Comprehension questions</h4>
-        {local.questions.map((q) => (
-          <div className="question-row" key={q.id}>
-            <input className="form-input" placeholder="Question"
-              value={q.prompt} onChange={(e) => updateQ(q.id, 'prompt', e.target.value)} />
-            <input className="form-input" placeholder="Expected answer"
-              value={q.answer} onChange={(e) => updateQ(q.id, 'answer', e.target.value)} />
+        <div className="question-list-head">
+          <h4>Comprehension questions</h4>
+          <button
+            type="button"
+            className="btn btn-ghost btn-small ai-gen-btn"
+            onClick={() => setShowGen((s) => !s)}
+            disabled={!arabicPassageReady}
+            title={!arabicPassageReady ? 'Fill in the Arabic passage first' : ''}
+          >
+            ✨ {showGen ? 'Close' : 'Generate with AI'}
+          </button>
+        </div>
+
+        {showGen && (
+          <div className="ai-gen-panel">
+            <div className="form-group">
+              <label className="form-label">Number of questions</label>
+              <input
+                type="number"
+                className="form-input"
+                min="1"
+                max="10"
+                value={genCount}
+                onChange={(e) => setGenCount(Number(e.target.value))}
+                style={{ maxWidth: 120 }}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">
+                Instructions for the AI <span className="form-optional">(optional)</span>
+              </label>
+              <textarea
+                className="form-input"
+                rows="3"
+                placeholder="e.g. Focus on vocabulary about family. Ask one inference question at the end."
+                value={genInstructions}
+                onChange={(e) => setGenInstructions(e.target.value)}
+              />
+            </div>
+
+            {genError && <p className="form-error">{genError}</p>}
+
+            <div className="ai-gen-actions">
+              <button
+                type="button"
+                className="btn btn-primary btn-small"
+                onClick={onGenerate}
+                disabled={generating}
+              >
+                {generating ? 'Generating…' : 'Generate questions'}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost btn-small"
+                onClick={() => { setShowGen(false); setGenError('') }}
+                disabled={generating}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {local.questions.map((q, i) => (
+          <div className="question-block" key={q.id}>
+            <div className="question-block-head">
+              <span className="question-number">Question {i + 1}</span>
+              <button type="button" className="mini-play"
+                onClick={() => removeQ(q.id)} aria-label="Remove question">✕</button>
+            </div>
+            <input className="form-input" placeholder="Question (Arabic)"
+              value={q.prompt}
+              onChange={(e) => updateQ(q.id, 'prompt', e.target.value)} />
+            <input className="form-input" placeholder="Expected answer (Arabic)"
+              value={q.answer}
+              onChange={(e) => updateQ(q.id, 'answer', e.target.value)} />
             <input className="form-input" placeholder="Hint (optional)"
-              value={q.hint} onChange={(e) => updateQ(q.id, 'hint', e.target.value)} />
-            <button type="button" className="mini-play"
-              onClick={() => removeQ(q.id)}>✕</button>
+              value={q.hint}
+              onChange={(e) => updateQ(q.id, 'hint', e.target.value)} />
           </div>
         ))}
+
         <button type="button" className="btn btn-ghost btn-small" onClick={addQ}>
-          + Add question
+          + Add question manually
         </button>
       </div>
 
