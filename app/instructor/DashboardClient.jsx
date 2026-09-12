@@ -2,10 +2,15 @@
 
 import Link from 'next/link'
 
-export default function DashboardClient({ profile, courses, practices, earnings }) {
-  const totalStudents = 0 // not tracked yet; add when enrollments are wired up
+export default function DashboardClient({ profile, courses, practices, earnings, stats }) {
   const publishedCourses = courses.filter((c) => c.status === 'published').length
-  const displayName = profile?.full_name?.split(' ')[0] || profile?.email?.split('@')[0] || 'there'
+  const displayName =
+    profile?.full_name?.split(' ')[0] ||
+    profile?.email?.split('@')[0] ||
+    'there'
+
+  const studentCount = stats?.studentCount ?? 0
+  const practiceCount = stats?.practiceCount ?? 0
 
   return (
     <section>
@@ -23,11 +28,13 @@ export default function DashboardClient({ profile, courses, practices, earnings 
         <div className="instructor-stat-card">
           <span className="instructor-stat-label">Total Revenue</span>
           <span className="instructor-stat-value">${earnings.total.toFixed(2)}</span>
-          <span className="instructor-stat-sub">${earnings.thisMonth.toFixed(2)} this month</span>
+          <span className="instructor-stat-sub">
+            ${earnings.thisMonth.toFixed(2)} this month
+          </span>
         </div>
         <div className="instructor-stat-card">
           <span className="instructor-stat-label">Students</span>
-          <span className="instructor-stat-value">{totalStudents.toLocaleString()}</span>
+          <span className="instructor-stat-value">{studentCount.toLocaleString()}</span>
           <span className="instructor-stat-sub">across all courses</span>
         </div>
         <div className="instructor-stat-card">
@@ -41,7 +48,7 @@ export default function DashboardClient({ profile, courses, practices, earnings 
         </div>
         <div className="instructor-stat-card">
           <span className="instructor-stat-label">Practices</span>
-          <span className="instructor-stat-value">{practices.length}</span>
+          <span className="instructor-stat-value">{practiceCount}</span>
           <span className="instructor-stat-sub">listening · reading · speaking</span>
         </div>
       </div>
