@@ -130,7 +130,6 @@ export default function LessonRenderer({
         {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
       </div>
 
-      {(course || (siblings && (siblings.prev || siblings.next))) && (
               <div className="lesson-page-foot">
         <button
           type="button"
@@ -161,7 +160,7 @@ export default function LessonRenderer({
           </div>
         )}
       </div>
-      )}
+      
     </section>
   )
 }
