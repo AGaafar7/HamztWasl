@@ -18,6 +18,7 @@ const DEFAULT_CONTENT = {
   listening: { title: { en: '', ar: '', zh: '' }, lines: [] },
   reading: { title: { en: '', ar: '', zh: '' }, passage: { en: '', ar: '', zh: '' }, questions: [] },
   speaking: { title: { en: '', ar: '', zh: '' }, words: [] },
+  writing: { title: { en: '', ar: '', zh: '' }, items: [] },
 }
 
 /**

@@ -41,6 +41,9 @@ export default function PortalLayout({ children }) {
           <Link href="/portal/speaking" className={linkClass('/portal/speaking')}>
             <span className="sidebar-dot" /> {s.speaking}
           </Link>
+          <Link href="/portal/writing" className={linkClass('/portal/writing')}>
+            <span className="sidebar-dot" /> {s.writing}
+          </Link>
         </div>
       </aside>
       <div className="portal-content">{children}</div>

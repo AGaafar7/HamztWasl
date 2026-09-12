@@ -6,6 +6,7 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { gloss } from '../i18n/gloss.js'
 import { speak } from '../utils/speak.js'
 import { toggleLessonCompleteAction } from '../app/actions/progress'
+import TracingCanvas from './TracingCanvas'
 
 /* -------- similarity helper (used by listening lesson) -------- */
 function normalizeArabic(str) {
@@ -126,6 +127,7 @@ export default function LessonRenderer({
         {lesson.kind === 'listening' && <ListeningLesson lesson={lesson} />}
         {lesson.kind === 'reading' && <ReadingLesson lesson={lesson} />}
         {lesson.kind === 'speaking' && <SpeakingLesson lesson={lesson} />}
+        {lesson.kind === 'writing' && <WritingLesson lesson={lesson} />}
         {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
       </div>
 
@@ -508,6 +510,79 @@ function SpeakingLesson({ lesson }) {
             </div>
           )}
         </>
+      )}
+    </div>
+  )
+}
+
+
+/* ============================================================
+   Writing — trace letters/words on a canvas
+   ============================================================ */
+function WritingLesson({ lesson }) {
+  const { lang } = useLanguage()
+  const items = lesson.content?.items || []
+  const [current, setCurrent] = useState(0)
+
+  if (items.length === 0) {
+    return <p className="portal-empty">This lesson has no items to trace yet.</p>
+  }
+
+  const item = items[current]
+
+  return (
+    <div className="writing-lesson">
+      {items.length > 1 && (
+        <div className="writing-tabs">
+          {items.map((it, i) => (
+            <button
+              key={it.id || i}
+              type="button"
+              className={`writing-tab ${i === current ? 'active' : ''}`}
+              onClick={() => setCurrent(i)}
+            >
+              <span className="arabic">{it.arabic}</span>
+              {it.transliteration && (
+                <span className="writing-tab-translit">{it.transliteration}</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <TracingCanvas guide={item.arabic} />
+
+      <div className="writing-meta">
+        {item.transliteration && (
+          <span className="writing-translit">{item.transliteration}</span>
+        )}
+        {item.meaning && (
+          <span className="writing-meaning">{item.meaning}</span>
+        )}
+      </div>
+
+      {items.length > 1 && (
+        <div className="writing-nav">
+          <button
+            type="button"
+            className="btn btn-ghost btn-small"
+            onClick={() => setCurrent((i) => Math.max(0, i - 1))}
+            disabled={current === 0}
+          >
+            ← Previous
+          </button>
+          <span className="writing-position">
+            {current + 1} / {items.length}
+          </span>
+          <button
+            type="button"
+            className="btn btn-ghost btn-small"
+            onClick={() => setCurrent((i) => Math.min(items.length - 1, i + 1))}
+            disabled={current === items.length - 1}
+          >
+            Next →
+          </button>
+        </div>
       )}
     </div>
   )

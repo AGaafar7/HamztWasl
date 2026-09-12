@@ -15,6 +15,7 @@ const KIND_LABELS = {
   listening: 'Listening',
   reading: 'Reading',
   speaking: 'Speaking',
+  writing: 'Writing',
 }
 
 // Only video still needs the dedicated pipeline (Piece 3).
@@ -191,6 +192,8 @@ function LessonCard({
             <ReadingLessonForm content={lesson.content} onSave={onSave} />
           ) : lesson.kind === 'speaking' ? (
             <SpeakingLessonForm content={lesson.content} onSave={onSave} />
+          ) : lesson.kind === 'writing' ? (
+            <WritingLessonForm content={lesson.content} onSave={onSave} />
           ) : null}
         </div>
       )}
@@ -474,6 +477,65 @@ function SpeakingLessonForm({ content, onSave }) {
         ))}
         <button type="button" className="btn btn-ghost btn-small" onClick={addWord}>
           + Add word
+        </button>
+      </div>
+
+      <button type="button" className="btn btn-primary btn-small"
+        onClick={() => onSave(local)}>
+        Save lesson
+      </button>
+    </div>
+  )
+}
+
+/* ============================================================
+   Writing — title + list of items (letters or words) to trace
+   ============================================================ */
+
+function WritingLessonForm({ content, onSave }) {
+  const [local, setLocal] = useState({
+    title: content.title || { en: '', ar: '', zh: '' },
+    items: content.items || [],
+  })
+
+  const addItem = () => setLocal((c) => ({
+    ...c,
+    items: [...c.items, {
+      id: `w${Date.now()}`, arabic: '', transliteration: '', meaning: '',
+    }],
+  }))
+  const updateItem = (id, key, value) => setLocal((c) => ({
+    ...c,
+    items: c.items.map((it) => (it.id === id ? { ...it, [key]: value } : it)),
+  }))
+  const removeItem = (id) => setLocal((c) => ({
+    ...c, items: c.items.filter((it) => it.id !== id),
+  }))
+
+  return (
+    <div className="lesson-form">
+      <TitleFields title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
+
+      <div className="question-list">
+        <h4>Letters or words to trace</h4>
+        {local.items.map((it) => (
+          <div className="word-row" key={it.id}>
+            <input className="form-input arabic" dir="rtl" placeholder="الحرف أو الكلمة"
+              value={it.arabic}
+              onChange={(e) => updateItem(it.id, 'arabic', e.target.value)} />
+            <input className="form-input" placeholder="transliteration"
+              value={it.transliteration}
+              onChange={(e) => updateItem(it.id, 'transliteration', e.target.value)} />
+            <input className="form-input" placeholder="meaning"
+              value={it.meaning}
+              onChange={(e) => updateItem(it.id, 'meaning', e.target.value)} />
+            <button type="button" className="mini-play"
+              onClick={() => removeItem(it.id)}>✕</button>
+          </div>
+        ))}
+        <button type="button" className="btn btn-ghost btn-small" onClick={addItem}>
+          + Add item
         </button>
       </div>
 
