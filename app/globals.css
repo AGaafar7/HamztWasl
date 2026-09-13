@@ -3396,3 +3396,57 @@ padding: 24px 22px 22px;
   .course-edit-head-actions { width: 100%; }
   .course-edit-head-actions .btn { flex: 1; }
 }
+
+/* ---------------- Course lessons list (tile rows) ---------------- */
+.lesson-tile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lesson-tile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: all 0.15s ease;
+}
+.lesson-tile-row:hover {
+  border-color: var(--gold);
+  box-shadow: 0 10px 20px -14px rgba(14,42,71,0.2);
+}
+.lesson-tile-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: inherit;
+}
+.lesson-tile-row-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--navy-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lesson-tile-row-go {
+  color: var(--grey);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+.lesson-tile-row:hover .lesson-tile-row-go {
+  color: var(--orange);
+  transform: translateX(3px);
+}
+.lesson-tile-row .lesson-row-actions {
+  padding-inline-end: 14px;
+}

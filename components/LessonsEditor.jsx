@@ -1,23 +1,18 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   createLessonAction,
-  updateLessonAction,
   removeLessonAction,
   reorderLessonsAction,
 } from '../app/actions/lessons'
-import { KIND_LABELS, LessonFormByKind } from './LessonForms'
+import { KIND_LABELS } from './LessonForms'
 
-const STANDALONE_HIDDEN = new Set(['video'])
-
-export default function LessonsEditor({
-  courseId = null,
-  initialLessons = [],
-  videoChoices = [],
-}) {
+export default function LessonsEditor({ courseId, initialLessons = [] }) {
+  const router = useRouter()
   const [lessons, setLessons] = useState(initialLessons)
-  const [expanded, setExpanded] = useState(null)
   const [pickingKind, setPickingKind] = useState(false)
   const [error, setError] = useState('')
   const [, startTransition] = useTransition()
@@ -27,11 +22,7 @@ export default function LessonsEditor({
     startTransition(async () => {
       try {
         const { id } = await createLessonAction({ courseId, kind })
-        setLessons((prev) => [
-          ...prev,
-          { id, courseId, sortOrder: prev.length, kind, content: {} },
-        ])
-        setExpanded(id)
+        router.push(`/instructor/courses/${courseId}/lessons/${id}`)
       } catch (err) {
         setError(err.message || 'Failed to add lesson')
       }
@@ -41,28 +32,13 @@ export default function LessonsEditor({
   const removeLesson = (id) => {
     if (!confirm('Delete this lesson?')) return
     setLessons((prev) => prev.filter((l) => l.id !== id))
-    if (expanded === id) setExpanded(null)
     startTransition(async () => {
       try {
         await removeLessonAction(id)
+        router.refresh()
       } catch (err) {
         setError(err.message || 'Failed to delete')
-      }
-    })
-  }
-
-  const saveContent = (id, content) => {
-    setLessons((prev) => prev.map((l) => (l.id === id ? { ...l, content } : l)))
-    startTransition(async () => {
-      try {
-        await updateLessonAction(id, content)
-      } catch (err) {
-        const msg = err?.message || ''
-        if (msg.includes('timeout') || msg.includes('Gateway')) {
-          setError('Save took too long. Refresh the page to confirm it went through.')
-        } else {
-          setError(msg || 'Failed to save')
-        }
+        router.refresh()
       }
     })
   }
@@ -75,110 +51,109 @@ export default function LessonsEditor({
     const next = lessons.slice()
     ;[next[idx], next[swap]] = [next[swap], next[idx]]
     setLessons(next)
-    if (courseId) {
-      startTransition(async () => {
-        try {
-          await reorderLessonsAction(courseId, next.map((l) => l.id))
-        } catch (err) {
-          setError(err.message || 'Failed to reorder')
-        }
-      })
-    }
+    startTransition(async () => {
+      try {
+        await reorderLessonsAction(courseId, next.map((l) => l.id))
+      } catch (err) {
+        setError(err.message || 'Failed to reorder')
+      }
+    })
   }
 
   return (
     <div className="lessons-editor">
       {lessons.length === 0 ? (
-        <p className="portal-empty" style={{ padding: '20px 0' }}>
-          No lessons yet.
-        </p>
+        <div className="empty-state-card">
+          <p className="portal-empty" style={{ padding: 0 }}>
+            No lessons yet.
+          </p>
+          <p style={{ fontSize: 13.5, color: 'var(--grey)', marginTop: 4 }}>
+            Add your first lesson below.
+          </p>
+        </div>
       ) : (
-        <div className="lesson-list">
-          {lessons.map((lesson, i) => (
-            <LessonCard
-              key={lesson.id}
-              lesson={lesson}
-              expanded={expanded === lesson.id}
-              onToggle={() =>
-                setExpanded((cur) => (cur === lesson.id ? null : lesson.id))
-              }
-              onRemove={() => removeLesson(lesson.id)}
-              onMoveUp={() => moveLesson(lesson.id, 'up')}
-              onMoveDown={() => moveLesson(lesson.id, 'down')}
-              canMoveUp={i > 0}
-              canMoveDown={i < lessons.length - 1}
-              onSave={(content) => saveContent(lesson.id, content)}
-              videoChoices={videoChoices}
-            />
-          ))}
+        <div className="lesson-tile-list">
+          {lessons.map((lesson, i) => {
+            const title =
+              lesson.content?.title?.en ||
+              lesson.content?.title?.ar ||
+              `Untitled ${KIND_LABELS[lesson.kind]} lesson`
+            return (
+              <div className="lesson-tile-row" key={lesson.id}>
+                <Link
+                  href={`/instructor/courses/${courseId}/lessons/${lesson.id}`}
+                  className="lesson-tile-row-main"
+                >
+                  <span className="lesson-kind">{KIND_LABELS[lesson.kind]}</span>
+                  <span className="lesson-tile-row-title">{title}</span>
+                  <span className="lesson-tile-row-go">→</span>
+                </Link>
+                <div className="lesson-row-actions">
+                  <button
+                    type="button"
+                    className="mini-play"
+                    disabled={i === 0}
+                    onClick={() => moveLesson(lesson.id, 'up')}
+                    aria-label="Move up"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    className="mini-play"
+                    disabled={i === lessons.length - 1}
+                    onClick={() => moveLesson(lesson.id, 'down')}
+                    aria-label="Move down"
+                  >
+                    ↓
+                  </button>
+                  <button
+                    type="button"
+                    className="mini-play"
+                    onClick={() => removeLesson(lesson.id)}
+                    aria-label="Delete"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
 
       {pickingKind ? (
         <div className="kind-picker">
-          {Object.entries(KIND_LABELS)
-            .filter(([kind]) => {
-              if (courseId) return true
-              return !STANDALONE_HIDDEN.has(kind)
-            })
-            .map(([kind, label]) => (
-              <button key={kind} type="button" className="chip"
-                onClick={() => addLesson(kind)}>
-                {label}
-              </button>
-            ))}
-          <button type="button" className="filter-clear"
-            onClick={() => setPickingKind(false)}>
+          {Object.entries(KIND_LABELS).map(([kind, label]) => (
+            <button
+              key={kind}
+              type="button"
+              className="chip"
+              onClick={() => addLesson(kind)}
+            >
+              {label}
+            </button>
+          ))}
+          <button
+            type="button"
+            className="filter-clear"
+            onClick={() => setPickingKind(false)}
+          >
             Cancel
           </button>
         </div>
       ) : (
-        <button type="button" className="btn btn-primary btn-small"
-          onClick={() => setPickingKind(true)} style={{ marginTop: 8 }}>
+        <button
+          type="button"
+          className="btn btn-primary btn-small"
+          onClick={() => setPickingKind(true)}
+          style={{ marginTop: 16 }}
+        >
           + Add lesson
         </button>
       )}
 
       {error && <p className="form-error" style={{ marginTop: 12 }}>{error}</p>}
-    </div>
-  )
-}
-
-function LessonCard({
-  lesson, expanded, onToggle, onRemove,
-  onMoveUp, onMoveDown, canMoveUp, canMoveDown, onSave,
-  videoChoices = [],
-}) {
-  const title =
-    lesson.content?.title?.en ||
-    lesson.content?.title?.ar ||
-    `Untitled ${KIND_LABELS[lesson.kind]} lesson`
-
-  return (
-    <div className={`lesson-card ${expanded ? 'expanded' : ''}`}>
-      <div className="lesson-card-head" onClick={onToggle}>
-        <span className="lesson-kind">{KIND_LABELS[lesson.kind]}</span>
-        <span className="lesson-title">{title}</span>
-        <div className="lesson-row-actions" onClick={(e) => e.stopPropagation()}>
-          <button type="button" className="mini-play"
-            disabled={!canMoveUp} onClick={onMoveUp} aria-label="Move up">↑</button>
-          <button type="button" className="mini-play"
-            disabled={!canMoveDown} onClick={onMoveDown} aria-label="Move down">↓</button>
-          <button type="button" className="mini-play"
-            onClick={onRemove} aria-label="Delete">✕</button>
-        </div>
-      </div>
-
-      {expanded && (
-        <div className="lesson-card-body">
-          <LessonFormByKind
-            kind={lesson.kind}
-            content={lesson.content}
-            videoChoices={videoChoices}
-            onSave={onSave}
-          />
-        </div>
-      )}
     </div>
   )
 }

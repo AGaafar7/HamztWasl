@@ -19,10 +19,10 @@ const TABS = [
 export default function EditCourseClient({
   course,
   initialLessons = [],
-  videoChoices = [],
+  defaultTab = 'details',
 }) {
   const router = useRouter()
-  const [tab, setTab] = useState('details')
+  const [tab, setTab] = useState(defaultTab)
   const [form, setForm] = useState({
     titleEn: course.title?.en || '',
     titleAr: course.title?.ar || '',
@@ -158,7 +158,6 @@ export default function EditCourseClient({
           <LessonsEditor
             courseId={course.id}
             initialLessons={initialLessons}
-            videoChoices={videoChoices}
           />
         )}
       </div>
@@ -167,7 +166,7 @@ export default function EditCourseClient({
 }
 
 /* ============================================================
-   Details tab
+   Details tab (same as before)
    ============================================================ */
 
 function DetailsTab({ form, update }) {
@@ -250,7 +249,7 @@ function DetailsTab({ form, update }) {
 }
 
 /* ============================================================
-   Settings tab
+   Settings tab (same as before)
    ============================================================ */
 
 function SettingsTab({ form, update }) {

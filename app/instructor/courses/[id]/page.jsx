@@ -2,13 +2,13 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '../../../../lib/supabase/server'
 import { fetchCourseLessons } from '../../../../lib/queries/lessons'
-import { fetchVideoChoices } from '../../../../lib/queries/lessons-content'
 import EditCourseClient from './EditCourseClient'
 
-export default async function EditCoursePage({ params }) {
+export default async function EditCoursePage({ params, searchParams }) {
   const { id } = await params
-  const supabase = await createClient()
+  const { tab } = await searchParams
 
+  const supabase = await createClient()
   const { data: course } = await supabase
     .from('courses')
     .select('id, glyph, theme, level, type, price, lessons_count, status, title, "desc"')
@@ -17,10 +17,7 @@ export default async function EditCoursePage({ params }) {
 
   if (!course) notFound()
 
-  const [lessons, videoChoices] = await Promise.all([
-    fetchCourseLessons(id),
-    fetchVideoChoices(),
-  ])
+  const lessons = await fetchCourseLessons(id)
 
   return (
     <EditCourseClient
@@ -37,7 +34,7 @@ export default async function EditCoursePage({ params }) {
         desc: course.desc,
       }}
       initialLessons={lessons}
-      videoChoices={videoChoices}
+      defaultTab={typeof tab === 'string' ? tab : 'details'}
     />
   )
 }
