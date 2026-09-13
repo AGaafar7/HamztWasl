@@ -43,7 +43,7 @@ export default function Footer() {
           <div>
             <h4>{f.support}</h4>
             <ul>
-              <li><Link href="/term">{f.supportLinks[0]}</Link></li>
+              <li><Link href="/terms">{f.supportLinks[0]}</Link></li>
               <li><Link href="/privacy">{f.supportLinks[1]}</Link>.</li>
               <li><a href="#">{f.supportLinks[2]}</a></li>
             </ul>

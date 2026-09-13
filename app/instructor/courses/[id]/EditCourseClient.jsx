@@ -39,12 +39,20 @@ export default function EditCourseClient({
     lessons: course.lessons || 0,
   })
   const [status, setStatus] = useState(course.status || 'draft')
-  const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
-  const [savedFlash, setSavedFlash] = useState(false)
 
   const update = (key, value) => setForm((f) => ({ ...f, [key]: value }))
+
+  const onSave = async () => {
+    setError('')
+    try {
+      await updateCourseAction(course.id, form)
+    } catch (err) {
+      setError(err.message || 'Failed to save')
+      throw err
+    }
+  }
 
   const onTogglePublish = async () => {
     const next = status !== 'published'
@@ -88,7 +96,7 @@ export default function EditCourseClient({
           </div>
         </div>
         <div className="course-edit-head-actions">
-                    {showSaveButton && (
+          {showSaveButton && (
             <SaveButton onClick={onSave} label="Save changes" />
           )}
           <button
@@ -133,10 +141,7 @@ export default function EditCourseClient({
         {tab === 'details' && <DetailsTab form={form} update={update} />}
         {tab === 'settings' && <SettingsTab form={form} update={update} />}
         {tab === 'lessons' && (
-          <LessonsEditor
-            courseId={course.id}
-            initialLessons={initialLessons}
-          />
+          <LessonsEditor courseId={course.id} initialLessons={initialLessons} />
         )}
       </div>
     </section>
@@ -144,7 +149,7 @@ export default function EditCourseClient({
 }
 
 /* ============================================================
-   Details tab (same as before)
+   Details tab
    ============================================================ */
 
 function DetailsTab({ form, update }) {
@@ -227,7 +232,7 @@ function DetailsTab({ form, update }) {
 }
 
 /* ============================================================
-   Settings tab (same as before)
+   Settings tab
    ============================================================ */
 
 function SettingsTab({ form, update }) {
