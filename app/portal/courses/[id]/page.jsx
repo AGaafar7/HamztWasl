@@ -8,14 +8,16 @@ import CourseDetailClient from './CourseDetailClient'
 
 export default async function CourseDetailPage({ params }) {
   const { id } = await params
-  const course = await fetchCourse(id)
-  if (!course) notFound()
 
-  const [letters, lessons, completedKeys] = await Promise.all([
+  // Fire every fetch in parallel instead of sequentially.
+  const [course, letters, lessons, completedKeys] = await Promise.all([
+    fetchCourse(id),
     id === 'alphabet' ? fetchLetters() : Promise.resolve([]),
     fetchCourseLessons(id),
     fetchCompletedLessonKeys(id),
   ])
+
+  if (!course) notFound()
 
   return (
     <CourseDetailClient

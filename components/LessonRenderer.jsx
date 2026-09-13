@@ -6,7 +6,8 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { gloss } from '../i18n/gloss.js'
 import { speak } from '../utils/speak.js'
 import { toggleLessonCompleteAction } from '../app/actions/progress'
-import TracingCanvas from './TracingCanvas'
+import dynamic from 'next/dynamic'
+const TracingCanvas = dynamic(() => import('./TracingCanvas'), { ssr: false })
 
 /* -------- similarity helper (used by listening lesson) -------- */
 function normalizeArabic(str) {

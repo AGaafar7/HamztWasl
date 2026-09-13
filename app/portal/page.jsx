@@ -5,13 +5,13 @@ import { requireUser } from '../../lib/supabase/server'
 import PortalCoursesClient from './PortalCoursesClient'
 
 export default async function PortalCoursesPage() {
-  const [courses, enrolledIds, completedMap] = await Promise.all([
+  const [{ supabase }, courses, enrolledIds, completedMap] = await Promise.all([
+    requireUser(),
     fetchCourses(),
     fetchEnrolledCourseIds(),
     fetchCompletedCountMap(),
   ])
 
-  const { supabase } = await requireUser()
   const { data: lessonRows } = await supabase
     .from('course_lessons')
     .select('course_id')
