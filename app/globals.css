@@ -3450,3 +3450,44 @@ padding: 24px 22px 22px;
 .lesson-tile-row .lesson-row-actions {
   padding-inline-end: 14px;
 }
+
+/* ---------------- Save button states ---------------- */
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.save-btn.state-saved {
+  background: var(--green) !important;
+  border-color: var(--green) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px -10px rgba(47, 158, 100, 0.55) !important;
+}
+.save-btn.state-refresh {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: #fff !important;
+}
+.save-btn.state-error {
+  background: #C23B3B !important;
+  border-color: #C23B3B !important;
+  color: #fff !important;
+}
+.save-btn.state-saving {
+  opacity: 0.85;
+  cursor: wait;
+}
+.save-btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: save-spin 0.7s linear infinite;
+}
+@keyframes save-spin {
+  to { transform: rotate(360deg); }
+}

@@ -15,26 +15,22 @@ export default function LessonEditorPage({
 }) {
   const router = useRouter()
   const [error, setError] = useState('')
-  const [saved, setSaved] = useState(false)
   const [, startTransition] = useTransition()
 
-  const onSave = (content) => {
+  const onSave = async (content) => {
     setError('')
-    setSaved(false)
-    startTransition(async () => {
-      try {
-        await updateLessonAction(lesson.id, content)
-        setSaved(true)
-        setTimeout(() => setSaved(false), 1800)
-      } catch (err) {
-        const msg = err?.message || ''
-        if (msg.includes('timeout') || msg.includes('Gateway')) {
-          setError('Save took too long. Refresh to confirm it went through.')
-        } else {
-          setError(msg || 'Failed to save')
-        }
-      }
-    })
+    try {
+      await updateLessonAction(lesson.id, content)
+    } catch (err) {
+      const msg = err?.message || ''
+      setError(
+        msg.includes('timeout') || msg.includes('Gateway')
+          ? 'Save took too long — refresh to confirm it went through.'
+          : msg || 'Failed to save'
+      )
+      // Re-throw so SaveButton knows it failed and shows its own state.
+      throw err
+    }
   }
 
   const onDelete = () => {
@@ -70,7 +66,6 @@ export default function LessonEditorPage({
       </div>
 
       {error && <p className="form-error">{error}</p>}
-      {saved && <p className="form-success">✅ Saved</p>}
 
       <LessonFormByKind
         kind={lesson.kind}

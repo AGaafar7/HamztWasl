@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import SaveButton from './SaveButton'
 
 /* ============================================================
    Shared helpers
@@ -47,9 +48,7 @@ export function TextLessonForm({ content, onSave }) {
         onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
       <BodyFields body={local.body}
         onChange={(lang, v) => setLocal((c) => ({ ...c, body: { ...c.body, [lang]: v } }))} />
-      <button type="button" className="btn btn-primary" onClick={() => onSave(local)}>
-        Save lesson
-      </button>
+      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
     </div>
   )
 }
@@ -102,9 +101,7 @@ export function TestedLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <button type="button" className="btn btn-primary" onClick={() => onSave(local)}>
-        Save lesson
-      </button>
+      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
     </div>
   )
 }
@@ -161,24 +158,21 @@ export function ListeningLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <button type="button" className="btn btn-primary" onClick={() => onSave(local)}>
-        Save lesson
-      </button>
+      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
     </div>
   )
 }
 
 /* ============================================================
-   Reading
+   Reading (unchanged structure from last version)
    ============================================================ */
+
 export function ReadingLessonForm({ content, onSave }) {
   const [local, setLocal] = useState({
     title: content.title || { en: '', ar: '', zh: '' },
     passage: content.passage || { en: '', ar: '', zh: '' },
     questions: content.questions || [],
   })
-
-  // AI question generator state.
   const [showGen, setShowGen] = useState(false)
   const [genCount, setGenCount] = useState(3)
   const [genInstructions, setGenInstructions] = useState('')
@@ -209,19 +203,11 @@ export function ReadingLessonForm({ content, onSave }) {
       const res = await fetch('/api/generate-questions', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          passage: arabic,
-          count: genCount,
-          instructions: genInstructions,
-        }),
+        body: JSON.stringify({ passage: arabic, count: genCount, instructions: genInstructions }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Generate failed')
-      const generated = data.questions || []
-      setLocal((c) => ({
-        ...c,
-        questions: [...c.questions, ...generated],
-      }))
+      setLocal((c) => ({ ...c, questions: [...c.questions, ...(data.questions || [])] }))
       setShowGen(false)
       setGenInstructions('')
     } catch (err) {
@@ -260,47 +246,27 @@ export function ReadingLessonForm({ content, onSave }) {
           <div className="ai-gen-panel">
             <div className="form-group">
               <label className="form-label">Number of questions</label>
-              <input
-                type="number"
-                className="form-input"
-                min="1"
-                max="10"
-                value={genCount}
-                onChange={(e) => setGenCount(Number(e.target.value))}
-                style={{ maxWidth: 120 }}
-              />
+              <input type="number" className="form-input" min="1" max="10"
+                value={genCount} onChange={(e) => setGenCount(Number(e.target.value))}
+                style={{ maxWidth: 120 }} />
             </div>
-
             <div className="form-group">
               <label className="form-label">
                 Instructions for the AI <span className="form-optional">(optional)</span>
               </label>
-              <textarea
-                className="form-input"
-                rows="3"
+              <textarea className="form-input" rows="3"
                 placeholder="e.g. Focus on vocabulary about family. Ask one inference question at the end."
                 value={genInstructions}
-                onChange={(e) => setGenInstructions(e.target.value)}
-              />
+                onChange={(e) => setGenInstructions(e.target.value)} />
             </div>
-
             {genError && <p className="form-error">{genError}</p>}
-
             <div className="ai-gen-actions">
-              <button
-                type="button"
-                className="btn btn-primary btn-small"
-                onClick={onGenerate}
-                disabled={generating}
-              >
+              <button type="button" className="btn btn-primary btn-small"
+                onClick={onGenerate} disabled={generating}>
                 {generating ? 'Generating…' : 'Generate questions'}
               </button>
-              <button
-                type="button"
-                className="btn btn-ghost btn-small"
-                onClick={() => { setShowGen(false); setGenError('') }}
-                disabled={generating}
-              >
+              <button type="button" className="btn btn-ghost btn-small"
+                onClick={() => { setShowGen(false); setGenError('') }} disabled={generating}>
                 Cancel
               </button>
             </div>
@@ -331,9 +297,7 @@ export function ReadingLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <button type="button" className="btn btn-primary" onClick={() => onSave(local)}>
-        Save lesson
-      </button>
+      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
     </div>
   )
 }
@@ -386,9 +350,7 @@ export function SpeakingLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <button type="button" className="btn btn-primary" onClick={() => onSave(local)}>
-        Save lesson
-      </button>
+      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
     </div>
   )
 }
@@ -441,15 +403,13 @@ export function WritingLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <button type="button" className="btn btn-primary" onClick={() => onSave(local)}>
-        Save lesson
-      </button>
+      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
     </div>
   )
 }
 
 /* ============================================================
-   Video (used in course editor only)
+   Video
    ============================================================ */
 
 export function VideoLessonForm({ content, videoChoices = [], onSave }) {
@@ -473,17 +433,17 @@ export function VideoLessonForm({ content, videoChoices = [], onSave }) {
           <strong>Videos → + Add Video</strong>.
         </p>
       )}
-      <button type="button" className="btn btn-primary"
+      <SaveButton
         onClick={() => onSave({ videoId: selectedId })}
-        disabled={!selectedId}>
-        Save lesson
-      </button>
+        label="Save lesson"
+        className="btn btn-primary"
+      />
     </div>
   )
 }
 
 /* ============================================================
-   Dispatcher — renders the right form for a given kind
+   Dispatcher + labels
    ============================================================ */
 
 export function LessonFormByKind({ kind, content, onSave, videoChoices = [] }) {

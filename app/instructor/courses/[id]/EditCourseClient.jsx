@@ -9,6 +9,7 @@ import {
   deleteCourseAction,
 } from '../../../actions/courses'
 import LessonsEditor from '../../../../components/LessonsEditor'
+import SaveButton from '../../../../components/SaveButton'
 
 const TABS = [
   { id: 'details', label: 'Details' },
@@ -44,22 +45,6 @@ export default function EditCourseClient({
   const [savedFlash, setSavedFlash] = useState(false)
 
   const update = (key, value) => setForm((f) => ({ ...f, [key]: value }))
-
-  const onSave = async (e) => {
-    e?.preventDefault?.()
-    setError('')
-    setSaving(true)
-    try {
-      await updateCourseAction(course.id, form)
-      setSavedFlash(true)
-      setTimeout(() => setSavedFlash(false), 1800)
-    } catch (err) {
-      console.error('Update failed:', err)
-      setError(err.message || 'Failed to save')
-    } finally {
-      setSaving(false)
-    }
-  }
 
   const onTogglePublish = async () => {
     const next = status !== 'published'
@@ -103,15 +88,8 @@ export default function EditCourseClient({
           </div>
         </div>
         <div className="course-edit-head-actions">
-          {showSaveButton && (
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={onSave}
-              disabled={saving}
-            >
-              {saving ? 'Saving…' : savedFlash ? '✅ Saved' : 'Save changes'}
-            </button>
+                    {showSaveButton && (
+            <SaveButton onClick={onSave} label="Save changes" />
           )}
           <button
             type="button"
