@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useLanguage } from '../../i18n/LanguageContext.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 
@@ -18,13 +18,15 @@ function LoginForm() {
   const { t } = useLanguage()
   const a = t.auth.login
   const { signIn, signInWithOAuth } = useAuth()
-  const router = useRouter()
   const searchParams = useSearchParams()
   const next = searchParams.get('next') || '/portal'
+  const errorParam = searchParams.get('error')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [error, setError] = useState(
+    errorParam ? 'Sign-in failed. Please try again.' : ''
+  )
   const [loading, setLoading] = useState(false)
   const [oauthLoading, setOauthLoading] = useState(null)
 
@@ -40,11 +42,10 @@ function LoginForm() {
       const { profile } = await signIn({ email, password })
       const dest =
         profile?.role === 'instructor' && next === '/portal' ? '/instructor' : next
-      router.replace(dest)
-      router.refresh()
+      // Hard navigation — guarantees the middleware sees the new cookie.
+      window.location.href = dest
     } catch (err) {
       setError(err.message || 'Login failed')
-    } finally {
       setLoading(false)
     }
   }
@@ -54,7 +55,6 @@ function LoginForm() {
     setOauthLoading(provider)
     try {
       await signInWithOAuth(provider, next)
-      // Browser navigates away; state resets on next mount.
     } catch (err) {
       setError(err.message || 'Login failed')
       setOauthLoading(null)

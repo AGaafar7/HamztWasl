@@ -35,10 +35,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       await signUp({ email, password, fullName: name, role })
-      // If email confirmation is OFF (as we set it in step 1), Supabase
-      // signs the user in immediately — so route straight to the portal.
-      router.replace(role === 'instructor' ? '/instructor' : '/portal')
-      router.refresh()
+      window.location.href = role === 'instructor' ? '/instructor' : '/portal'
     } catch (err) {
       setError(err.message || 'Registration failed')
     } finally {
