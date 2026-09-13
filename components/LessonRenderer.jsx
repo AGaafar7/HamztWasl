@@ -353,55 +353,80 @@ function ListeningLesson({ lesson }) {
 
   return (
     <div className="lesson-listen">
+      <p className="lesson-listen-intro">
+        Listen to the audio, then type what you hear in Arabic.
+      </p>
+
       {lines.map((line, i) => {
         const state = checked[line.id]
+        const isGood = state?.accuracy >= 70
         return (
           <div className="lesson-listen-line" key={line.id || i}>
             <div className="lesson-listen-head">
+              <span className="lesson-listen-counter">
+                Line {i + 1} of {lines.length}
+              </span>
+            </div>
+
+            <div className="lesson-listen-playrow">
               <button
                 type="button"
                 className="listen-play-btn"
                 onClick={() => speak(line.arabic)}
               >
-                🔊 Play
+                🔊 Play the line
               </button>
-              <span className="lesson-listen-index">
-                {i + 1} / {lines.length}
+              <span className="lesson-listen-hint">
+                You can replay as many times as you need
               </span>
             </div>
+
+            <label className="lesson-listen-label">
+              Type what you heard
+            </label>
             <input
               type="text"
               dir="rtl"
-              className="form-input arabic"
-              placeholder="What did you hear?"
+              className="form-input arabic lesson-listen-input"
+              placeholder="اكتب هنا…"
               value={answers[line.id] || ''}
               onChange={(e) =>
                 setAnswers((a) => ({ ...a, [line.id]: e.target.value }))
               }
             />
-            <div className="listen-actions">
+
+            <div className="lesson-listen-actions">
               <button
                 type="button"
-                className="btn btn-primary btn-small"
+                className="btn btn-primary"
                 onClick={() => onCheck(line.id, line.arabic)}
+                disabled={!answers[line.id]?.trim()}
               >
-                Check
+                Check answer
               </button>
               <button
                 type="button"
-                className="btn btn-ghost btn-small"
+                className="btn btn-ghost"
                 onClick={() => onReveal(line.id)}
               >
                 Show answer
               </button>
             </div>
+
             {state && (
-              <div className={`listen-result ${state.accuracy >= 70 ? 'good' : 'retry'}`}>
-                <div className="listen-accuracy">Accuracy: {state.accuracy}%</div>
+              <div className={`listen-result ${isGood ? 'good' : 'retry'}`}>
+                <div className="listen-accuracy">
+                  {isGood ? '✓ ' : '✕ '}
+                  Accuracy: {state.accuracy}%
+                </div>
                 {state.revealed && (
                   <div className="listen-reveal">
-                    <span className="arabic">{line.arabic}</span>
-                    {gloss(line.gloss, lang) && <p>{gloss(line.gloss, lang)}</p>}
+                    <span className="arabic listen-reveal-arabic">
+                      {line.arabic}
+                    </span>
+                    {gloss(line.gloss, lang) && (
+                      <p className="listen-reveal-gloss">{gloss(line.gloss, lang)}</p>
+                    )}
                   </div>
                 )}
               </div>

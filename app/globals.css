@@ -3967,3 +3967,91 @@ padding: 24px 22px 22px;
   .lesson-row-title { font-size: 14px; }
   .lesson-row-num { width: 30px; height: 30px; font-size: 13px; }
 }
+
+
+/* ---------------- Listening lesson (learner) ---------------- */
+.lesson-listen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lesson-listen-intro {
+  font-size: 14.5px;
+  color: var(--grey);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.lesson-listen-line {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lesson-listen-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lesson-listen-counter {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-ink);
+}
+
+.lesson-listen-playrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.lesson-listen-playrow .listen-play-btn {
+  margin-bottom: 0;
+  padding: 14px 26px;
+  font-size: 15px;
+}
+.lesson-listen-hint {
+  font-size: 12.5px;
+  color: var(--grey);
+  font-style: italic;
+}
+
+.lesson-listen-label {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--navy-ink);
+  margin-bottom: -12px; /* absorbs the flex gap so label sits right above input */
+}
+
+.lesson-listen-input {
+  font-size: 20px;
+  padding: 16px 18px;
+  background: var(--card);
+  text-align: right;
+}
+
+.lesson-listen-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.lesson-listen-actions .btn {
+  padding: 12px 24px;
+  font-size: 14.5px;
+}
+
+@media (max-width: 560px) {
+  .lesson-listen-line { padding: 20px; gap: 16px; }
+  .lesson-listen-playrow .listen-play-btn { width: 100%; justify-content: center; }
+  .lesson-listen-actions .btn { flex: 1; }
+}
