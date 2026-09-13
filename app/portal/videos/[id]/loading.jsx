@@ -1,5 +1,5 @@
 // app/portal/videos/[id]/loading.jsx
-import { Skeleton, SkeletonText } from '../../../../../components/Skeleton'
+import { Skeleton, SkeletonText } from '../../../../components/Skeleton'
 
 export default function VideoDetailLoading() {
   return (
