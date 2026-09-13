@@ -139,6 +139,7 @@ export const translations = {
     learn: {
       sidebar: {
         explore: 'Explore',
+        profile: 'Profile',
         courses: 'Courses',
         videos: 'Videos',
         dictionary: 'Audio Dictionary',
@@ -401,6 +402,7 @@ writing: {
     learn: {
       sidebar: {
         explore: 'استكشاف',
+        profile: 'الملف الشخصي',
         courses: 'الدورات',
         videos: 'الفيديوهات',
         dictionary: 'القاموس الصوتي',
@@ -631,6 +633,7 @@ withApple: '使用 Apple 注册',
     learn: {
       sidebar: {
         explore: '探索',
+        profile: '个人资料',
         courses: '课程',
         videos: '视频',
         dictionary: '语音词典',

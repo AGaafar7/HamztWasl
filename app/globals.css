@@ -4294,3 +4294,69 @@ padding: 24px 22px 22px;
   font-weight: 700;
 }
 .profile-course-done .profile-course-end { color: var(--green); }
+
+
+/* ---------------- Avatar uploader ---------------- */
+.avatar-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.avatar-uploader-btn {
+  position: relative;
+  cursor: pointer;
+  border: 3px solid rgba(255,255,255,0.25);
+  padding: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.avatar-uploader-btn:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px -8px rgba(0,0,0,0.25);
+}
+.avatar-uploader-btn:disabled { cursor: wait; }
+.avatar-uploader-input { display: none; }
+
+.avatar-uploader-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(14, 42, 71, 0.65);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+.avatar-uploader-btn:hover:not(:disabled) .avatar-uploader-overlay {
+  opacity: 1;
+}
+
+.avatar-uploader-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.avatar-uploader-actions .btn {
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+  padding: 7px 14px;
+  font-size: 12.5px;
+}
+.avatar-uploader-actions .btn:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
+.avatar-uploader-error {
+  font-size: 12px;
+  margin-top: 4px;
+  padding: 6px 10px;
+}

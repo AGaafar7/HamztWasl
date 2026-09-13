@@ -20,7 +20,7 @@ export default function PortalLayout({ children }) {
         <div className="sidebar-group">
           <div className="sidebar-heading">{s.explore}</div>
           <Link href="/portal/profile" className={linkClass('/portal/profile')}>
-            <span className="sidebar-dot" /> Profile
+            <span className="sidebar-dot" /> {s.profile}
           </Link>
           <Link href="/portal" className={linkClass('/portal', true)}>
             <span className="sidebar-dot" /> {s.courses}

@@ -6,6 +6,7 @@ import { useLanguage } from '../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../i18n/gloss.js'
 import { useAuth } from '../../../context/AuthContext.jsx'
 import { updateProfileAction, updatePasswordAction } from '../../actions/profile'
+import AvatarUploader from '../../../components/AvatarUploader'
 
 const TABS = [
   { id: 'account', label: 'Account' },
@@ -35,7 +36,6 @@ export default function ProfileClient({ profile, data }) {
       try {
         await updateProfileAction({
           fullName: form.fullName,
-          avatarUrl: form.avatarUrl,
         })
         await refreshProfile()
         setSaved(true)
@@ -57,14 +57,11 @@ export default function ProfileClient({ profile, data }) {
 
   return (
     <section className="profile-page">
-      <div className="profile-hero">
-        <div className="profile-avatar">
-          {form.avatarUrl ? (
-            <img src={form.avatarUrl} alt={form.fullName} />
-          ) : (
-            <span>{initial}</span>
-          )}
-        </div>
+            <div className="profile-hero">
+        <AvatarUploader
+          currentUrl={profile?.avatar_url || ''}
+          fullName={form.fullName}
+        />
         <div className="profile-hero-body">
           <h1 className="profile-hero-name">{form.fullName || 'Student'}</h1>
           <p className="profile-hero-email">{profile?.email}</p>
@@ -118,19 +115,6 @@ export default function ProfileClient({ profile, data }) {
                 onChange={(e) => update('fullName', e.target.value)}
                 placeholder="Your name"
               />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Avatar URL</label>
-              <input
-                className="form-input"
-                value={form.avatarUrl}
-                onChange={(e) => update('avatarUrl', e.target.value)}
-                placeholder="https://…"
-              />
-              <p className="profile-field-hint">
-                Leave blank to use your initial.
-              </p>
             </div>
 
             <div className="form-group">
