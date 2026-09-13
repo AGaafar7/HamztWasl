@@ -1,5 +1,5 @@
 // app/instructor/page.jsx
-import { createClient } from '../../lib/supabase/server'
+import { requireUser } from '../../lib/supabase/server'
 import {
   fetchInstructorCourses,
   fetchInstructorPractices,
@@ -9,8 +9,7 @@ import {
 import DashboardClient from './DashboardClient'
 
 export default async function InstructorDashboard() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { supabase, user } = await requireUser()
 
   const { data: profile } = await supabase
     .from('profiles')

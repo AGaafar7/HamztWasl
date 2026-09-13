@@ -1,14 +1,13 @@
 // app/instructor/courses/[id]/lessons/[lessonId]/page.jsx
 import { notFound } from 'next/navigation'
-import { createClient } from '../../../../../../lib/supabase/server'
+import { requireUser } from '../../../../../../lib/supabase/server'
 import { fetchCourseLessonById } from '../../../../../../lib/queries/lessons'
 import { fetchVideoChoices } from '../../../../../../lib/queries/lessons-content'
 import CourseLessonEditClient from './CourseLessonEditClient'
 
 export default async function CourseLessonEditorPage({ params }) {
   const { id, lessonId } = await params
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { supabase, user } = await requireUser()
 
   const [lesson, videoChoices] = await Promise.all([
     fetchCourseLessonById(lessonId, id, user.id),

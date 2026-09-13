@@ -1,14 +1,14 @@
 // app/instructor/courses/[id]/page.jsx
 import { notFound } from 'next/navigation'
-import { createClient } from '../../../../lib/supabase/server'
+import { requireUser } from '../../../../lib/supabase/server'
 import { fetchCourseLessons } from '../../../../lib/queries/lessons'
 import EditCourseClient from './EditCourseClient'
 
 export default async function EditCoursePage({ params, searchParams }) {
   const { id } = await params
   const { tab } = await searchParams
+  const { supabase } = await requireUser()
 
-  const supabase = await createClient()
   const { data: course } = await supabase
     .from('courses')
     .select('id, glyph, theme, level, type, price, lessons_count, status, title, "desc"')
