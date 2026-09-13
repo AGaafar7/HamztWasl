@@ -66,6 +66,7 @@ const KIND_LABEL = {
   listening: 'Listening',
   reading: 'Reading',
   speaking: 'Speaking',
+  writing: 'Writing',
 }
 
 export default function LessonRenderer({
@@ -84,6 +85,7 @@ export default function LessonRenderer({
     (siblings ? `Lesson ${siblings.index + 1}` : 'Lesson')
 
   const onToggleComplete = () => {
+    if (!course) return
     const next = !completed
     setCompleted(next)
     startTransition(async () => {
@@ -97,70 +99,84 @@ export default function LessonRenderer({
   }
 
   const backHref = course ? `/portal/courses/${course.id}` : '/portal'
-  const backLabel = course
-    ? gloss(course.title, lang)
-    : 'Back to portal'
+  const backLabel = course ? gloss(course.title, lang) : 'Back to portal'
+
+  const progressPct =
+    siblings && siblings.total
+      ? Math.round(((siblings.index + 1) / siblings.total) * 100)
+      : 0
 
   return (
     <section className="lesson-page">
-      <Link href={backHref} className="back-link">← {backLabel}</Link>
-
-      <div className="lesson-page-head">
-        <div className="lesson-page-meta">
-          <span className="lesson-kind">{KIND_LABEL[lesson.kind] || lesson.kind}</span>
-          {siblings && (
-            <span className="lesson-page-position">
-              Lesson {siblings.index + 1} of {siblings.total}
-            </span>
-          )}
-          {!course && (
-            <span className="lesson-page-position">Standalone lesson</span>
-          )}
-        </div>
-        <h1 className="page-title">{title}</h1>
-      </div>
-
-      <div className="lesson-page-body">
-        {lesson.kind === 'text' && <TextLesson lesson={lesson} />}
-        {lesson.kind === 'tested' && <TestedLesson lesson={lesson} />}
-        {lesson.kind === 'listening' && <ListeningLesson lesson={lesson} />}
-        {lesson.kind === 'reading' && <ReadingLesson lesson={lesson} />}
-        {lesson.kind === 'speaking' && <SpeakingLesson lesson={lesson} />}
-        {lesson.kind === 'writing' && <WritingLesson lesson={lesson} />}
-        {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
-      </div>
-
-              <div className="lesson-page-foot">
-        <button
-          type="button"
-          className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
-          onClick={onToggleComplete}
-        >
-          {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
-        </button>
-
-        {siblings && (siblings.prev || siblings.next) && (
-          <div className="lesson-page-nav">
-            {siblings.prev && (
-              <Link
-                href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
-                className="btn btn-ghost btn-small"
-              >
-                ← Previous
-              </Link>
-            )}
-            {siblings.next && (
-              <Link
-                href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
-                className="btn btn-primary btn-small"
-              >
-                Next lesson →
-              </Link>
-            )}
-          </div>
+      <div className="lesson-page-topbar">
+        <Link href={backHref} className="back-link">← {backLabel}</Link>
+        {siblings && (
+          <span className="lesson-page-position">
+            Lesson {siblings.index + 1} of {siblings.total}
+          </span>
         )}
       </div>
-      
+
+      {siblings && siblings.total > 1 && (
+        <div className="lesson-page-progress">
+          <div
+            className="lesson-page-progress-fill"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+      )}
+
+      <article className="lesson-page-card">
+        <header className="lesson-page-head">
+          <span className="lesson-kind">
+            {KIND_LABEL[lesson.kind] || lesson.kind}
+          </span>
+          <h1 className="lesson-page-title">{title}</h1>
+        </header>
+
+        <div className="lesson-page-body">
+          {lesson.kind === 'text' && <TextLesson lesson={lesson} />}
+          {lesson.kind === 'tested' && <TestedLesson lesson={lesson} />}
+          {lesson.kind === 'listening' && <ListeningLesson lesson={lesson} />}
+          {lesson.kind === 'reading' && <ReadingLesson lesson={lesson} />}
+          {lesson.kind === 'speaking' && <SpeakingLesson lesson={lesson} />}
+          {lesson.kind === 'writing' && <WritingLesson lesson={lesson} />}
+          {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
+        </div>
+      </article>
+
+      <div className="lesson-page-foot">
+        <div className="lesson-page-nav">
+          {siblings?.prev ? (
+            <Link
+              href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
+              className="btn btn-ghost btn-small"
+            >
+              ← Previous
+            </Link>
+          ) : (
+            <span />
+          )}
+          {siblings?.next && (
+            <Link
+              href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
+              className="btn btn-ghost btn-small"
+            >
+              Next →
+            </Link>
+          )}
+        </div>
+
+        {course && (
+          <button
+            type="button"
+            className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
+            onClick={onToggleComplete}
+          >
+            {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
+          </button>
+        )}
+      </div>
     </section>
   )
 }
@@ -176,30 +192,137 @@ function TextLesson({ lesson }) {
 }
 
 /* ============================================================
-   Tested
+   Tested — interactive quiz with Gemini grading
    ============================================================ */
 function TestedLesson({ lesson }) {
   const { lang } = useLanguage()
   const c = lesson.content || {}
   const body = gloss(c.body, lang)
+  const questions = c.questions || []
+
+  const [answers, setAnswers] = useState({})
+  const [results, setResults] = useState({})
+  const [loading, setLoading] = useState({})
+  const [revealed, setRevealed] = useState({})
+
+  if (questions.length === 0) {
+    return (
+      <div className="lesson-body-text">
+        {body && <div className="lesson-body-text-body">{body}</div>}
+        <p className="portal-empty">This lesson has no questions yet.</p>
+      </div>
+    )
+  }
+
+  const onCheck = async (q) => {
+    const userAnswer = (answers[q.id] || '').trim()
+    if (!userAnswer) return
+    setLoading((s) => ({ ...s, [q.id]: true }))
+    try {
+      const res = await fetch('/api/comprehension/check', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          passage: body || q.prompt,
+          question: q.prompt,
+          userAnswer,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Check failed')
+      setResults((s) => ({ ...s, [q.id]: data }))
+    } catch (err) {
+      setResults((s) => ({
+        ...s,
+        [q.id]: {
+          correct: false,
+          feedback: err.message || 'Check failed. Try again.',
+        },
+      }))
+    } finally {
+      setLoading((s) => ({ ...s, [q.id]: false }))
+    }
+  }
+
+  const onReveal = (qid) => {
+    setRevealed((s) => ({ ...s, [qid]: !s[qid] }))
+  }
+
   return (
     <div className="lesson-body-text">
       {body && <div className="lesson-body-text-body">{body}</div>}
-      {c.questions?.length > 0 && (
-        <div className="lesson-questions">
-          <h3>Questions</h3>
-          {c.questions.map((q, i) => (
-            <div className="lesson-q" key={q.id || i}>
-              <p className="lesson-q-prompt">{i + 1}. {q.prompt}</p>
-              <details className="lesson-q-answer">
-                <summary>Show answer</summary>
-                <p>{q.answer}</p>
-                {q.hint && <p className="lesson-q-hint">Hint: {q.hint}</p>}
-              </details>
+
+      <div className="lesson-questions">
+        <h3>Questions</h3>
+        {questions.map((q, i) => {
+          const result = results[q.id]
+          const isCorrect = result?.correct === true
+          const isWrong = result && !result.correct
+          const isRevealed = revealed[q.id]
+          return (
+            <div
+              className={`quiz-card ${isCorrect ? 'quiz-correct' : ''} ${isWrong ? 'quiz-wrong' : ''}`}
+              key={q.id || i}
+            >
+              <div className="quiz-card-head">
+                <span className="quiz-card-num">Question {i + 1}</span>
+                {isCorrect && (
+                  <span className="quiz-badge quiz-badge-correct">✓ Correct</span>
+                )}
+                {isWrong && (
+                  <span className="quiz-badge quiz-badge-wrong">Try again</span>
+                )}
+              </div>
+
+              <p className="quiz-card-prompt arabic" dir="rtl">{q.prompt}</p>
+
+              <textarea
+                className="form-input quiz-input arabic"
+                dir="rtl"
+                rows="3"
+                placeholder="اكتب إجابتك هنا…"
+                value={answers[q.id] || ''}
+                onChange={(e) =>
+                  setAnswers((s) => ({ ...s, [q.id]: e.target.value }))
+                }
+                disabled={isCorrect || loading[q.id]}
+              />
+
+              <div className="quiz-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-small"
+                  onClick={() => onCheck(q)}
+                  disabled={!answers[q.id]?.trim() || loading[q.id] || isCorrect}
+                >
+                  {loading[q.id] ? 'Checking…' : 'Check answer'}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-small"
+                  onClick={() => onReveal(q.id)}
+                >
+                  {isRevealed ? 'Hide reference' : 'Show reference answer'}
+                </button>
+              </div>
+
+              {result && (
+                <div className={`quiz-feedback ${result.correct ? 'good' : 'bad'}`}>
+                  {result.feedback}
+                </div>
+              )}
+
+              {isRevealed && (
+                <div className="quiz-reference">
+                  <span className="quiz-reference-label">Reference answer</span>
+                  <p className="quiz-reference-text arabic" dir="rtl">{q.answer}</p>
+                  {q.hint && <p className="quiz-hint">Hint: {q.hint}</p>}
+                </div>
+              )}
             </div>
-          ))}
-        </div>
-      )}
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -511,12 +634,10 @@ function SpeakingLesson({ lesson }) {
   )
 }
 
-
 /* ============================================================
-   Writing — trace letters/words on a canvas
+   Writing
    ============================================================ */
 function WritingLesson({ lesson }) {
-  const { lang } = useLanguage()
   const items = lesson.content?.items || []
   const [current, setCurrent] = useState(0)
 
@@ -552,9 +673,7 @@ function WritingLesson({ lesson }) {
         {item.transliteration && (
           <span className="writing-translit">{item.transliteration}</span>
         )}
-        {item.meaning && (
-          <span className="writing-meaning">{item.meaning}</span>
-        )}
+        {item.meaning && <span className="writing-meaning">{item.meaning}</span>}
       </div>
 
       {items.length > 1 && (
