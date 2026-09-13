@@ -19,6 +19,9 @@ export default function PortalLayout({ children }) {
       <aside className="portal-sidebar">
         <div className="sidebar-group">
           <div className="sidebar-heading">{s.explore}</div>
+          <Link href="/portal/profile" className={linkClass('/portal/profile')}>
+            <span className="sidebar-dot" /> Profile
+          </Link>
           <Link href="/portal" className={linkClass('/portal', true)}>
             <span className="sidebar-dot" /> {s.courses}
           </Link>

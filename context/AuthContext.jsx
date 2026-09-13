@@ -104,9 +104,18 @@ export function AuthProvider({ children }) {
     setProfile(null)
   }
 
+    /** Re-read the profiles row from the DB. Call after an edit. */
+  const refreshProfile = async () => {
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
+    if (!currentUser) return null
+    const p = await loadProfile(currentUser.id)
+    setProfile(p)
+    return p
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, profile, loading, signUp, signIn, signInWithOAuth, signOut }}
+      value={{ user, profile, loading, signUp, signIn, signInWithOAuth, signOut, refreshProfile }}
     >
       {children}
     </AuthContext.Provider>

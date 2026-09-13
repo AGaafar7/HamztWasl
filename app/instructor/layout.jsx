@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext.jsx'
 
 const NAV = [
   { href: '/instructor', label: 'Dashboard', icon: '📊', exact: true },
+    { href: '/instructor/profile', label: 'Profile', icon: '👤' },
   { href: '/instructor/courses', label: 'My Courses', icon: '📚' },
    { href: '/instructor/videos', label: 'Videos', icon: '🎬' },
   { href: '/instructor/practices', label: 'Practices', icon: '🎯' },
