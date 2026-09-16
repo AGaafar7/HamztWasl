@@ -21,17 +21,17 @@
   --grey-dark: #40454F;
   --line: rgba(14, 42, 71, 0.12);
 
-  --font-display: 'Manrope', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-arabic: 'Cairo', system-ui, sans-serif;
+  --font-display: var(--font-manrope), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-arabic: var(--font-cairo), system-ui, sans-serif;
 
   --max: 1180px;
   --pad: 32px;
 }
 
 html[dir="rtl"] {
-  --font-display: 'Cairo', system-ui, sans-serif;
-  --font-body: 'Cairo', 'Inter', system-ui, sans-serif;
+  --font-display: var(--font-cairo), system-ui, sans-serif;
+  --font-body: var(--font-cairo), var(--font-inter), system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }

@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useMemo, useState, useTransition } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '../../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../../i18n/gloss.js'
@@ -44,25 +44,67 @@ export default function AnnotateClient({ video }) {
 
   // Local draft for the currently selected word.
   const [draft, setDraft] = useState(() => makeDraft(selected))
-  // Whenever we switch words, refresh the draft.
-  useMemo(() => setDraft(makeDraft(selected)), [selected?.id])
+
+  // Snapshot of what we last wrote to the DB, keyed by word id. Lets us
+  // skip the network call when nothing actually changed.
+  const savedSnapshotRef = useRef(new Map())
+  useEffect(() => {
+    // Seed the snapshot map with whatever came in from the server, so a
+    // word that was already annotated and untouched is a no-op on save.
+    const map = savedSnapshotRef.current
+    wordsState.forEach((w) => {
+      if (!map.has(w.id)) map.set(w.id, makeDraft(w))
+    })
+    // Only seed once per loaded video; wordsState identity changes on every
+    // local save, but we don't want to overwrite an existing snapshot.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [video.id])
+   // Refresh the draft whenever the selected word changes.
+  useEffect(() => {
+    setDraft(makeDraft(selected))
+  }, [selected?.id])
+
 
   const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }))
 
+  const draftsEqual = (a, b) =>
+    a.meaningEn === b.meaningEn &&
+    a.meaningZh === b.meaningZh &&
+    a.grammarEn === b.grammarEn &&
+    a.grammarZh === b.grammarZh &&
+    a.root === b.root
+
   const saveWord = async (word, d) => {
-    await updateWordAction(word.id, {
-      gloss: { en: d.meaningEn.trim(), zh: d.meaningZh.trim() },
-      grammar: { en: d.grammarEn.trim(), zh: d.grammarZh.trim() },
+        const normalized = {
+      meaningEn: d.meaningEn.trim(),
+      meaningZh: d.meaningZh.trim(),
+      grammarEn: d.grammarEn.trim(),
+      grammarZh: d.grammarZh.trim(),
       root: d.root.trim(),
+    }
+
+        // Nothing changed since last save — skip the round-trip entirely.
+    const previous = savedSnapshotRef.current.get(word.id)
+    if (previous && draftsEqual(previous, normalized)) {
+      return
+    }
+
+    await updateWordAction(word.id, {
+      gloss: { en: normalized.meaningEn, zh: normalized.meaningZh },
+      grammar: { en: normalized.grammarEn, zh: normalized.grammarZh },
+      root: normalized.root,
     })
+
+    savedSnapshotRef.current.set(word.id, normalized)
+
     setWordsState((prev) =>
       prev.map((w) =>
         w.id === word.id
           ? {
               ...w,
-              gloss: { en: d.meaningEn.trim(), zh: d.meaningZh.trim() },
-              grammar: { en: d.grammarEn.trim(), zh: d.grammarZh.trim() },
-              root: d.root.trim(),
+              gloss: { en: normalized.meaningEn, zh: normalized.meaningZh },
+              grammar: { en: normalized.grammarEn, zh: normalized.grammarZh },
+              root: normalized.root,
             }
           : w
       )

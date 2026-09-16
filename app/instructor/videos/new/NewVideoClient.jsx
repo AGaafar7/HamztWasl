@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '../../../../lib/supabase/client'
@@ -36,6 +36,21 @@ export default function NewVideoClient() {
   const [audioFile, setAudioFile] = useState(null)
   const [state, setState] = useState('idle') // idle|uploading|transcribing|saving|done|error
   const [error, setError] = useState('')
+
+  // Holds the polling interval so we can clean it up on unmount or when a
+  // new transcription is started (e.g. after a failed attempt and retry).
+  const pollRef = useRef(null)
+
+  const clearPoll = () => {
+    if (pollRef.current) {
+      clearInterval(pollRef.current)
+      pollRef.current = null
+    }
+  }
+
+// Clean up on unmount — if the instructor navigates away mid-transcription,
+  // the interval stops instead of hammering the API in the background.
+  useEffect(() => clearPoll, [])
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
   const toggleDialect = (id) => setForm((f) => ({
@@ -87,19 +102,20 @@ export default function NewVideoClient() {
 
       // 3. Poll until done.
       const lines = await new Promise((resolve, reject) => {
-        const interval = setInterval(async () => {
+        clearPoll()
+        pollRef.current = setInterval(async () => {
           try {
             const pollRes = await fetch(`/api/transcribe/${submitData.id}`)
             const pollData = await pollRes.json()
             if (pollData.status === 'completed') {
-              clearInterval(interval)
+              clearPoll()
               resolve(pollData.lines)
             } else if (pollData.status === 'error') {
-              clearInterval(interval)
+              clearPoll()
               reject(new Error(pollData.error || 'Transcription failed'))
             }
           } catch (err) {
-            clearInterval(interval)
+            clearPoll()
             reject(err)
           }
         }, 3000)
@@ -126,6 +142,7 @@ export default function NewVideoClient() {
       router.refresh()
     } catch (err) {
       console.error(err)
+      clearPoll()
       setError(err.message || 'Something went wrong')
       setState('error')
     }

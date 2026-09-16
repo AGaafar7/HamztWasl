@@ -1,4 +1,5 @@
 import './globals.css'
+import { Manrope, Inter, Cairo } from 'next/font/google'
 import Providers from '../components/Providers.jsx'
 import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
@@ -14,6 +15,34 @@ import Footer from '../components/Footer.jsx'
  * (e.g. /ar/..., /zh/...) — a further step beyond this pass, since the
  * language switcher here is still client-side state, not part of the URL.
  */
+
+/**
+ * Fonts are self-hosted at build time by next/font — no runtime request to
+ * Google, no layout shift, no FOUT. Each one exposes a CSS variable that
+ * globals.css points at (see --font-display / --font-body / --font-arabic).
+ *
+ * Cairo covers both Arabic and Latin so the RTL override in globals.css
+ * can swap the display + body stack over to it without a second import.
+ */
+const manrope = Manrope({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-manrope',
+  display: 'swap',
+})
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+const cairo = Cairo({
+  subsets: ['arabic', 'latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-cairo',
+  display: 'swap',
+})
+
 export const metadata = {
   metadataBase: new URL('https://hamztwasl.app'),
   title: {
@@ -32,7 +61,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr"
+    className={`${manrope.variable} ${inter.variable} ${cairo.variable}`}>
       <body>
         <Providers>
           <Navbar />
