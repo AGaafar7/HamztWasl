@@ -198,7 +198,7 @@ function TextLesson({ lesson }) {
 function TestedLesson({ lesson }) {
   const { lang } = useLanguage()
   const c = lesson.content || {}
-  const body = gloss(c.body, lang)
+  const body = c.body?.ar || c.body?.en || ''
   const questions = c.questions || []
 
   const [answers, setAnswers] = useState({})
@@ -209,7 +209,11 @@ function TestedLesson({ lesson }) {
   if (questions.length === 0) {
     return (
       <div className="lesson-body-text">
-        {body && <div className="lesson-body-text-body">{body}</div>}
+              {body && (
+        <div className="lesson-body-text-body arabic" dir="rtl">
+          {body}
+        </div>
+      )}
         <p className="portal-empty">This lesson has no questions yet.</p>
       </div>
     )
@@ -251,7 +255,11 @@ function TestedLesson({ lesson }) {
 
   return (
     <div className="lesson-body-text">
-      {body && <div className="lesson-body-text-body">{body}</div>}
+            {body && (
+        <div className="lesson-body-text-body arabic" dir="rtl">
+          {body}
+        </div>
+      )}
 
       <div className="lesson-questions">
         <h3>Questions</h3>
@@ -440,12 +448,15 @@ function ListeningLesson({ lesson }) {
 }
 
 /* ============================================================
-   Reading — passage + interactive comprehension questions
+   Reading — passage always Arabic, interactive comprehension
    ============================================================ */
 function ReadingLesson({ lesson }) {
-  const { lang } = useLanguage()
   const c = lesson.content || {}
-  const passage = gloss(c.passage, lang)
+
+  // The student is learning to READ in Arabic, so the passage always
+  // shows the Arabic version — not the UI language. Fall back to English
+  // only if the instructor left the Arabic empty.
+  const passage = c.passage?.ar || c.passage?.en || ''
   const questions = c.questions || []
 
   const [answers, setAnswers] = useState({})
@@ -465,11 +476,7 @@ function ReadingLesson({ lesson }) {
       const res = await fetch('/api/comprehension/check', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          passage,
-          question: q.prompt,
-          userAnswer,
-        }),
+        body: JSON.stringify({ passage, question: q.prompt, userAnswer }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Check failed')
@@ -494,7 +501,7 @@ function ReadingLesson({ lesson }) {
   return (
     <div className="lesson-reading">
       {passage && (
-        <div className="passage-box">
+        <div className="passage-box arabic" dir="rtl">
           <p>{passage}</p>
         </div>
       )}
