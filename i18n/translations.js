@@ -73,12 +73,12 @@ export const translations = {
     },
     ctaSection: {
       title: 'Your first Arabic lesson is free — no card required',
-      lede: 'Join 12,400+ learners across Asia and get matched with a native instructor this week.',
+      lede: 'Join 12,400+ learners everywhere and get matched with a native instructor this week.',
       primary: 'Start Free Lesson',
       ghost: 'Talk to an Advisor',
     },
     footer: {
-      tagline: 'Helping learners across Asia go from the Arabic alphabet to real conversation, one letter at a time.',
+      tagline: 'Helping learners everywhere go from the Arabic alphabet to real conversation, one letter at a time.',
       learn: 'Learn',
       learnLinks: ['Courses', 'Learning path', 'Instructors'],
       company: 'Company',
@@ -86,7 +86,7 @@ export const translations = {
       support: 'Support',
       supportLinks: ['Help center', 'Contact us', 'Pricing'],
       rights: '© 2026 Hamzat Wasl. All rights reserved.',
-      made: 'Made for learners across Asia',
+      made: 'Made for learners worldwide',
     },
     auth: {
       login: {
@@ -99,7 +99,7 @@ export const translations = {
         createOne: 'Create one',
         or: 'or',
         forgot: 'Forgot password?',
-        demoNote: 'This is a demo login — any email and password will work.',
+        demoNote: 'We\'ll never share your email.',
         errorRequired: 'Please enter your email and password.',
         withGoogle: 'Continue with Google',
         withApple: 'Continue with Apple',
@@ -316,7 +316,7 @@ writing: {
       steps: [
         { glyph: 'ا', label: 'الألف', sub: 'الأبجدية', state: 'done' },
         { glyph: 'ب', label: 'الباء', sub: 'الأصوات والكتابة', state: 'done' },
-        { glyph: 'ج', label: 'الجيم', sub: 'اتصال الهمزة وصل', state: 'done' },
+        { glyph: 'ج', label: 'الجيم', sub: 'اتصال الحروف', state: 'done' },
         { glyph: 'ن', label: 'النون', sub: 'أول الكلمات', state: 'current' },
         { glyph: 'ر', label: 'الراء', sub: 'المحادثة', state: 'locked' },
         { glyph: 'ي', label: 'الياء', sub: 'القراءة بطلاقة', state: 'locked' },
@@ -330,18 +330,18 @@ writing: {
       lede: 'تقدّم حقيقي لمتعلمين بدأوا بدون أي معرفة بالعربية وبجهاز لابتوب فقط.',
       list: [
         { quote: '"بالكاد كنت أقرأ كلمة واحدة قبل ستة أشهر. الآن أقرأ لافتات الشوارع في عمّان دون ترجمة في ذهني أولاً."', name: 'هاروتو ك.', place: 'أوساكا، اليابان · دورة القراءة' },
-        { quote: '"مسار الهمزة وصل جعل الأمر واضحًا لي — استطعت أن أرى بالضبط أي الأصوات ما زلت بحاجة للتدرب عليها بدل التخمين."', name: 'مين جي پ.', place: 'بوسان، كوريا الجنوبية · دورة المبتدئين' },
+        { quote: '"مسار الحروف جعل الأمر واضحًا لي — استطعت أن أرى بالضبط أي الأصوات ما زلت بحاجة للتدرب عليها بدل التخمين."', name: 'مين جي پ.', place: 'بوسان، كوريا الجنوبية · دورة المبتدئين' },
         { quote: '"مدرّبي كان يصحح نطقي مباشرة كل أسبوع. هذا وحده كان يستحق أكثر من سنة كاملة من التطبيقات."', name: 'سيتي ر.', place: 'جاكرتا، إندونيسيا · دورة المحادثة' },
       ],
     },
     ctaSection: {
       title: 'درسك الأول في العربية مجاني — بدون بطاقة ائتمان',
-      lede: 'انضم إلى أكثر من 12,400 متعلم في آسيا واحصل على مدرّس أصلي هذا الأسبوع.',
+      lede: 'انضم إلى أكثر من 12,400 متعلم حول العالم واحصل على مدرّس أصلي هذا الأسبوع.',
       primary: 'ابدأ درسًا مجانيًا',
       ghost: 'تحدّث مع مستشار',
     },
     footer: {
-      tagline: 'نساعد المتعلمين في آسيا على الانتقال من الأبجدية العربية إلى محادثة حقيقية، حرفًا بعد حرف.',
+      tagline: 'نساعد المتعلمين في كل مكان على الانتقال من الأبجدية العربية إلى محادثة حقيقية، حرفًا بعد حرف.',
       learn: 'تعلّم',
       learnLinks: ['الدورات', 'مسار التعلم', 'المدرّسون'],
       company: 'الشركة',
@@ -349,7 +349,7 @@ writing: {
       support: 'الدعم',
       supportLinks: ['مركز المساعدة', 'تواصل معنا', 'الأسعار'],
       rights: '© 2026 همزة وصل. جميع الحقوق محفوظة.',
-      made: 'صُنع للمتعلمين في آسيا',
+      made: 'صُنع للمتعلمين حول العالم',
     },
     auth: {
       login: {
@@ -362,7 +362,7 @@ writing: {
         createOne: 'أنشئ حسابًا',
         or: 'أو',
         forgot: 'نسيت كلمة المرور؟',
-        demoNote: 'هذا تسجيل دخول تجريبي — أي بريد إلكتروني وكلمة مرور ستعمل.',
+        demoNote: 'لن نشارك بريدك الإلكتروني مع أي طرف آخر.',
         errorRequired: 'يرجى إدخال البريد الإلكتروني وكلمة المرور.',
         withGoogle: 'المتابعة باستخدام Google',
         withApple: 'المتابعة باستخدام Apple',
@@ -497,14 +497,14 @@ speaking: {
   wellPronounced: 'نطق ممتاز!',
   notQuite: 'ليس تمامًا',
   match: 'تطابق',
-  hint: 'حاول مرة أخرى — تمهّل وركّز على كل صوت، خاصةً الهمزة وصل غير الموجودة في لغتك الأم.',
+  hint: 'حاول مرة أخرى — تمهّل وركّز على كل صوت، خاصةً الحروف غير الموجودة في لغتك الأم.',
   nextWord: 'الكلمة التالية ←',
   tryAgain: 'أعد هذه الكلمة',
   correct: 'صحيحة',
   session: 'الجلسة',
   accuracy: 'الدقة',
   micDenied: 'تم رفض الوصول إلى الميكروفون. يرجى السماح به والمحاولة مرة أخرى.',
-  noLetters: 'لا توجد همزة وصل متاحة بعد.',
+  noLetters: 'لا توجد حروف متاحة بعد.',
 },
 letter: {
   backToCourse: 'العودة إلى الدورة',
@@ -518,7 +518,7 @@ letter: {
 },
 writing: {
   eyebrow: 'تدريب الكتابة',
-  title: 'تتبّع الهمزة وصل',
+  title: 'تتبّع الحروف',
   lede: 'استخدم الفأرة أو القلم أو إصبعك لتتبّع كل حرف فوق الدليل المنقّط. التدريب يصنع الإتقان.',
   empty: 'لا توجد تدريبات كتابة متاحة بعد.',
 },
@@ -574,13 +574,13 @@ writing: {
         { quote: '"我的导师每周都会当面纠正我的发音。仅这一点就比用一年的App更有价值。"', name: 'Siti R.', place: '印度尼西亚雅加达 · 对话课程' },
       ],
     },
-    ctaSection: { title: '第一节阿拉伯语课程免费——无需信用卡', lede: '加入12,400多名亚洲学习者的行列，本周就能匹配到一位母语导师。', primary: '开始免费试听', ghost: '咨询顾问' },
+    ctaSection: { title: '第一节阿拉伯语课程免费——无需信用卡', lede: '加入12,400多名世界各地的学习者，本周就能匹配到一位母语导师。', primary: '开始免费试听', ghost: '咨询顾问' },
     footer: {
-      tagline: '帮助亚洲学习者从阿拉伯字母表逐步走向真正的对话，一个字母，一个字母地积累。',
+      tagline: '帮助世界各地的学习者从阿拉伯字母表逐步走向真正的对话，一个字母，一个字母地积累。',
       learn: '学习', learnLinks: ['课程', '学习路径', '导师'],
       company: '公司', companyLinks: ['关于我们', '招聘', '学员故事'],
       support: '支持', supportLinks: ['帮助中心', '联系我们', '价格'],
-      rights: '© 2026 Hamzat Wasl。保留所有权利。', made: '为亚洲学习者而打造',
+      rights: '© 2026 Hamzat Wasl。保留所有权利。', made: '为世界各地的学习者而打造',
     },
     auth: {
       login: {
@@ -593,7 +593,7 @@ writing: {
         createOne: '立即注册',
         or: '或',
         forgot: '忘记密码？',
-        demoNote: '这是演示登录——任意邮箱和密码均可使用。',
+        demoNote: '我们绝不会与任何第三方分享你的邮箱。',
         errorRequired: '请输入邮箱和密码。',
         withGoogle: '使用 Google 继续',
 withApple: '使用 Apple 继续',
