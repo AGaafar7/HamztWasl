@@ -440,12 +440,57 @@ function ListeningLesson({ lesson }) {
 }
 
 /* ============================================================
-   Reading
+   Reading — passage + interactive comprehension questions
    ============================================================ */
 function ReadingLesson({ lesson }) {
   const { lang } = useLanguage()
   const c = lesson.content || {}
   const passage = gloss(c.passage, lang)
+  const questions = c.questions || []
+
+  const [answers, setAnswers] = useState({})
+  const [results, setResults] = useState({})
+  const [loading, setLoading] = useState({})
+  const [revealed, setRevealed] = useState({})
+
+  if (!passage && questions.length === 0) {
+    return <p className="portal-empty">This lesson has no content yet.</p>
+  }
+
+  const onCheck = async (q) => {
+    const userAnswer = (answers[q.id] || '').trim()
+    if (!userAnswer) return
+    setLoading((s) => ({ ...s, [q.id]: true }))
+    try {
+      const res = await fetch('/api/comprehension/check', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          passage,
+          question: q.prompt,
+          userAnswer,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Check failed')
+      setResults((s) => ({ ...s, [q.id]: data }))
+    } catch (err) {
+      setResults((s) => ({
+        ...s,
+        [q.id]: {
+          correct: false,
+          feedback: err.message || 'Check failed. Try again.',
+        },
+      }))
+    } finally {
+      setLoading((s) => ({ ...s, [q.id]: false }))
+    }
+  }
+
+  const onReveal = (qid) => {
+    setRevealed((s) => ({ ...s, [qid]: !s[qid] }))
+  }
+
   return (
     <div className="lesson-reading">
       {passage && (
@@ -453,23 +498,79 @@ function ReadingLesson({ lesson }) {
           <p>{passage}</p>
         </div>
       )}
-      {c.questions?.length > 0 && (
+
+      {questions.length > 0 && (
         <div className="lesson-questions">
           <h3>Comprehension questions</h3>
-          {c.questions.map((q, i) => (
-            <div className="lesson-q" key={q.id || i}>
-              <p className="lesson-q-prompt">{i + 1}. {q.prompt}</p>
-              <details className="lesson-q-answer">
-                <summary>Show answer</summary>
-                <p>{q.answer}</p>
-                {q.hint && <p className="lesson-q-hint">Hint: {q.hint}</p>}
-              </details>
-            </div>
-          ))}
+          {questions.map((q, i) => {
+            const result = results[q.id]
+            const isCorrect = result?.correct === true
+            const isWrong = result && !result.correct
+            const isRevealed = revealed[q.id]
+            return (
+              <div
+                className={`quiz-card ${isCorrect ? 'quiz-correct' : ''} ${isWrong ? 'quiz-wrong' : ''}`}
+                key={q.id || i}
+              >
+                <div className="quiz-card-head">
+                  <span className="quiz-card-num">Question {i + 1}</span>
+                  {isCorrect && (
+                    <span className="quiz-badge quiz-badge-correct">✓ Correct</span>
+                  )}
+                  {isWrong && (
+                    <span className="quiz-badge quiz-badge-wrong">Try again</span>
+                  )}
+                </div>
+
+                <p className="quiz-card-prompt arabic" dir="rtl">{q.prompt}</p>
+
+                <textarea
+                  className="form-input quiz-input arabic"
+                  dir="rtl"
+                  rows="3"
+                  placeholder="اكتب إجابتك هنا…"
+                  value={answers[q.id] || ''}
+                  onChange={(e) =>
+                    setAnswers((s) => ({ ...s, [q.id]: e.target.value }))
+                  }
+                  disabled={isCorrect || loading[q.id]}
+                />
+
+                <div className="quiz-actions">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-small"
+                    onClick={() => onCheck(q)}
+                    disabled={!answers[q.id]?.trim() || loading[q.id] || isCorrect}
+                  >
+                    {loading[q.id] ? 'Checking…' : 'Check answer'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-small"
+                    onClick={() => onReveal(q.id)}
+                  >
+                    {isRevealed ? 'Hide reference' : 'Show reference answer'}
+                  </button>
+                </div>
+
+                {result && (
+                  <div className={`quiz-feedback ${result.correct ? 'good' : 'bad'}`}>
+                    {result.feedback}
+                  </div>
+                )}
+
+                {isRevealed && (
+                  <div className="quiz-reference">
+                    <span className="quiz-reference-label">Reference answer</span>
+                    <p className="quiz-reference-text arabic" dir="rtl">{q.answer}</p>
+                    {q.hint && <p className="quiz-hint">Hint: {q.hint}</p>}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
-      )}
-      {!passage && !c.questions?.length && (
-        <p className="portal-empty">This lesson has no content yet.</p>
       )}
     </div>
   )
