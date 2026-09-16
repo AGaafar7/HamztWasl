@@ -223,7 +223,7 @@ function CourseHero({ course, title, desc, levelLabel, typeLabel, meta }) {
         {desc && <p className="course-hero-desc">{desc}</p>}
         <div className="course-hero-meta">
           {meta}
-          {course.instructor && course.instructor !== 'Huroof Team' && (
+          {course.instructor && course.instructor !== 'Hamzat Wasl Team' && (
             <> · by {course.instructor}</>
           )}
         </div>

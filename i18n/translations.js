@@ -14,11 +14,11 @@ export const translations = {
       titleBefore: 'Learn Arabic the way ',
       titleAccent: 'native speakers',
       titleAfter: ' actually teach it',
-      lede: "Huroof is built for learners across Asia starting from zero — real instructors, structured letter-by-letter courses, and a path that shows exactly how far you've come.",
+      lede: "Hamzat Wasl is built for learners everywhere starting from zero — real instructors, structured letter-by-letter courses, and a path that shows exactly how far you've come.",
       ctaPrimary: 'Start Your First Lesson',
       ctaGhost: 'See the Learning Path',
       trustStrong: '12,400+',
-      trustRest: 'learners from Japan, Korea, Indonesia & Vietnam',
+      trustRest: 'learners worldwide',
       card: {
         lessonTag: 'Lesson 08 · The Alphabet',
         levelTag: 'Beginner',
@@ -46,8 +46,8 @@ export const translations = {
       viewAll: 'View all courses',
     },
     pathSection: {
-      eyebrowAr: 'حروف',
-      eyebrow: 'The Huroof Path',
+      eyebrowAr: 'همزة وصل',
+      eyebrow: 'The Hamzat Wasl Path',
       title: 'Every letter you learn is a step you can see',
       lede: "Instead of a generic percentage bar, your progress is the alphabet itself — each letter unlocks the next stage of speaking and reading.",
       steps: [
@@ -85,7 +85,7 @@ export const translations = {
       companyLinks: ['About', 'Careers', 'Learner stories'],
       support: 'Support',
       supportLinks: ['Help center', 'Contact us', 'Pricing'],
-      rights: '© 2026 Huroof. All rights reserved.',
+      rights: '© 2026 Hamzat Wasl. All rights reserved.',
       made: 'Made for learners across Asia',
     },
     auth: {
@@ -277,11 +277,11 @@ writing: {
       titleBefore: 'تعلّم العربية بالطريقة التي ',
       titleAccent: 'يعلّمها بها أهلها',
       titleAfter: ' فعلاً',
-      lede: 'حروف مصممة للمتعلمين في آسيا بداية من الصفر — مدرّسون حقيقيون، ودورات مبنية حرفًا حرفًا، ومسار يوضح لك بالضبط كم تقدّمت.',
+      lede: 'همزة وصل مصممة للمتعلمين في كل مكان بداية من الصفر — مدرّسون حقيقيون، ودورات مبنية حرفًا حرفًا، ومسار يوضح لك بالضبط كم تقدّمت.',
       ctaPrimary: 'ابدأ درسك الأول',
       ctaGhost: 'شاهد مسار التعلم',
       trustStrong: '+12,400',
-      trustRest: 'متعلم من اليابان وكوريا وإندونيسيا وفيتنام',
+      trustRest: 'متعلم حول العالم',
       card: {
         lessonTag: 'الدرس 08 · الأبجدية',
         levelTag: 'مبتدئ',
@@ -309,14 +309,14 @@ writing: {
       viewAll: 'عرض كل الدورات',
     },
     pathSection: {
-      eyebrowAr: 'حروف',
-      eyebrow: 'مسار حروف',
+      eyebrowAr: 'همزة وصل',
+      eyebrow: 'مسار همزة وصل',
       title: 'كل حرف تتعلمه خطوة تراها بعينك',
       lede: 'بدلًا من شريط تقدّم عام، تقدّمك هو الأبجدية نفسها — كل حرف يفتح لك مرحلة جديدة في الحديث والقراءة.',
       steps: [
         { glyph: 'ا', label: 'الألف', sub: 'الأبجدية', state: 'done' },
         { glyph: 'ب', label: 'الباء', sub: 'الأصوات والكتابة', state: 'done' },
-        { glyph: 'ج', label: 'الجيم', sub: 'اتصال الحروف', state: 'done' },
+        { glyph: 'ج', label: 'الجيم', sub: 'اتصال الهمزة وصل', state: 'done' },
         { glyph: 'ن', label: 'النون', sub: 'أول الكلمات', state: 'current' },
         { glyph: 'ر', label: 'الراء', sub: 'المحادثة', state: 'locked' },
         { glyph: 'ي', label: 'الياء', sub: 'القراءة بطلاقة', state: 'locked' },
@@ -330,7 +330,7 @@ writing: {
       lede: 'تقدّم حقيقي لمتعلمين بدأوا بدون أي معرفة بالعربية وبجهاز لابتوب فقط.',
       list: [
         { quote: '"بالكاد كنت أقرأ كلمة واحدة قبل ستة أشهر. الآن أقرأ لافتات الشوارع في عمّان دون ترجمة في ذهني أولاً."', name: 'هاروتو ك.', place: 'أوساكا، اليابان · دورة القراءة' },
-        { quote: '"مسار الحروف جعل الأمر واضحًا لي — استطعت أن أرى بالضبط أي الأصوات ما زلت بحاجة للتدرب عليها بدل التخمين."', name: 'مين جي پ.', place: 'بوسان، كوريا الجنوبية · دورة المبتدئين' },
+        { quote: '"مسار الهمزة وصل جعل الأمر واضحًا لي — استطعت أن أرى بالضبط أي الأصوات ما زلت بحاجة للتدرب عليها بدل التخمين."', name: 'مين جي پ.', place: 'بوسان، كوريا الجنوبية · دورة المبتدئين' },
         { quote: '"مدرّبي كان يصحح نطقي مباشرة كل أسبوع. هذا وحده كان يستحق أكثر من سنة كاملة من التطبيقات."', name: 'سيتي ر.', place: 'جاكرتا، إندونيسيا · دورة المحادثة' },
       ],
     },
@@ -348,7 +348,7 @@ writing: {
       companyLinks: ['من نحن', 'الوظائف', 'قصص المتعلمين'],
       support: 'الدعم',
       supportLinks: ['مركز المساعدة', 'تواصل معنا', 'الأسعار'],
-      rights: '© 2026 حروف. جميع الحقوق محفوظة.',
+      rights: '© 2026 همزة وصل. جميع الحقوق محفوظة.',
       made: 'صُنع للمتعلمين في آسيا',
     },
     auth: {
@@ -497,14 +497,14 @@ speaking: {
   wellPronounced: 'نطق ممتاز!',
   notQuite: 'ليس تمامًا',
   match: 'تطابق',
-  hint: 'حاول مرة أخرى — تمهّل وركّز على كل صوت، خاصةً الحروف غير الموجودة في لغتك الأم.',
+  hint: 'حاول مرة أخرى — تمهّل وركّز على كل صوت، خاصةً الهمزة وصل غير الموجودة في لغتك الأم.',
   nextWord: 'الكلمة التالية ←',
   tryAgain: 'أعد هذه الكلمة',
   correct: 'صحيحة',
   session: 'الجلسة',
   accuracy: 'الدقة',
   micDenied: 'تم رفض الوصول إلى الميكروفون. يرجى السماح به والمحاولة مرة أخرى.',
-  noLetters: 'لا توجد حروف متاحة بعد.',
+  noLetters: 'لا توجد همزة وصل متاحة بعد.',
 },
 letter: {
   backToCourse: 'العودة إلى الدورة',
@@ -518,7 +518,7 @@ letter: {
 },
 writing: {
   eyebrow: 'تدريب الكتابة',
-  title: 'تتبّع الحروف',
+  title: 'تتبّع الهمزة وصل',
   lede: 'استخدم الفأرة أو القلم أو إصبعك لتتبّع كل حرف فوق الدليل المنقّط. التدريب يصنع الإتقان.',
   empty: 'لا توجد تدريبات كتابة متاحة بعد.',
 },
@@ -531,9 +531,9 @@ writing: {
       eyebrowAr: 'أ ← ي',
       eyebrow: '从阿列夫到流利表达',
       titleBefore: '跟着', titleAccent: '母语者的真实教法', titleAfter: '，学习阿拉伯语',
-      lede: 'Huroof 专为零基础的亚洲学习者打造——真正的母语导师、按字母循序渐进的课程体系，以及清晰展示你进步程度的学习路径。',
+      lede: 'Hamzat Wasl 专为世界各地的零基础学习者打造——真正的母语导师、按字母循序渐进的课程体系，以及清晰展示你进步程度的学习路径。',
       ctaPrimary: '开始你的第一课', ctaGhost: '查看学习路径',
-      trustStrong: '12,400+', trustRest: '来自日本、韩国、印度尼西亚和越南的学习者',
+      trustStrong: '12,400+', trustRest: '来自世界各地的学习者',
       card: {
         lessonTag: '第8课 · 字母表', levelTag: '初级', name: '阿因（ʿAyn）',
         sound: '一个从喉咙深处发出的音——在学习"阿列夫"之前先练习它',
@@ -554,7 +554,7 @@ writing: {
       viewAll: '查看全部课程',
     },
     pathSection: {
-      eyebrowAr: 'حروف', eyebrow: 'Huroof 学习路径', title: '你学会的每个字母，都是看得见的一步',
+      eyebrowAr: 'همزة وصل', eyebrow: 'Hamzat Wasl 学习路径', title: '你学会的每个字母，都是看得见的一步',
       lede: '你的进度不是一个笼统的百分比条，而是字母表本身——每个字母都会解锁下一阶段的听说读写。',
       steps: [
         { glyph: 'ا', label: '阿列夫', sub: '字母表', state: 'done' },
@@ -580,7 +580,7 @@ writing: {
       learn: '学习', learnLinks: ['课程', '学习路径', '导师'],
       company: '公司', companyLinks: ['关于我们', '招聘', '学员故事'],
       support: '支持', supportLinks: ['帮助中心', '联系我们', '价格'],
-      rights: '© 2026 Huroof。保留所有权利。', made: '为亚洲学习者而打造',
+      rights: '© 2026 Hamzat Wasl。保留所有权利。', made: '为亚洲学习者而打造',
     },
     auth: {
       login: {

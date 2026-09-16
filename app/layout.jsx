@@ -15,15 +15,15 @@ import Footer from '../components/Footer.jsx'
  * language switcher here is still client-side state, not part of the URL.
  */
 export const metadata = {
-  metadataBase: new URL('https://huroof.example.com'),
+  metadataBase: new URL('https://hamztwasl.app'),
   title: {
-    default: 'Huroof — Learn Arabic, Letter by Letter',
-    template: '%s | Huroof',
+    default: 'Hamzat Wasl — Learn Arabic, Letter by Letter',
+    template: '%s | Hamzat Wasl',
   },
   description:
-    'Huroof helps learners across Asia learn Arabic from the alphabet up, with native instructors, real video lessons, and structured courses.',
+    'Hamzat Wasl helps learners everywhere learn Arabic from the alphabet up, with native instructors, real video lessons, and structured courses.',
   openGraph: {
-    title: 'Huroof — Learn Arabic, Letter by Letter',
+    title: 'Hamzat Wasl — Learn Arabic, Letter by Letter',
     description:
       'Real instructors, structured letter-by-letter courses, and a learning path that shows exactly how far you\'ve come.',
     type: 'website',

@@ -15,8 +15,8 @@ export default function Footer() {
             <div className="logo">
               <div className="logo-mark">ح</div>
               <div className="logo-text">
-                <span className="en" style={{ color: '#fff' }}>Huroof</span>
-                <span className="ar arabic">حروف</span>
+                <span className="en" style={{ color: '#fff' }}>Hamzat Wasl</span>
+                <span className="ar arabic">همزة وصل</span>
               </div>
             </div>
             <p>{f.tagline}</p>

@@ -32,7 +32,7 @@ const text = {
      'alphabet': { 
         title: 'Arabic Alphabet (Alef Ba2)', 
         desc: 'Learn all 28 Arabic letters with correct pronunciation, articulation points, and example words. The perfect foundation for your Arabic journey.', 
-        instructor: 'Huroof Team' 
+        instructor: 'Hamzat Wasl Team' 
       },
       'alphabet-101': { title: 'The Arabic Alphabet, from Scratch', desc: 'All 28 letters, their sounds, and how they connect — built for absolute beginners.', instructor: 'Yusuf A.' },
       'everyday-conversation': { title: 'Everyday Conversation', desc: 'Order food, ask directions, and hold a real conversation with confidence.', instructor: 'Layla H.' },
@@ -47,10 +47,10 @@ const text = {
     items: {
       'alphabet': { 
         title: 'الأبجدية العربية (ألف باء)', 
-        desc: 'تعلم جميع الحروف العربية الثمانية والعشرين مع النطق الصحيح، مخارج الحروف، وكلمات مثال. الأساس المثالي لرحلتك في تعلم العربية.', 
-        instructor: 'فريق حروف' 
+        desc: 'تعلم جميع الهمزة وصل العربية الثمانية والعشرين مع النطق الصحيح، مخارج الهمزة وصل، وكلمات مثال. الأساس المثالي لرحلتك في تعلم العربية.', 
+        instructor: 'فريق همزة وصل' 
       },
-      'alphabet-101': { title: 'الأبجدية العربية من الصفر', desc: 'الحروف الـ28 كاملة، أصواتها، وكيفية اتصالها ببعضها — مصممة للمبتدئين تمامًا.', instructor: 'يوسف أ.' },
+      'alphabet-101': { title: 'الأبجدية العربية من الصفر', desc: 'الهمزة وصل الـ28 كاملة، أصواتها، وكيفية اتصالها ببعضها — مصممة للمبتدئين تمامًا.', instructor: 'يوسف أ.' },
       'everyday-conversation': { title: 'محادثة يومية', desc: 'اطلب الطعام، اسأل عن الاتجاهات، وتحدّث بثقة في مواقف حقيقية.', instructor: 'ليلى ح.' },
       'reading-msa': { title: 'قراءة العربية الفصحى', desc: 'انتقل من التحدث إلى قراءة الأخبار واللافتات والنصوص اليومية.', instructor: 'عمر س.' },
       'numbers-counting': { title: 'الأرقام والعد', desc: 'أتقن الأرقام العربية، والأسعار، والتواريخ، وقول الوقت.', instructor: 'يوسف أ.' },
@@ -64,7 +64,7 @@ const text = {
        'alphabet': { 
         title: '阿拉伯字母 (Alef Ba2)', 
         desc: '学习全部28个阿拉伯字母，包括正确发音、发音部位和示例单词。为您阿拉伯语学习之旅打下完美基础。', 
-        instructor: 'Huroof 团队' 
+        instructor: 'Hamzat Wasl 团队' 
       },
       'alphabet-101': { title: '从零开始的阿拉伯字母', desc: '完整的28个字母及其发音，以及它们如何连接——专为完全初学者设计。', instructor: '优素福 A.' },
       'everyday-conversation': { title: '日常对话', desc: '点餐、问路，自信地进行真实对话。', instructor: '莱拉 H.' },

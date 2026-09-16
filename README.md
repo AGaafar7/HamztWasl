@@ -1,4 +1,4 @@
-# Huroof — Next.js version
+# Hamzat Wasl — Next.js version
 
 Migrated from the earlier Vite + React app. Same design system, same
 features (courses, video library, audio dictionary, listening practice),
