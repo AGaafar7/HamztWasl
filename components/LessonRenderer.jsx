@@ -86,12 +86,11 @@ export default function LessonRenderer({
     (siblings ? `Lesson ${siblings.index + 1}` : 'Lesson')
 
   const onToggleComplete = () => {
-    if (!course) return
     const next = !completed
     setCompleted(next)
     startTransition(async () => {
       try {
-        await toggleLessonCompleteAction(course.id, `lesson:${lesson.id}`)
+        await toggleLessonCompleteAction(course?.id ?? null, `lesson:${lesson.id}`)
       } catch (err) {
         console.error('Toggle complete failed:', err)
         setCompleted(!next)
@@ -168,7 +167,7 @@ export default function LessonRenderer({
           )}
         </div>
 
-        {course && (
+        
           <button
             type="button"
             className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
@@ -176,7 +175,7 @@ export default function LessonRenderer({
           >
             {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
           </button>
-        )}
+      
       </div>
     </section>
   )

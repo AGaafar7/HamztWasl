@@ -8,7 +8,7 @@ import LessonRenderer from '../../../../components/LessonRenderer'
 export default async function StandaloneLessonPage({ params }) {
   const { lessonId } = await params
   const lesson = await fetchLesson(lessonId)
-  if (!lesson || lesson.courseId) notFound()
+  if (!lesson) notFound()
 
   const [completedKeys] = await Promise.all([
     fetchStandaloneCompletedLessonKeys(),

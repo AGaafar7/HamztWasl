@@ -79,7 +79,7 @@ export default function ListeningClient({ lines, videos, lessons = [], completed
             {lessons.length > 0 && (
         <div className="lesson-library-section">
           <h2 className="lesson-library-heading">From instructor lessons</h2>
-          <LessonLibraryList lessons={lessons} completedIds={completedIds} />
+          <LessonLibraryList lessons={lessons} completedIds={completedIds} openStandalone/>
         </div>
       )}
 

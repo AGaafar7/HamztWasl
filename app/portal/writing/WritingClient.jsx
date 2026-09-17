@@ -18,7 +18,7 @@ export default function WritingClient({ lessons = [], completedIds = [] }) {
       {lessons.length === 0 ? (
         <p className="portal-empty">{w.empty}</p>
       ) : (
-        <LessonLibraryList lessons={lessons} completedIds={completedIds} />
+        <LessonLibraryList lessons={lessons} completedIds={completedIds} openStandalone/>
       )}
     </section>
   )
