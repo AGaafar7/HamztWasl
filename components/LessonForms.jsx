@@ -313,7 +313,7 @@ export function SpeakingLessonForm({ content, onSave }) {
   })
   const addWord = () => setLocal((c) => ({
     ...c,
-    words: [...c.words, { id: `w${Date.now()}`, arabic: '', transliteration: '', meaning: '' }],
+    words: [...c.words, { id: `w${Date.now()}`, arabic: '', transliteration: '', meaning: '' , type: 'word'}],
   }))
   const updateWord = (id, key, value) => setLocal((c) => ({
     ...c,
@@ -329,22 +329,31 @@ export function SpeakingLessonForm({ content, onSave }) {
         onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
 
       <div className="question-list">
-        <h4>Words the student will pronounce</h4>
+        <h4>Words or letters the student will pronounce</h4>
         {local.words.map((w) => (
-          <div className="word-row" key={w.id}>
-            <input className="form-input arabic" dir="rtl" placeholder="الكلمة"
-              value={w.arabic}
-              onChange={(e) => updateWord(w.id, 'arabic', e.target.value)} />
-            <input className="form-input" placeholder="transliteration"
-              value={w.transliteration}
-              onChange={(e) => updateWord(w.id, 'transliteration', e.target.value)} />
-            <input className="form-input" placeholder="meaning"
-              value={w.meaning}
-              onChange={(e) => updateWord(w.id, 'meaning', e.target.value)} />
-            <button type="button" className="mini-play"
-              onClick={() => removeWord(w.id)}>✕</button>
-          </div>
-        ))}
+  <div className="word-row word-row-speaking" key={w.id}>
+    <select
+      className="form-input"
+      value={w.type || 'word'}
+      onChange={(e) => updateWord(w.id, 'type', e.target.value)}
+      style={{ maxWidth: 110 }}
+    >
+      <option value="word">Word</option>
+      <option value="letter">Letter</option>
+    </select>
+    <input className="form-input arabic" dir="rtl" placeholder="الكلمة"
+      value={w.arabic}
+      onChange={(e) => updateWord(w.id, 'arabic', e.target.value)} />
+    <input className="form-input" placeholder="transliteration"
+      value={w.transliteration}
+      onChange={(e) => updateWord(w.id, 'transliteration', e.target.value)} />
+    <input className="form-input" placeholder="meaning"
+      value={w.meaning}
+      onChange={(e) => updateWord(w.id, 'meaning', e.target.value)} />
+    <button type="button" className="mini-play"
+      onClick={() => removeWord(w.id)}>✕</button>
+  </div>
+))}
         <button type="button" className="btn btn-ghost btn-small" onClick={addWord}>
           + Add word
         </button>

@@ -586,6 +586,8 @@ function ReadingLesson({ lesson }) {
    Speaking
    ============================================================ */
 function SpeakingLesson({ lesson }) {
+  const { t } = useLanguage()
+  const sp = t.learn.speaking
   const words = lesson.content?.words || []
   const [selectedId, setSelectedId] = useState(words[0]?.id || null)
   const [recording, setRecording] = useState(false)
@@ -680,23 +682,31 @@ function SpeakingLesson({ lesson }) {
 
       {selected && (
         <>
-          <div className="speaking-card" style={{ marginTop: 20 }}>
-            <div className="speaking-arabic arabic">{selected.arabic}</div>
-            {selected.transliteration && (
-              <div className="speaking-translit">{selected.transliteration}</div>
-            )}
-            {selected.meaning && (
-              <div className="speaking-meaning">{selected.meaning}</div>
-            )}
-            <button
-              type="button"
-              className="btn btn-ghost btn-small"
-              onClick={() => speak(selected.arabic)}
-              style={{ marginTop: 12 }}
-            >
-              🔊 Hear it
-            </button>
-          </div>
+<div className="speaking-card" style={{ marginTop: 20 }}>
+  <span className="speaking-type">
+    {selected.type === 'letter' ? sp.letterName : sp.exampleWord}
+  </span>
+  <div className="speaking-arabic arabic">{selected.arabic}</div>
+  {selected.transliteration && (
+    <div className="speaking-translit">{selected.transliteration}</div>
+  )}
+  {selected.meaning && (
+    <div className="speaking-meaning">{selected.meaning}</div>
+  )}
+  {selected.type === 'letter' && (
+    <div className="speaking-say-hint">
+      💡 {sp.letterTip} <strong className="arabic">هذا حرف {selected.arabic}</strong> {sp.letterTipEnd}
+    </div>
+  )}
+  <button
+    type="button"
+    className="btn btn-ghost btn-small"
+    onClick={() => speak(selected.arabic)}
+    style={{ marginTop: 12 }}
+  >
+    🔊 Hear it
+  </button>
+</div>
 
           <div className="speaking-controls">
             {!recording && !audioBlob && !feedback && (

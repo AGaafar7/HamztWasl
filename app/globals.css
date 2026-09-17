@@ -2402,6 +2402,9 @@ padding: 24px 22px 22px;
   gap: 8px;
   margin-bottom: 8px;
 }
+.word-row-speaking {
+  grid-template-columns: 120px 1.2fr 1.2fr 1.4fr auto;
+}
 @media (max-width: 760px) {
   .line-row,
   .word-row { grid-template-columns: 1fr; }

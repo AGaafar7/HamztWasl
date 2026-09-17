@@ -27,7 +27,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="wrap navbar-inner">
         <Link href="/" className="logo" onClick={close}>
-          <div className="logo-mark">ح</div>
+          <div className="logo-mark">ء</div>
           <div className="logo-text">
             <span className="en">Hamzat Wasl</span>
             <span className="ar arabic">همزة وصل</span>

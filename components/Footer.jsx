@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="logo">
-              <div className="logo-mark">ح</div>
+              <div className="logo-mark">ء</div>
               <div className="logo-text">
                 <span className="en" style={{ color: '#fff' }}>Hamzat Wasl</span>
                 <span className="ar arabic">همزة وصل</span>
