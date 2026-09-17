@@ -70,6 +70,13 @@ const KIND_LABEL = {
   writing: 'Writing',
 }
 
+const PRACTICE_LABEL = {
+  listening: 'Listening Practice',
+  reading: 'Reading Practice',
+  speaking: 'Speaking Practice',
+  writing: 'Writing Practice',
+}
+
 export default function LessonRenderer({
   course = null,
   lesson,
@@ -110,7 +117,7 @@ const backLabel = course
   : from && PRACTICE_LABEL[from]
     ? `Back to ${PRACTICE_LABEL[from]}`
     : 'Back to portal'
-    
+
   const progressPct =
     siblings && siblings.total
       ? Math.round(((siblings.index + 1) / siblings.total) * 100)
