@@ -21,6 +21,7 @@ export default function ListeningClient({ lessons = [], completedIds = [] }) {
           lessons={lessons}
           completedIds={completedIds}
           openStandalone
+          from="listening"
         />
       </div>
     ) : (

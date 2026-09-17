@@ -76,6 +76,7 @@ export default function LessonRenderer({
   siblings = null,
   isCompleted: initialCompleted = false,
   videoData = null,
+  from = null,
 }) {
   const { t, lang } = useLanguage()
   const [completed, setCompleted] = useState(initialCompleted)
@@ -98,9 +99,18 @@ export default function LessonRenderer({
     })
   }
 
-  const backHref = course ? `/portal/courses/${course.id}` : '/portal'
-  const backLabel = course ? gloss(course.title, lang) : 'Back to portal'
+  const backHref = course
+  ? `/portal/courses/${course.id}`
+  : from && PRACTICE_LABEL[from]
+    ? `/portal/${from}`
+    : '/portal'
 
+const backLabel = course
+  ? gloss(course.title, lang)
+  : from && PRACTICE_LABEL[from]
+    ? `Back to ${PRACTICE_LABEL[from]}`
+    : 'Back to portal'
+    
   const progressPct =
     siblings && siblings.total
       ? Math.round(((siblings.index + 1) / siblings.total) * 100)

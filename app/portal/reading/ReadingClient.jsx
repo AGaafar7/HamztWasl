@@ -22,6 +22,7 @@ export default function ReadingClient({ lessons = [], completedIds = [] }) {
             lessons={lessons}
             completedIds={completedIds}
             openStandalone
+            from="reading"
           />
         </div>
       ) : (

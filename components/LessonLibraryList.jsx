@@ -5,7 +5,12 @@ import Link from 'next/link'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { gloss } from '../i18n/gloss.js'
 
-export default function LessonLibraryList({ lessons, completedIds = [], openStandalone = false  }) {
+export default function LessonLibraryList({ 
+  lessons,
+  completedIds = [], 
+  openStandalone = false,
+  from = null,          // e.g. 'listening' | 'reading' | 'speaking' | 'writing'
+   }) {
   const { lang } = useLanguage()
   const completedSet = useMemo(() => new Set(completedIds), [completedIds])
 
@@ -22,10 +27,10 @@ export default function LessonLibraryList({ lessons, completedIds = [], openStan
         // If the caller says we're showing these as free practice content,
         // always open the standalone route — even for lessons that live
         // inside a free course. Otherwise honour the lesson's real home.
-        const href = (openStandalone || !lesson.courseId)
+        const base = (openStandalone || !lesson.courseId)
           ? `/portal/lessons/${lesson.id}`
           : `/portal/courses/${lesson.courseId}/lessons/${lesson.id}`
-
+        const href = from ? `${base}?from=${from}` : base
 
         const done = completedSet.has(lesson.id)
 

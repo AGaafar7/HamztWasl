@@ -5,8 +5,9 @@ import { fetchVideo } from '../../../../lib/queries/videos'
 import { fetchStandaloneCompletedLessonKeys } from '../../../../lib/queries/user'
 import LessonRenderer from '../../../../components/LessonRenderer'
 
-export default async function StandaloneLessonPage({ params }) {
+export default async function StandaloneLessonPage({ params, searchParams }) {
   const { lessonId } = await params
+  const { from } = await searchParams
   const lesson = await fetchLesson(lessonId)
   if (!lesson) notFound()
 
@@ -25,6 +26,7 @@ export default async function StandaloneLessonPage({ params }) {
       lesson={lesson}
       isCompleted={completedKeys.includes(`lesson:${lessonId}`)}
       videoData={videoData}
+      from={typeof from === 'string' ? from : null}
     />
   )
 }

@@ -22,6 +22,7 @@ export default function SpeakingClient({ lessons = [], completedIds = [] }) {
             lessons={lessons}
             completedIds={completedIds}
             openStandalone
+            from="speaking"
           />
         </div>
       ) : (
