@@ -18,6 +18,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
   const router = useRouter()
   const [tab, setTab] = useState('all')
   const [courses, setCourses] = useState(initialCourses)
+  const [error, setError] = useState(null)
   const [, startTransition] = useTransition()
 
   const handleLogout = async () => {
@@ -27,6 +28,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
   }
 
   const handleEnroll = (course) => {
+    setError(null)
     // Optimistic UI only for free — paid flow should not flip the button until payment confirms
     if (course.type === 'free') {
      setCourses((prev) =>
@@ -44,6 +46,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
         }
       } catch (err) {
         console.error('Enroll failed:', err)
+        setError('Payment could not be started. Please try again.')
         if (course.type === 'free') {
           setCourses((prev) =>
             prev.map((c) => (c.id === course.id ? { ...c, enrolled: false, progress: null } : c))
@@ -84,6 +87,12 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
           </button>
         ))}
       </div>
+
+       {error && (
+        <p className="form-error" style={{ marginBottom: 20 }}>
+          {error}
+        </p>
+      )}
 
       {filtered.length === 0 ? (
         <p className="portal-empty">{p.emptyState}</p>

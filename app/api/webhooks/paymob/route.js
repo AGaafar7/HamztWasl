@@ -85,7 +85,8 @@ export async function POST(request) {
     return NextResponse.json({ ok: true })
   }
 
-  const [userId, courseId] = (obj.order?.merchant_order_id || '').split('::')
+  const parts = (obj.order?.merchant_order_id || '').split('::')
+  const [userId, courseId] = parts
   if (!userId || !courseId) {
     console.error('Bad merchant_order_id', obj.order?.merchant_order_id)
     return NextResponse.json({ ok: true })

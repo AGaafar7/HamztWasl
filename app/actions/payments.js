@@ -49,7 +49,7 @@ export async function createPaymentIntentAction(courseId) {
       currency: 'EGP',
       items: [],
       // We pass our identifiers here so they come back in the webhook
-      merchant_order_id: `${user.id}::${courseId}`,
+      merchant_order_id: `${user.id}::${courseId}::${Date.now()}`,
     }),
   })
   if (!orderRes.ok) throw new Error(`Paymob order failed: ${await orderRes.text()}`)
