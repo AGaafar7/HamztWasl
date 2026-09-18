@@ -7,6 +7,7 @@ import { useLanguage } from '../../i18n/LanguageContext.jsx'
 import { gloss } from '../../i18n/gloss.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { enrollAction } from '../actions/enrollments'
+import { createPaymentIntentAction } from '../actions/payments'
 
 const TABS = ['all', 'free', 'paid', 'inProgress']
 
@@ -25,18 +26,29 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
     router.refresh()
   }
 
-  const handleEnroll = (courseId) => {
-    setCourses((prev) =>
-      prev.map((c) => (c.id === courseId ? { ...c, enrolled: true, progress: 0 } : c))
-    )
+  const handleEnroll = (course) => {
+    // Optimistic UI only for free — paid flow should not flip the button until payment confirms
+    if (course.type === 'free') {
+     setCourses((prev) =>
+        prev.map((c) => (c.id === course.id ? { ...c, enrolled: true, progress: 0 } : c))
+      )
+    }
+
     startTransition(async () => {
       try {
-        await enrollAction(courseId)
+        if (course.type === 'free') {
+          await enrollAction(course.id)
+        } else {
+          const { paymentToken } = await createPaymentIntentAction(course.id)
+          window.location.href = `https://accept.paymob.com/api/acceptance/iframes/${process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`
+        }
       } catch (err) {
         console.error('Enroll failed:', err)
-        setCourses((prev) =>
-          prev.map((c) => (c.id === courseId ? { ...c, enrolled: false, progress: null } : c))
-        )
+        if (course.type === 'free') {
+          setCourses((prev) =>
+            prev.map((c) => (c.id === course.id ? { ...c, enrolled: false, progress: null } : c))
+          )
+        }
       }
     })
   }
@@ -123,7 +135,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
                       <button
                         type="button"
                         className="btn btn-primary btn-small"
-                        onClick={() => handleEnroll(c.id)}
+                        onClick={() => handleEnroll(c)}
                       >
                         {c.type === 'free' ? p.enrollFree : p.enrollBtn}
                       </button>
