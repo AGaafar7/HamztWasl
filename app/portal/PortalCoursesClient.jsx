@@ -42,7 +42,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
           await enrollAction(course.id)
         } else {
           const { paymentToken } = await createPaymentIntentAction(course.id)
-          window.location.href = `https://accept.paymob.com/api/acceptance/iframes/${process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`
+          window.location.href = `https://accept-alpha.paymob.com/api/acceptance/iframes/${process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`
         }
       } catch (err) {
         console.error('Enroll failed:', err)
