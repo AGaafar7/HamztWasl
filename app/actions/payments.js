@@ -2,8 +2,7 @@
 
 import { createClient } from '../../lib/supabase/server'
 
-// payments.js
-const PAYMOB_BASE = 'https://accept-alpha.paymob.com/api'
+const PAYMOB_BASE = 'https://accept.paymob.com/api'
 // Fixed exchange rate for converting the DB's USD prices into EGP at
 // checkout time. Update this when the rate drifts meaningfully; or, if you
 // later decide to store prices in EGP directly (Option A), delete this and

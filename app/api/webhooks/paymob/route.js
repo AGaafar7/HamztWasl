@@ -59,7 +59,7 @@ export async function POST(request) {
 
   const obj = body.obj
   
-   const debugFields = [
+  /*const debugFields = [
     obj.amount_cents, obj.created_at, obj.currency, obj.error_occured,
     obj.has_parent_transaction, obj.id, obj.integration_id, obj.is_3d_secure,
     obj.is_auth, obj.is_capture, obj.is_refunded, obj.is_standalone_payment,
@@ -71,7 +71,7 @@ export async function POST(request) {
     received: hmacFromQuery,
     concatenated: debugFields.map((v) => v === undefined || v === null ? '' : String(v)).join(''),
     fieldCount: debugFields.length,
-  })
+  })*/
   // --- END TEMPORARY DEBUG ---
 
   const expected = computeHmac(obj)
