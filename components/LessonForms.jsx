@@ -98,7 +98,10 @@ export function TextLessonForm({ content, onSave }) {
 
   const handleSave = () => {
     const errors = validateLesson('text', local)
-    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    if (errors.length > 0) { 
+      setValidationError(errors.join(' ')); 
+      throw new Error(errors.join(' '))
+    }
     setValidationError('')
     onSave(local)
   }
@@ -140,7 +143,10 @@ export function TestedLessonForm({ content, onSave }) {
 
     const handleSave = () => {
     const errors = validateLesson('tested', local)
-    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    if (errors.length > 0) { 
+      setValidationError(errors.join(' ')); 
+      throw new Error(errors.join(' '))
+     }
     setValidationError('')
     onSave(local)
   }
@@ -205,7 +211,10 @@ export function ListeningLessonForm({ content, onSave }) {
   }))
     const handleSave = () => {
     const errors = validateLesson('listening', local)
-    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    if (errors.length > 0) { 
+      setValidationError(errors.join(' '));
+      throw new Error(errors.join(' '))
+    }
     setValidationError('')
     onSave(local)
   }
@@ -302,7 +311,10 @@ export function ReadingLessonForm({ content, onSave }) {
 
   const handleSave = () => {
     const errors = validateLesson('reading', local)
-    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    if (errors.length > 0) { 
+      setValidationError(errors.join(' ')); 
+      throw new Error(errors.join(' '))
+   }
     setValidationError('')
     onSave(local)
   }
@@ -415,7 +427,10 @@ export function SpeakingLessonForm({ content, onSave }) {
 
     const handleSave = () => {
     const errors = validateLesson('speaking', local)
-    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    if (errors.length > 0) { 
+      setValidationError(errors.join(' '));
+      throw new Error(errors.join(' '))
+    }
     setValidationError('')
     onSave(local)
   }
@@ -486,7 +501,10 @@ export function WritingLessonForm({ content, onSave }) {
 
     const handleSave = () => {
     const errors = validateLesson('writing', local)
-    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    if (errors.length > 0) { 
+      setValidationError(errors.join(' '));
+      throw new Error(errors.join(' '))
+    }
     setValidationError('')
     onSave(local)
   }
