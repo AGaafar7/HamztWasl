@@ -7,6 +7,58 @@ import SaveButton from './SaveButton'
    Shared helpers
    ============================================================ */
 
+
+function validateLesson(kind, content) {
+  const errors = []
+
+  const titleEn = (content.title?.en || '').trim()
+  const titleAr = (content.title?.ar || '').trim()
+  if (!titleEn) errors.push('English title is required.')
+  if (!titleAr) errors.push('Arabic title is required.')
+
+  switch (kind) {
+    case 'text':
+      if (!(content.body?.ar || '').trim()) {
+        errors.push('The Arabic body is required.')
+      }
+      break
+    case 'tested':
+      if (!(content.body?.ar || '').trim()) {
+        errors.push('The Arabic body is required.')
+      }
+      if (!(content.questions || []).some((q) => (q.prompt || '').trim() && (q.answer || '').trim())) {
+        errors.push('Add at least one question with a prompt and an answer.')
+      }
+      break
+    case 'listening':
+      if (!(content.lines || []).some((l) => (l.arabic || '').trim())) {
+        errors.push('Add at least one Arabic line.')
+      }
+      break
+    case 'reading':
+      if (!(content.passage?.ar || '').trim()) {
+        errors.push('The Arabic passage is required.')
+      }
+      if (!(content.questions || []).some((q) => (q.prompt || '').trim() && (q.answer || '').trim())) {
+        errors.push('Add at least one question with a prompt and an answer.')
+      }
+      break
+    case 'speaking':
+      if (!(content.words || []).some((w) => (w.arabic || '').trim())) {
+        errors.push('Add at least one Arabic word or letter.')
+      }
+      break
+    case 'writing':
+      if (!(content.items || []).some((it) => (it.arabic || '').trim())) {
+        errors.push('Add at least one Arabic item to trace.')
+      }
+      break
+    // video: no validation needed
+  }
+
+  return errors
+}
+
 export function TitleFields({ title, onChange }) {
   return (
     <div className="lesson-lang-grid">
@@ -42,13 +94,23 @@ export function TextLessonForm({ content, onSave }) {
     title: content.title || { en: '', ar: '', zh: '' },
     body: content.body || { en: '', ar: '', zh: '' },
   })
+   const [validationError, setValidationError] = useState('')
+
+  const handleSave = () => {
+    const errors = validateLesson('text', local)
+    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    setValidationError('')
+    onSave(local)
+  }
+
   return (
     <div className="lesson-form">
       <TitleFields title={local.title}
         onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))} />
       <BodyFields body={local.body}
         onChange={(lang, v) => setLocal((c) => ({ ...c, body: { ...c.body, [lang]: v } }))} />
-      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
+       {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
     </div>
   )
 }
@@ -63,6 +125,7 @@ export function TestedLessonForm({ content, onSave }) {
     body: content.body || { en: '', ar: '', zh: '' },
     questions: content.questions || [],
   })
+  const [validationError, setValidationError] = useState('')
   const addQ = () => setLocal((c) => ({
     ...c,
     questions: [...c.questions, { id: `q${Date.now()}`, prompt: '', answer: '', hint: '' }],
@@ -74,6 +137,15 @@ export function TestedLessonForm({ content, onSave }) {
   const removeQ = (id) => setLocal((c) => ({
     ...c, questions: c.questions.filter((q) => q.id !== id),
   }))
+
+    const handleSave = () => {
+    const errors = validateLesson('tested', local)
+    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    setValidationError('')
+    onSave(local)
+  }
+
+
 
   return (
     <div className="lesson-form">
@@ -100,8 +172,8 @@ export function TestedLessonForm({ content, onSave }) {
           + Add question
         </button>
       </div>
-
-      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
+        {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
     </div>
   )
 }
@@ -119,6 +191,7 @@ export function ListeningLessonForm({ content, onSave }) {
     ...c,
     lines: [...c.lines, { id: `l${Date.now()}`, arabic: '', gloss: { en: '', zh: '' } }],
   }))
+   const [validationError, setValidationError] = useState('')
   const updateLine = (id, key, value) => setLocal((c) => ({
     ...c,
     lines: c.lines.map((l) => {
@@ -130,6 +203,12 @@ export function ListeningLessonForm({ content, onSave }) {
   const removeLine = (id) => setLocal((c) => ({
     ...c, lines: c.lines.filter((l) => l.id !== id),
   }))
+    const handleSave = () => {
+    const errors = validateLesson('listening', local)
+    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    setValidationError('')
+    onSave(local)
+  }
 
   return (
     <div className="lesson-form">
@@ -158,7 +237,8 @@ export function ListeningLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
+      {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
     </div>
   )
 }
@@ -178,6 +258,7 @@ export function ReadingLessonForm({ content, onSave }) {
   const [genInstructions, setGenInstructions] = useState('')
   const [generating, setGenerating] = useState(false)
   const [genError, setGenError] = useState('')
+  const [validationError, setValidationError] = useState('')
 
   const addQ = () => setLocal((c) => ({
     ...c,
@@ -218,6 +299,13 @@ export function ReadingLessonForm({ content, onSave }) {
   }
 
   const arabicPassageReady = (local.passage.ar || '').trim().length > 0
+
+  const handleSave = () => {
+    const errors = validateLesson('reading', local)
+    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    setValidationError('')
+    onSave(local)
+  }
 
   return (
     <div className="lesson-form">
@@ -297,7 +385,8 @@ export function ReadingLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
+       {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
     </div>
   )
 }
@@ -311,6 +400,7 @@ export function SpeakingLessonForm({ content, onSave }) {
     title: content.title || { en: '', ar: '', zh: '' },
     words: content.words || [],
   })
+  const [validationError, setValidationError] = useState('')
   const addWord = () => setLocal((c) => ({
     ...c,
     words: [...c.words, { id: `w${Date.now()}`, arabic: '', transliteration: '', meaning: '' , type: 'word'}],
@@ -322,6 +412,13 @@ export function SpeakingLessonForm({ content, onSave }) {
   const removeWord = (id) => setLocal((c) => ({
     ...c, words: c.words.filter((w) => w.id !== id),
   }))
+
+    const handleSave = () => {
+    const errors = validateLesson('speaking', local)
+    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    setValidationError('')
+    onSave(local)
+  }
 
   return (
     <div className="lesson-form">
@@ -359,7 +456,8 @@ export function SpeakingLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
+       {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
     </div>
   )
 }
@@ -373,6 +471,7 @@ export function WritingLessonForm({ content, onSave }) {
     title: content.title || { en: '', ar: '', zh: '' },
     items: content.items || [],
   })
+  const [validationError, setValidationError] = useState('')
   const addItem = () => setLocal((c) => ({
     ...c,
     items: [...c.items, { id: `w${Date.now()}`, arabic: '', transliteration: '', meaning: '' }],
@@ -384,6 +483,13 @@ export function WritingLessonForm({ content, onSave }) {
   const removeItem = (id) => setLocal((c) => ({
     ...c, items: c.items.filter((it) => it.id !== id),
   }))
+
+    const handleSave = () => {
+    const errors = validateLesson('writing', local)
+    if (errors.length > 0) { setValidationError(errors.join(' ')); return }
+    setValidationError('')
+    onSave(local)
+  }
 
   return (
     <div className="lesson-form">
@@ -412,7 +518,8 @@ export function WritingLessonForm({ content, onSave }) {
         </button>
       </div>
 
-      <SaveButton onClick={() => onSave(local)} label="Save lesson" />
+      {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
     </div>
   )
 }

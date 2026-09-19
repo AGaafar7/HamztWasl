@@ -13,6 +13,51 @@ const DEFAULT_CONTENT = {
   writing: { title: { en: '', ar: '', zh: '' }, items: [] },
 }
 
+function validateLessonContent(kind, content) {
+  const errors = []
+
+  const titleEn = (content.title?.en || '').trim()
+  const titleAr = (content.title?.ar || '').trim()
+  if (!titleEn) errors.push('English title is required.')
+  if (!titleAr) errors.push('Arabic title is required.')
+
+  switch (kind) {
+    case 'text':
+      if (!(content.body?.ar || '').trim()) errors.push('The Arabic body is required.')
+      break
+    case 'tested':
+      if (!(content.body?.ar || '').trim()) errors.push('The Arabic body is required.')
+      if (!(content.questions || []).some((q) => (q.prompt || '').trim() && (q.answer || '').trim())) {
+        errors.push('At least one complete question is required.')
+      }
+      break
+    case 'listening':
+      if (!(content.lines || []).some((l) => (l.arabic || '').trim())) {
+        errors.push('At least one Arabic line is required.')
+      }
+      break
+    case 'reading':
+      if (!(content.passage?.ar || '').trim()) errors.push('The Arabic passage is required.')
+      if (!(content.questions || []).some((q) => (q.prompt || '').trim() && (q.answer || '').trim())) {
+        errors.push('At least one complete question is required.')
+      }
+      break
+    case 'speaking':
+      if (!(content.words || []).some((w) => (w.arabic || '').trim())) {
+        errors.push('At least one Arabic word or letter is required.')
+      }
+      break
+    case 'writing':
+      if (!(content.items || []).some((it) => (it.arabic || '').trim())) {
+        errors.push('At least one Arabic item is required.')
+      }
+      break
+    // video: no content validation
+  }
+
+  return errors
+}
+
 export async function createLessonAction({ courseId = null, kind }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -51,6 +96,18 @@ export async function updateLessonAction(lessonId, content) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
+
+  const { data: existing, error: fetchErr } = await supabase
+    .from('course_lessons')
+    .select('kind')
+    .eq('id', lessonId)
+    .eq('instructor_id', user.id)
+    .maybeSingle()
+
+  if (fetchErr) throw fetchErr
+  if (!existing) throw new Error('Lesson not found')
+  const errors = validateLessonContent(existing.kind, content)
+  if (errors.length > 0) throw new Error(errors.join(' '))
 
   const { error } = await supabase
     .from('course_lessons')
