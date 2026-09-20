@@ -7,7 +7,7 @@ import { useLanguage } from '../../i18n/LanguageContext.jsx'
 import { gloss } from '../../i18n/gloss.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { enrollAction } from '../actions/enrollments'
-import { createPaymentIntentAction } from '../actions/payments'
+import { createCheckoutSessionAction } from '../actions/payments'
 
 const TABS = ['all', 'free', 'paid', 'inProgress']
 
@@ -41,8 +41,8 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
         if (course.type === 'free') {
           await enrollAction(course.id)
         } else {
-          const { paymentToken } = await createPaymentIntentAction(course.id)
-          window.location.href = `https://accept.paymob.com/api/acceptance/iframes/${process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`
+            const { url } = await createCheckoutSessionAction(course.id)
+            window.location.href = url
         }
       } catch (err) {
         console.error('Enroll failed:', err)

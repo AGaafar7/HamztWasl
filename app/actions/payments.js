@@ -2,13 +2,14 @@
 
 import { createClient } from '../../lib/supabase/server'
 
-const PAYMOB_BASE = 'https://accept.paymob.com/api'
-// Fixed exchange rate for converting the DB's USD prices into EGP at
-// checkout time. Update this when the rate drifts meaningfully; or, if you
-// later decide to store prices in EGP directly (Option A), delete this and
-// use course.price directly.
+const XPAY_BASE = 'https://api.xpay.app'
+
+// Fixed exchange rate for converting DB (USD) prices into EGP at checkout.
+// Update when the rate drifts. If you later move prices to EGP in the DB,
+// delete this and use course.price directly.
 const USD_TO_EGP = 50
-export async function createPaymentIntentAction(courseId) {
+
+export async function createCheckoutSessionAction(courseId) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
@@ -21,75 +22,59 @@ export async function createPaymentIntentAction(courseId) {
 
   if (!course || course.type !== 'paid') throw new Error('Invalid course')
 
-  const amountCents = Math.round(course.price * USD_TO_EGP * 100)
-  const apiKey = process.env.PAYMOB_API_KEY
-  const integrationId = Number(process.env.PAYMOB_INTEGRATION_ID)
+  const amountEgp = Math.round(course.price * USD_TO_EGP * 100) // piastres
 
-  if (!apiKey || !integrationId) {
-    throw new Error('Paymob is not configured')
-  }
+  const secretKey = process.env.XPAY_SECRET_KEY
+  if (!secretKey) throw new Error('XPay is not configured')
 
-  // 1. Authenticate — exchange API key for a short-lived auth token
-  const authRes = await fetch(`${PAYMOB_BASE}/auth/tokens`, {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hamztwasl.vercel.app'
+  const courseTitle = course.title?.en || course.id
+
+  const res = await fetch(`${XPAY_BASE}/checkout/sessions`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ api_key: apiKey }),
-  })
-  if (!authRes.ok) throw new Error(`Paymob auth failed: ${await authRes.text()}`)
-  const { token } = await authRes.json()
-
-  // 2. Register an order — Paymob needs an order record before the iframe
-  const orderRes = await fetch(`${PAYMOB_BASE}/ecommerce/orders`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
-      auth_token: token,
-      delivery_needed: false,
-      amount_cents: amountCents,
+      mode: 'payment',
+      uiMode: 'hosted',
       currency: 'EGP',
-      items: [],
-      // We pass our identifiers here so they come back in the webhook
-      merchant_order_id: `${user.id}::${courseId}::${Date.now()}`,
-    }),
-  })
-  if (!orderRes.ok) throw new Error(`Paymob order failed: ${await orderRes.text()}`)
-  const order = await orderRes.json()
-
-  // 3. Request a payment key — this is what the iframe uses
-  const nameParts = (user.user_metadata?.full_name || 'Student User').split(' ')
-  const firstName = nameParts[0] || 'Student'
-  const lastName = nameParts.slice(1).join(' ') || 'User'
-
-  const keyRes = await fetch(`${PAYMOB_BASE}/acceptance/payment_keys`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      auth_token: token,
-      amount_cents: amountCents,
-      expiration: 3600,
-      order_id: order.id,
-      currency: 'EGP',
-      integration_id: integrationId,
-      redirection_url: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/payment/return`,
-      billing_data: {
-        first_name: firstName,
-        last_name: lastName,
-        email: user.email || 'na@example.com',
-        phone_number: user.user_metadata?.phone || 'NA',
-        apartment: 'NA',
-        floor: 'NA',
-        street: 'NA',
-        building: 'NA',
-        shipping_method: 'NA',
-        postal_code: 'NA',
-        city: 'NA',
-        country: 'EG',
-        state: 'NA',
+      lineItems: [{
+        quantity: 1,
+        priceData: {
+          currency: 'EGP',
+          unitAmount: amountEgp,
+          productData: {
+            name: courseTitle,
+            description: `Enrollment in ${courseTitle}`,
+          },
+        },
+      }],
+      afterCompletion: {
+        type: 'redirect',
+        redirect: {
+          url: `${siteUrl}/portal/payment/return?session_id={CHECKOUT_SESSION_ID}`,
+        },
+      },
+      cancelUrl: `${siteUrl}/portal`,
+      customerDetails: {
+        email: user.email || undefined,
+        name: user.user_metadata?.full_name || undefined,
+      },
+      metadata: {
+        user_id: user.id,
+        course_id: courseId,
       },
     }),
   })
-  if (!keyRes.ok) throw new Error(`Paymob payment key failed: ${await keyRes.text()}`)
-  const { token: paymentToken } = await keyRes.json()
 
-  return { paymentToken, orderId: order.id }
+  if (!res.ok) {
+    const text = await res.text()
+    console.error('XPay session creation failed:', res.status, text)
+    throw new Error('Payment could not be started')
+  }
+
+  const session = await res.json()
+  return { url: session.url, sessionId: session.id }
 }
