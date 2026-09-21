@@ -301,7 +301,7 @@ export function ReadingLessonForm({ content, onSave }) {
       setShowGen(false)
       setGenInstructions('')
     } catch (err) {
-      setGenError(err.message || 'Something went wrong')
+      setGenError(err.message || 'Something went wrong. You can add questions manually below.')
     } finally {
       setGenerating(false)
     }
@@ -360,6 +360,16 @@ export function ReadingLessonForm({ content, onSave }) {
                 onChange={(e) => setGenInstructions(e.target.value)} />
             </div>
             {genError && <p className="form-error">{genError}</p>}
+            {genError && (
+  <button
+    type="button"
+    className="btn btn-ghost btn-small"
+    onClick={onGenerate}
+    disabled={generating}
+  >
+    Try again
+  </button>
+)}
             <div className="ai-gen-actions">
               <button type="button" className="btn btn-primary btn-small"
                 onClick={onGenerate} disabled={generating}>
