@@ -2,6 +2,35 @@
 import { NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
 
+const MODEL = 'gemini-3.6-flash'
+const MAX_ATTEMPTS = 3
+
+// Retry only on transient capacity errors. Anything else (bad input,
+// auth failure) should surface immediately.
+function isRetryable(err) {
+  const msg = String(err?.message || '')
+  return (
+    msg.includes('503') ||
+    msg.includes('UNAVAILABLE') ||
+    msg.includes('overloaded') ||
+    msg.includes('high demand')
+  )
+}
+
+function friendlyError(err) {
+  const msg = String(err?.message || '')
+  if (isRetryable(err)) {
+    return 'The AI grader is temporarily busy. Please try again in a moment.'
+  }
+  if (msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED')) {
+    return 'Too many checks right now. Please wait a few seconds and try again.'
+  }
+  if (msg.includes('API key') || msg.includes('API_KEY')) {
+    return 'The grading service is not configured correctly. Please contact support.'
+  }
+  return 'Could not check your answer right now. Please try again.'
+}
+
 export async function POST(request) {
   let body
   try {
@@ -21,15 +50,12 @@ export async function POST(request) {
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) {
     return NextResponse.json(
-      { error: 'GEMINI_API_KEY is not configured on the server.' },
+      { error: 'The grading service is not configured. Please contact support.' },
       { status: 503 }
     )
   }
 
-  try {
-    const ai = new GoogleGenAI({ apiKey })
-
-    const prompt = `You are a friendly, encouraging Arabic tutor. Evaluate the student's answer to the question based on the passage.
+  const prompt = `You are a friendly, encouraging Arabic tutor. Evaluate the student's answer to the question based on the passage.
 
 Passage: """${passage}"""
 Question: """${question}"""
@@ -43,34 +69,50 @@ Rules:
 Format:
 { "correct": true | false, "feedback": "<one or two short, encouraging sentences>" }`
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: prompt,
-    })
+  const ai = new GoogleGenAI({ apiKey })
 
-    // New SDK exposes response.text as a plain property, not a function.
-    const text = response.text
+  let lastErr = null
 
-    const cleaned = text.replace(/```json\s*/gi, '').replace(/```/g, '').trim()
-    const match = cleaned.match(/\{[\s\S]*\}/)
-    if (!match) {
-      console.error('Gemini returned unparseable text:', text)
-      return NextResponse.json(
-        { error: 'The grader returned an unexpected response. Try again.' },
-        { status: 502 }
-      )
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    try {
+      const response = await ai.models.generateContent({
+        model: MODEL,
+        contents: prompt,
+      })
+
+      // New SDK exposes response.text as a plain property, not a function.
+      const text = response.text
+      const cleaned = text.replace(/```json\s*/gi, '').replace(/```/g, '').trim()
+      const match = cleaned.match(/\{[\s\S]*\}/)
+      if (!match) {
+        console.error('Gemini returned unparseable text:', text)
+        return NextResponse.json(
+          { error: 'The grader returned an unexpected response. Please try again.' },
+          { status: 502 }
+        )
+      }
+
+      const parsed = JSON.parse(match[0])
+
+      return NextResponse.json({
+        correct: Boolean(parsed.correct),
+        feedback: String(parsed.feedback || '').trim() || 'Thanks for your answer.',
+      })
+    } catch (err) {
+      lastErr = err
+      const retryable = isRetryable(err)
+      console.error(`Gemini check attempt ${attempt + 1} failed:`, err?.message || err)
+
+      if (!retryable) break
+      // Exponential backoff: 800ms, 1600ms
+      if (attempt < MAX_ATTEMPTS - 1) {
+        await new Promise((r) => setTimeout(r, 800 * Math.pow(2, attempt)))
+      }
     }
-    const parsed = JSON.parse(match[0])
-
-    return NextResponse.json({
-      correct: Boolean(parsed.correct),
-      feedback: String(parsed.feedback || '').trim() || 'Thanks for your answer.',
-    })
-  } catch (error) {
-    console.error('Gemini evaluation error:', error)
-    return NextResponse.json(
-      { error: error.message || 'Failed to evaluate answer. Please try again.' },
-      { status: 500 }
-    )
   }
+
+  return NextResponse.json(
+    { error: friendlyError(lastErr) },
+    { status: 503 }
+  )
 }
