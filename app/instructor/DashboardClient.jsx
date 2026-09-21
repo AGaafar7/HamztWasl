@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-export default function DashboardClient({ profile, courses, practices, earnings, stats }) {
+export default function DashboardClient({ profile, courses, earnings, stats }) {
   const publishedCourses = courses.filter((c) => c.status === 'published').length
   const displayName =
     profile?.full_name?.split(' ')[0] ||
@@ -10,7 +10,6 @@ export default function DashboardClient({ profile, courses, practices, earnings,
     'there'
 
   const studentCount = stats?.studentCount ?? 0
-  const practiceCount = stats?.practiceCount ?? 0
 
   return (
     <section>
@@ -47,9 +46,9 @@ export default function DashboardClient({ profile, courses, practices, earnings,
           </span>
         </div>
         <div className="instructor-stat-card">
-          <span className="instructor-stat-label">Practices</span>
-          <span className="instructor-stat-value">{practiceCount}</span>
-          <span className="instructor-stat-sub">listening · reading · speaking</span>
+          <span className="instructor-stat-label">Lessons</span>
+          <span className="instructor-stat-value">{stats?.lessonCount ?? 0}</span>
+          <span className="instructor-stat-sub">authored</span>
         </div>
       </div>
 

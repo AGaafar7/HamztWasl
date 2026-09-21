@@ -9,7 +9,6 @@ const NAV = [
     { href: '/instructor/profile', label: 'Profile', icon: '👤' },
   { href: '/instructor/courses', label: 'My Courses', icon: '📚' },
    { href: '/instructor/videos', label: 'Videos', icon: '🎬' },
-  { href: '/instructor/practices', label: 'Practices', icon: '🎯' },
   { href: '/instructor/earnings', label: 'Earnings', icon: '💰' },
   { href: '/instructor/lessons', label: 'Lessons', icon: '📝' },
 ]

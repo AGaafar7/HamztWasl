@@ -2,7 +2,6 @@
 import { requireUser } from '../../lib/supabase/server'
 import {
   fetchInstructorCourses,
-  fetchInstructorPractices,
   fetchInstructorEarnings,
   fetchInstructorStats,
 } from '../../lib/queries/instructor'
@@ -17,9 +16,8 @@ export default async function InstructorDashboard() {
     .eq('id', user.id)
     .single()
 
-  const [courses, practices, earnings, stats] = await Promise.all([
+  const [courses, earnings, stats] = await Promise.all([
     fetchInstructorCourses(user.id),
-    fetchInstructorPractices(user.id),
     fetchInstructorEarnings(user.id),
     fetchInstructorStats(user.id),
   ])
@@ -28,7 +26,6 @@ export default async function InstructorDashboard() {
     <DashboardClient
       profile={profile}
       courses={courses}
-      practices={practices}
       earnings={earnings}
       stats={stats}
     />
