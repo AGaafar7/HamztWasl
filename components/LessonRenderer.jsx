@@ -202,10 +202,17 @@ const backLabel = course
    Text
    ============================================================ */
 function TextLesson({ lesson }) {
-  const { lang } = useLanguage()
-  const body = gloss(lesson.content?.body, lang)
-  if (!body) return <p className="portal-empty">This lesson has no content yet.</p>
-  return <div className="lesson-body-text">{body}</div>
+  const body = lesson.content?.body?.ar || lesson.content?.body?.en || ''
+
+  if (!body) {
+    return <p className="portal-empty">This lesson has no content yet.</p>
+  }
+
+  return (
+    <div className="lesson-body-text arabic" dir="rtl">
+      {body}
+    </div>
+  )
 }
 
 /* ============================================================
