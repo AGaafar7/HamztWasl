@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { createClient } from '@supabase/supabase-js'
 
-// Service-role client — this endpoint runs outside user context.
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -11,35 +10,51 @@ const supabaseAdmin = createClient(
 /**
  * Verify the XPay webhook signature.
  *
- * ⚠️ PLACEHOLDER — the exact verification algorithm is not yet known.
- * Paymob used HMAC-SHA512 over a specific field order. XPay likely uses
- * HMAC-SHA256 over the raw body with a timestamp header. Replace the body
- * of this function with XPay's documented method once available.
+ * Scheme (per XPay docs):
+ *   Header: XPay-Signature: t=1730000000,v1=a1b2c3d4...
+ *   Signed payload: `${timestamp}.${rawBody}`
+ *   Algorithm: HMAC-SHA256
+ *   Secret: the whsec_... you got when creating the endpoint
  *
- * Until then, this returns false for everything, which means
- * enrollments will NOT be created. Fix this before going live.
+ * Rejects events older than 5 minutes (replay protection).
  */
-function verifySignature(rawBody, headers) {
-  const secret = process.env.XPAY_WEBHOOK_SECRET
-  if (!secret) {
-    console.error('XPAY_WEBHOOK_SECRET is not set')
+function verifySignature(rawBody, header, secret) {
+  if (!header || !secret) return false
+
+  const parts = Object.fromEntries(
+    header.split(',').map((kv) => kv.split('='))
+  )
+  const timestamp = parts.t
+  const signature = parts.v1
+  if (!timestamp || !signature) return false
+
+  // Reject if older than 5 minutes
+  const age = Math.abs(Date.now() / 1000 - Number(timestamp))
+  if (age > 300) {
+    console.error('XPay webhook timestamp out of tolerance:', age)
     return false
   }
 
-  // TODO: replace with XPay's actual verification scheme.
-  // Placeholder — do NOT ship as-is.
-  console.error('XPay webhook signature verification not implemented')
-  return false
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(`${timestamp}.${rawBody}`)
+    .digest('hex')
+
+  // Timing-safe compare
+  const a = Buffer.from(signature, 'hex')
+  const b = Buffer.from(expected, 'hex')
+  if (a.length !== b.length) return false
+  return crypto.timingSafeEqual(a, b)
 }
 
 export async function POST(request) {
-  // Read raw body once — needed for signature verification.
   const rawBody = await request.text()
-  const headers = Object.fromEntries(request.headers.entries())
+  const header = request.headers.get('xpay-signature')
+  const secret = process.env.XPAY_WEBHOOK_SECRET
 
-  if (!verifySignature(rawBody, headers)) {
+  if (!verifySignature(rawBody, header, secret)) {
     console.error('XPay webhook signature verification failed')
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
   let event
@@ -49,27 +64,35 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  // Only handle the completed event; ignore everything else.
-  if (event.type !== 'checkout.session.completed') {
+  // Only handle the completed and async_payment_succeeded events.
+  // Fawry arrives `unpaid` in `completed`, then paid in `async_payment_succeeded`.
+  const handlable =
+    event.type === 'checkout.session.completed' ||
+    event.type === 'checkout.session.async_payment_succeeded'
+  if (!handlable) {
     return NextResponse.json({ ok: true })
   }
 
-  const session = event.data?.object || event.data || event
+  const session = event.data?.object
+  if (!session) {
+    console.error('No session in event payload')
+    return NextResponse.json({ ok: true })
+  }
 
-  // CRITICAL: never fulfil on `status` alone. Check paymentStatus === 'paid'.
+  // CRITICAL: never fulfil on status alone — check paymentStatus.
   if (session.paymentStatus !== 'paid') {
-    console.log('Session not paid, skipping enrollment:', session.id)
+    console.log('Session not paid, skipping:', session.id)
     return NextResponse.json({ ok: true })
   }
 
   const userId = session.metadata?.user_id
   const courseId = session.metadata?.course_id
   if (!userId || !courseId) {
-    console.error('Missing user_id/course_id in session metadata:', session.id)
+    console.error('Missing metadata:', session.id, session.metadata)
     return NextResponse.json({ ok: true })
   }
 
-  // Idempotent insert — safe if webhook fires twice for the same session.
+  // Idempotent insert — safe if the webhook fires twice for the same session.
   const { error } = await supabaseAdmin
     .from('enrollments')
     .insert({ user_id: userId, course_id: courseId })
