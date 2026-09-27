@@ -8,7 +8,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Jawf (The empty space in the mouth and throat)',
     videoId: 'L4qYcEwuakI',
     startTime: 0,
-    mouthImage: '/images/makhraj/jawf.png',
+    mouthImage: '/images/makhraj/ا.png',
     examples: [
       { word: 'أَسَد', transliteration: 'asad', meaning: 'Lion' },
       { word: 'أُم', transliteration: 'umm', meaning: 'Mother' },
@@ -24,7 +24,7 @@ export const alphabetLetters = [
     makhraj: 'Ash-Shafataan (The two lips)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/lips.png',
+    mouthImage: '/images/makhraj/ب.png',
     examples: [
       { word: 'بَاب', transliteration: 'baab', meaning: 'Door' },
       { word: 'بَيْت', transliteration: 'bayt', meaning: 'House' },
@@ -40,7 +40,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the roots of the upper front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ت.png',
     examples: [
       { word: 'تَمْر', transliteration: 'tamr', meaning: 'Date (fruit)' },
       { word: 'تِلْك', transliteration: 'tilk', meaning: 'That (fem.)' },
@@ -56,7 +56,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the edge of the upper incisors)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ث.png',
     examples: [
       { word: 'ثَلْج', transliteration: 'thalj', meaning: 'Snow' },
       { word: 'ثَعْلَب', transliteration: 'thalab', meaning: 'Fox' },
@@ -72,7 +72,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The middle of the tongue touching the hard palate)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-palate.png',
+    mouthImage: '/images/makhraj/ج.png',
     examples: [
       { word: 'جَمَل', transliteration: 'jamal', meaning: 'Camel' },
       { word: 'جَزَر', transliteration: 'jazar', meaning: 'Carrot' },
@@ -88,7 +88,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Halq (The middle of the throat)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/throat.png',
+    mouthImage: '/images/makhraj/ح.png',
     examples: [
       { word: 'حَبْل', transliteration: 'habl', meaning: 'Rope' },
       { word: 'حِصَان', transliteration: 'hisaan', meaning: 'Horse' },
@@ -104,7 +104,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Halq (The lowest part of the throat, closest to the chest)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/throat.png',
+    mouthImage: '/images/makhraj/خ.png',
     examples: [
       { word: 'خُبْز', transliteration: 'khubz', meaning: 'Bread' },
       { word: 'خَيْر', transliteration: 'khayr', meaning: 'Goodness' },
@@ -120,7 +120,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/د.png',
     examples: [
       { word: 'دَرْس', transliteration: 'dars', meaning: 'Lesson' },
       { word: 'دَم', transliteration: 'dam', meaning: 'Blood' },
@@ -136,7 +136,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the edge of the upper incisors)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ذ.png',
     examples: [
       { word: 'ذَهَب', transliteration: 'dhahab', meaning: 'Gold' },
       { word: 'ذُبَاب', transliteration: 'dhubab', meaning: 'Fly' },
@@ -154,7 +154,7 @@ export const alphabetLetters = [
     startTime: 0,
     mouthImage: '/images/makhraj/tongue-teeth.png',
     examples: [
-      { word: 'رَجُل', transliteration: 'rajul', meaning: 'Man' },
+      { word: 'رَجُل', transliteration: 'ر', meaning: 'Man' },
       { word: 'رِيشَة', transliteration: 'reesha', meaning: 'Feather' },
       { word: 'رُمْح', transliteration: 'rumh', meaning: 'Spear' }
     ]
@@ -168,7 +168,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the lower front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ز.png',
     examples: [
       { word: 'زَرَافَة', transliteration: 'zarafa', meaning: 'Giraffe' },
       { word: 'زَيْت', transliteration: 'zayt', meaning: 'Oil' },
@@ -184,7 +184,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the lower front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/س.png',
     examples: [
       { word: 'سَمَك', transliteration: 'samak', meaning: 'Fish' },
       { word: 'سُكَّر', transliteration: 'sukkar', meaning: 'Sugar' },
@@ -200,7 +200,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The middle of the tongue touching the hard palate)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-palate.png',
+    mouthImage: '/images/makhraj/ش.png',
     examples: [
       { word: 'شَمْس', transliteration: 'shams', meaning: 'Sun' },
       { word: 'شَجَرَة', transliteration: 'shajara', meaning: 'Tree' },
@@ -216,7 +216,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ص.png',
     examples: [
       { word: 'صَبْر', transliteration: 'sabr', meaning: 'Patience' },
       { word: 'صَخْر', transliteration: 'sakhr', meaning: 'Rock' },
@@ -232,7 +232,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The side of the tongue touching the upper molars)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-molars.png',
+    mouthImage: '/images/makhraj/ض.png',
     examples: [
       { word: 'ضِفْدَع', transliteration: "difda'", meaning: 'Frog' },
       { word: 'ضَرْب', transliteration: 'darb', meaning: 'Strike' },
@@ -248,7 +248,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ط.png',
     examples: [
       { word: 'طَيْر', transliteration: 'tayr', meaning: 'Bird' },
       { word: 'طُوب', transliteration: 'toob', meaning: 'Brick' },
@@ -264,7 +264,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue and the edge of the upper incisors)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ظ.png',
     examples: [
       { word: 'ظِلّ', transliteration: 'thill', meaning: 'Shade' },
       { word: 'ظَرْف', transliteration: 'tharf', meaning: 'Envelope' },
@@ -280,7 +280,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Halq (The middle of the throat)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/throat.png',
+    mouthImage: '/images/makhraj/ع.png',
     examples: [
       { word: 'عَيْن', transliteration: 'ayn', meaning: 'Eye' },
       { word: 'عَرَب', transliteration: 'arab', meaning: 'Arabs' },
@@ -296,7 +296,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Halq (The lowest part of the throat, closest to the chest)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/throat.png',
+    mouthImage: '/images/makhraj/غ.png',
     examples: [
       { word: 'غُرَاب', transliteration: 'ghuraab', meaning: 'Crow' },
       { word: 'غَنَم', transliteration: 'ghanam', meaning: 'Sheep' },
@@ -312,7 +312,7 @@ export const alphabetLetters = [
     makhraj: 'Ash-Shafataan (The two lips)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/lips.png',
+    mouthImage: '/images/makhraj/ف.png',
     examples: [
       { word: 'فِيل', transliteration: 'feel', meaning: 'Elephant' },
       { word: 'فَم', transliteration: 'fam', meaning: 'Mouth' },
@@ -328,7 +328,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The deepest part of the tongue touching the soft palate)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-palate.png',
+    mouthImage: '/images/makhraj/ق.png',
     examples: [
       { word: 'قَلَم', transliteration: 'qalam', meaning: 'Pen' },
       { word: 'قَمَر', transliteration: 'qamar', meaning: 'Moon' },
@@ -344,7 +344,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The deepest part of the tongue touching the soft palate)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-palate.png',
+    mouthImage: '/images/makhraj/ك.png',
     examples: [
       { word: 'كِتَاب', transliteration: 'kitaab', meaning: 'Book' },
       { word: 'كَلْب', transliteration: 'kalb', meaning: 'Dog' },
@@ -360,7 +360,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue touching the gums of the upper front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ل.png',
     examples: [
       { word: 'لَيْل', transliteration: 'layl', meaning: 'Night' },
       { word: 'لَحْم', transliteration: 'lahm', meaning: 'Meat' },
@@ -376,7 +376,7 @@ export const alphabetLetters = [
     makhraj: 'Ash-Shafataan (The two lips)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/lips.png',
+    mouthImage: '/images/makhraj/م.png',
     examples: [
       { word: 'مَاء', transliteration: "maa'", meaning: 'Water' },
       { word: 'مَسْجِد', transliteration: 'masjid', meaning: 'Mosque' },
@@ -392,7 +392,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Lisan (The tip of the tongue touching the gums of the upper front teeth)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/tongue-teeth.png',
+    mouthImage: '/images/makhraj/ن.png',
     examples: [
       { word: 'نَجْم', transliteration: 'najm', meaning: 'Star' },
       { word: 'نَار', transliteration: 'naar', meaning: 'Fire' },
@@ -408,7 +408,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Halq (The lowest part of the throat)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/throat.png',
+    mouthImage: '/images/makhraj/ه.png',
     examples: [
       { word: 'هَدِيَّة', transliteration: 'hadiyya', meaning: 'Gift' },
       { word: 'هَذَا', transliteration: 'haadhaa', meaning: 'This (masc.)' },
@@ -424,7 +424,7 @@ export const alphabetLetters = [
     makhraj: 'Ash-Shafataan (The two lips)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/lips.png',
+    mouthImage: '/images/makhraj/و.png',
     examples: [
       { word: 'وَرْد', transliteration: 'ward', meaning: 'Rose' },
       { word: 'وَجْه', transliteration: 'wajh', meaning: 'Face' },
@@ -440,7 +440,7 @@ export const alphabetLetters = [
     makhraj: 'Al-Jawf (The empty space in the mouth and throat)',
     videoId: 'your-video-id',
     startTime: 0,
-    mouthImage: '/images/makhraj/jawf.png',
+    mouthImage: '/images/makhraj/ي.png',
     examples: [
       { word: 'يَد', transliteration: 'yad', meaning: 'Hand' },
       { word: 'يَوْم', transliteration: 'yawm', meaning: 'Day' },
