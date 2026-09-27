@@ -6,7 +6,7 @@ export const alphabetLetters = [
     name: 'أَلِف',
     transliteration: 'alif',
     makhraj: 'Al-Jawf (The empty space in the mouth and throat)',
-    videoId: 'L4qYcEwuakI',
+    videoId: '-A_uepM5yTg',
     startTime: 0,
     mouthImage: '/images/makhraj/ا.png',
     examples: [
@@ -22,7 +22,7 @@ export const alphabetLetters = [
     name: 'بَاء',
     transliteration: 'baa',
     makhraj: 'Ash-Shafataan (The two lips)',
-    videoId: 'your-video-id',
+    videoId: '6wEmfCS6kyE',
     startTime: 0,
     mouthImage: '/images/makhraj/ب.png',
     examples: [
@@ -38,7 +38,7 @@ export const alphabetLetters = [
     name: 'تَاء',
     transliteration: 'taa',
     makhraj: 'Al-Lisan (The tip of the tongue and the roots of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: '1LGvX4SnoWk',
     startTime: 0,
     mouthImage: '/images/makhraj/ت.png',
     examples: [
@@ -54,7 +54,7 @@ export const alphabetLetters = [
     name: 'ثَاء',
     transliteration: 'thaa',
     makhraj: 'Al-Lisan (The tip of the tongue and the edge of the upper incisors)',
-    videoId: 'your-video-id',
+    videoId: '86BEvUxr1LE',
     startTime: 0,
     mouthImage: '/images/makhraj/ث.png',
     examples: [
@@ -70,7 +70,7 @@ export const alphabetLetters = [
     name: 'جِيم',
     transliteration: 'jeem',
     makhraj: 'Al-Lisan (The middle of the tongue touching the hard palate)',
-    videoId: 'your-video-id',
+    videoId: 'xp_65BW3h_w',
     startTime: 0,
     mouthImage: '/images/makhraj/ج.png',
     examples: [
@@ -86,7 +86,7 @@ export const alphabetLetters = [
     name: 'حَاء',
     transliteration: 'haa',
     makhraj: 'Al-Halq (The middle of the throat)',
-    videoId: 'your-video-id',
+    videoId: 'HwrexEr6LnM',
     startTime: 0,
     mouthImage: '/images/makhraj/ح.png',
     examples: [
@@ -102,7 +102,7 @@ export const alphabetLetters = [
     name: 'خَاء',
     transliteration: 'khaa',
     makhraj: 'Al-Halq (The lowest part of the throat, closest to the chest)',
-    videoId: 'your-video-id',
+    videoId: 'B3hW4EMZIp4',
     startTime: 0,
     mouthImage: '/images/makhraj/خ.png',
     examples: [
@@ -118,7 +118,7 @@ export const alphabetLetters = [
     name: 'دَال',
     transliteration: 'daal',
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: 'TkYJjLArF1M',
     startTime: 0,
     mouthImage: '/images/makhraj/د.png',
     examples: [
@@ -134,7 +134,7 @@ export const alphabetLetters = [
     name: 'ذَال',
     transliteration: 'dhaal',
     makhraj: 'Al-Lisan (The tip of the tongue and the edge of the upper incisors)',
-    videoId: 'your-video-id',
+    videoId: '4dM5x7vxrVY',
     startTime: 0,
     mouthImage: '/images/makhraj/ذ.png',
     examples: [
@@ -150,7 +150,7 @@ export const alphabetLetters = [
     name: 'رَاء',
     transliteration: 'raa',
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: 'eeC5salC9LI',
     startTime: 0,
     mouthImage: '/images/makhraj/tongue-teeth.png',
     examples: [
@@ -166,7 +166,7 @@ export const alphabetLetters = [
     name: 'زَاي',
     transliteration: 'zaay',
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the lower front teeth)',
-    videoId: 'your-video-id',
+    videoId: 'uNfRqQgCT48',
     startTime: 0,
     mouthImage: '/images/makhraj/ز.png',
     examples: [
@@ -182,7 +182,7 @@ export const alphabetLetters = [
     name: 'سِين',
     transliteration: 'seen',
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the lower front teeth)',
-    videoId: 'your-video-id',
+    videoId: '-93D9bocJgw',
     startTime: 0,
     mouthImage: '/images/makhraj/س.png',
     examples: [
@@ -198,7 +198,7 @@ export const alphabetLetters = [
     name: 'شِين',
     transliteration: 'sheen',
     makhraj: 'Al-Lisan (The middle of the tongue touching the hard palate)',
-    videoId: 'your-video-id',
+    videoId: 'EZET1RuERtQ',
     startTime: 0,
     mouthImage: '/images/makhraj/ش.png',
     examples: [
@@ -214,7 +214,7 @@ export const alphabetLetters = [
     name: 'صَاد',
     transliteration: 'saad',
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: 'WNAOXfNk1n8',
     startTime: 0,
     mouthImage: '/images/makhraj/ص.png',
     examples: [
@@ -230,7 +230,7 @@ export const alphabetLetters = [
     name: 'ضَاد',
     transliteration: 'daad',
     makhraj: 'Al-Lisan (The side of the tongue touching the upper molars)',
-    videoId: 'your-video-id',
+    videoId: 'vJoPitpZorU',
     startTime: 0,
     mouthImage: '/images/makhraj/ض.png',
     examples: [
@@ -246,7 +246,7 @@ export const alphabetLetters = [
     name: 'طَاء',
     transliteration: 'taa (emphatic)',
     makhraj: 'Al-Lisan (The tip of the tongue and the gums of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: '1BZRF4hV4UA',
     startTime: 0,
     mouthImage: '/images/makhraj/ط.png',
     examples: [
@@ -262,7 +262,7 @@ export const alphabetLetters = [
     name: 'ظَاء',
     transliteration: 'thaa (emphatic)',
     makhraj: 'Al-Lisan (The tip of the tongue and the edge of the upper incisors)',
-    videoId: 'your-video-id',
+    videoId: 'kozyM5HTYtU',
     startTime: 0,
     mouthImage: '/images/makhraj/ظ.png',
     examples: [
@@ -278,7 +278,7 @@ export const alphabetLetters = [
     name: 'عَيْن',
     transliteration: 'ayn',
     makhraj: 'Al-Halq (The middle of the throat)',
-    videoId: 'your-video-id',
+    videoId: '4anD0eQ2XIc',
     startTime: 0,
     mouthImage: '/images/makhraj/ع.png',
     examples: [
@@ -294,7 +294,7 @@ export const alphabetLetters = [
     name: 'غَيْن',
     transliteration: 'ghayn',
     makhraj: 'Al-Halq (The lowest part of the throat, closest to the chest)',
-    videoId: 'your-video-id',
+    videoId: 'oMn9897J5jQ',
     startTime: 0,
     mouthImage: '/images/makhraj/غ.png',
     examples: [
@@ -310,7 +310,7 @@ export const alphabetLetters = [
     name: 'فَاء',
     transliteration: 'faa',
     makhraj: 'Ash-Shafataan (The two lips)',
-    videoId: 'your-video-id',
+    videoId: 'FmRJykcwFXA',
     startTime: 0,
     mouthImage: '/images/makhraj/ف.png',
     examples: [
@@ -326,7 +326,7 @@ export const alphabetLetters = [
     name: 'قَاف',
     transliteration: 'qaaf',
     makhraj: 'Al-Lisan (The deepest part of the tongue touching the soft palate)',
-    videoId: 'your-video-id',
+    videoId: 'Tl8dQ27uE7g',
     startTime: 0,
     mouthImage: '/images/makhraj/ق.png',
     examples: [
@@ -342,7 +342,7 @@ export const alphabetLetters = [
     name: 'كَاف',
     transliteration: 'kaaf',
     makhraj: 'Al-Lisan (The deepest part of the tongue touching the soft palate)',
-    videoId: 'your-video-id',
+    videoId: 'Xq4YN6ylZXM',
     startTime: 0,
     mouthImage: '/images/makhraj/ك.png',
     examples: [
@@ -358,7 +358,7 @@ export const alphabetLetters = [
     name: 'لاَم',
     transliteration: 'laam',
     makhraj: 'Al-Lisan (The tip of the tongue touching the gums of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: 'yCBz9n0FBWc',
     startTime: 0,
     mouthImage: '/images/makhraj/ل.png',
     examples: [
@@ -374,7 +374,7 @@ export const alphabetLetters = [
     name: 'مِيم',
     transliteration: 'meem',
     makhraj: 'Ash-Shafataan (The two lips)',
-    videoId: 'your-video-id',
+    videoId: '899dsxFe9Zo',
     startTime: 0,
     mouthImage: '/images/makhraj/م.png',
     examples: [
@@ -390,7 +390,7 @@ export const alphabetLetters = [
     name: 'نُون',
     transliteration: 'noon',
     makhraj: 'Al-Lisan (The tip of the tongue touching the gums of the upper front teeth)',
-    videoId: 'your-video-id',
+    videoId: 'CmyBTCLLCDw',
     startTime: 0,
     mouthImage: '/images/makhraj/ن.png',
     examples: [
@@ -406,7 +406,7 @@ export const alphabetLetters = [
     name: 'هَاء',
     transliteration: 'haa',
     makhraj: 'Al-Halq (The lowest part of the throat)',
-    videoId: 'your-video-id',
+    videoId: '6qHlMPGNP78',
     startTime: 0,
     mouthImage: '/images/makhraj/ه.png',
     examples: [
@@ -422,7 +422,7 @@ export const alphabetLetters = [
     name: 'وَاو',
     transliteration: 'waaw',
     makhraj: 'Ash-Shafataan (The two lips)',
-    videoId: 'your-video-id',
+    videoId: 'dLsA0ZRsmRE',
     startTime: 0,
     mouthImage: '/images/makhraj/و.png',
     examples: [
@@ -438,7 +438,7 @@ export const alphabetLetters = [
     name: 'يَاء',
     transliteration: 'yaa',
     makhraj: 'Al-Jawf (The empty space in the mouth and throat)',
-    videoId: 'your-video-id',
+    videoId: 'oHkt1yihseg',
     startTime: 0,
     mouthImage: '/images/makhraj/ي.png',
     examples: [
