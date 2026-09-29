@@ -55,11 +55,7 @@ export default function HarfBuzzTest({ word }) {
 
           const otGlyph = otFont.glyphs.get(glyphId)
           if (otGlyph) {
-            const path = otGlyph.getPath(
-              cursorX + xDisplacement,
-              0,
-              otFont.unitsPerEm
-            )
+            const path = otGlyph.getPath(cursorX + xDisplacement, 0, 1)
             paths.push(path.toPathData(2))
           }
           cursorX += xAdvance
@@ -78,8 +74,8 @@ export default function HarfBuzzTest({ word }) {
         if (!svg) return
         svg.innerHTML = ''
 
-        const totalWidth = cursorX
-        const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
+  const totalWidth = cursorX
+const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
         svg.setAttribute('viewBox', viewBox)
 
         for (const d of paths) {
