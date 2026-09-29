@@ -136,15 +136,29 @@ function setupCanvas(canvas, guide, { showStrokeOrder, strokeOrderKey } = {}) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, rect.width, rect.height)
 
-  const fontSize = Math.min(rect.width * 0.72, rect.height * 0.85)
+  const fontFamily = '"Cairo", "Noto Naskh Arabic", system-ui, sans-serif'
+  const maxWidth = rect.width * 0.85     // leave a 7.5% margin each side
+  const maxHeight = rect.height * 0.80   // leave a 10% margin top and bottom
 
-  ctx.font = `700 ${fontSize}px "Cairo", "Noto Naskh Arabic", system-ui, sans-serif`
+  // Start with a font size based on height, then shrink it until the
+  // rendered word actually fits within maxWidth.
+  let fontSize = maxHeight
+  ctx.font = `700 ${fontSize}px ${fontFamily}`
+
+  // measureText gives the width for the current font size; scale down
+  // proportionally if it overflows.
+  const measured = ctx.measureText(guide).width
+  if (measured > maxWidth) {
+    fontSize = Math.floor(fontSize * (maxWidth / measured))
+    ctx.font = `700 ${fontSize}px ${fontFamily}`
+  }
+
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
 
   // Dotted outline for the tracing feel.
   ctx.setLineDash([7, 9])
-  ctx.lineWidth = 3
+  ctx.lineWidth = Math.max(2, fontSize * 0.012)
   ctx.strokeStyle = 'rgba(14, 42, 71, 0.28)'
   ctx.strokeText(guide, rect.width / 2, rect.height / 2)
 
