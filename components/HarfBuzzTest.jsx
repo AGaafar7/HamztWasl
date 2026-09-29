@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import hbjs from 'harfbuzzjs/hbjs.js'
 
 export default function HarfBuzzTest({ word }) {
   const svgRef = useRef(null)
@@ -13,36 +12,38 @@ export default function HarfBuzzTest({ word }) {
 
     async function run() {
       try {
-        // 1. Load harfbuzzjs and the wasm binary
-        const wasmResponse = await fetch('/harfbuzzjs/hb.wasm')
-        const wasm = await WebAssembly.instantiateStreaming(wasmResponse)
-        const hb = hbjs(wasm.instance)
-        const wasmBinary = await wasmResponse.arrayBuffer()
-        const wasmModule = await WebAssembly.instantiate(wasmBinary, {})
-        const hbInstance = hb(wasmModule.instance)
+        // 1. Load harfbuzzjs (browser entry point)
+        const hbjsModule = await import('harfbuzzjs/hbjs.js')
+        const hbjs = hbjsModule.default || hbjsModule
 
-        // 2. Load the font for shaping
+        // 2. Fetch the WASM binary. arrayBuffer works regardless of MIME type.
+        const wasmBuffer = await fetch('/harfbuzzjs/hb.wasm').then((r) => r.arrayBuffer())
+        const wasm = await WebAssembly.instantiate(wasmBuffer)
+        const hb = hbjs(wasm.instance)
+
+        // 3. Load the font
         const fontResponse = await fetch('/fonts/Cairo-Bold.ttf')
         const fontData = await fontResponse.arrayBuffer()
 
-        const blob = hbInstance.createBlob(new Uint8Array(fontData))
-        const face = hbInstance.createFace(blob, 0)
-        const hbFont = hbInstance.createFont(face)
+        // 4. Create the hb font object
+        const blob = hb.createBlob(new Uint8Array(fontData))
+        const face = hb.createFace(blob, 0)
+        const hbFont = hb.createFont(face)
 
-        // 3. Shape the word
-        const buffer = hbInstance.createBuffer()
+        // 5. Shape the word
+        const buffer = hb.createBuffer()
         buffer.addText(word)
         buffer.guessSegmentProperties()
-        hbInstance.shape(hbFont, buffer)
+        hb.shape(hbFont, buffer)
         const glyphs = buffer.json()
 
         if (cancelled) return
 
-        // 4. Use opentype.js to get SVG paths for each glyph
+        // 6. Use opentype.js to get SVG paths
         const opentype = await import('opentype.js')
         const otFont = opentype.parse(fontData)
 
-        // 5. Build SVG paths, placing each glyph by its x-advance
+        // 7. Build SVG paths, placing each glyph by its x-advance
         let cursorX = 0
         const paths = []
 
@@ -72,15 +73,13 @@ export default function HarfBuzzTest({ word }) {
 
         if (cancelled) return
 
-        // 6. Render into SVG
+        // 8. Render into SVG
         const svg = svgRef.current
         if (!svg) return
         svg.innerHTML = ''
 
-        // Compute a viewBox from the shaped glyphs
         const totalWidth = cursorX
         const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
-
         svg.setAttribute('viewBox', viewBox)
 
         for (const d of paths) {
