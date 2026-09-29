@@ -37,13 +37,17 @@ export default function HarfBuzzTest({ word }) {
         hb.shape(hbFont, buffer)
         const glyphs = buffer.json()
 
+        // Log glyphs so we can see the actual `ax` values in the console
+        console.log('HarfBuzz glyphs:', glyphs)
+
         if (cancelled) return
 
         // 6. Use opentype.js to get SVG paths
         const opentype = await import('opentype.js')
         const otFont = opentype.parse(fontData)
 
-        // 7. Build SVG paths, placing each glyph by its x-advance
+        // 7. Build SVG paths, placing each glyph by its x-advance.
+        //    Paths are in font units (unitsPerEm scale).
         let cursorX = 0
         const paths = []
 
@@ -51,11 +55,14 @@ export default function HarfBuzzTest({ word }) {
           const glyphId = g.g
           const xAdvance = g.ax
           const xDisplacement = g.dx
-          const yDisplacement = g.dy
 
           const otGlyph = otFont.glyphs.get(glyphId)
           if (otGlyph) {
-            const path = otGlyph.getPath(cursorX + xDisplacement, 0, 1)
+            const path = otGlyph.getPath(
+              cursorX + xDisplacement,
+              otFont.ascender,       // baseline sits at ascender height
+              otFont.unitsPerEm      // paths come out in font units
+            )
             paths.push(path.toPathData(2))
           }
           cursorX += xAdvance
@@ -74,9 +81,17 @@ export default function HarfBuzzTest({ word }) {
         if (!svg) return
         svg.innerHTML = ''
 
-  const totalWidth = cursorX
-const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
+        // The viewBox needs to cover the full font vertical range.
+        // HarfBuzz advances (ax) are in font units, and getPath with
+        // fontSize = unitsPerEm produces paths in font units — so
+        // totalWidth and the viewBox are in the same coordinate space.
+        const totalWidth = cursorX || otFont.unitsPerEm
+        const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
         svg.setAttribute('viewBox', viewBox)
+
+        // Stroke width should scale with the viewBox. At unitsPerEm
+        // scale, ~8 is thin; ~30 reads well.
+        const strokeWidth = otFont.unitsPerEm * 0.03
 
         for (const d of paths) {
           const pathEl = document.createElementNS(
@@ -86,7 +101,7 @@ const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
           pathEl.setAttribute('d', d)
           pathEl.setAttribute('fill', 'none')
           pathEl.setAttribute('stroke', '#0E2A47')
-          pathEl.setAttribute('stroke-width', '8')
+          pathEl.setAttribute('stroke-width', String(strokeWidth))
           pathEl.setAttribute('stroke-linejoin', 'round')
           pathEl.setAttribute('stroke-linecap', 'round')
           svg.appendChild(pathEl)
