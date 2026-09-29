@@ -37,17 +37,17 @@ export default function HarfBuzzTest({ word }) {
         hb.shape(hbFont, buffer)
         const glyphs = buffer.json()
 
-        // Log glyphs so we can see the actual `ax` values in the console
-        console.log('HarfBuzz glyphs:', glyphs)
-
         if (cancelled) return
 
         // 6. Use opentype.js to get SVG paths
         const opentype = await import('opentype.js')
         const otFont = opentype.parse(fontData)
 
-        // 7. Build SVG paths, placing each glyph by its x-advance.
-        //    Paths are in font units (unitsPerEm scale).
+        // 7. Build SVG paths.
+        //    HarfBuzz returns glyphs in logical order (first letter first).
+        //    The cursorX advances through the word. We keep the natural
+        //    order so glyph positions match the shaped layout, and reverse
+        //    only at animation time so drawing starts on the right.
         let cursorX = 0
         const paths = []
 
@@ -60,8 +60,8 @@ export default function HarfBuzzTest({ word }) {
           if (otGlyph) {
             const path = otGlyph.getPath(
               cursorX + xDisplacement,
-              0,       // baseline sits at ascender height
-              otFont.unitsPerEm      // paths come out in font units
+              0,
+              otFont.unitsPerEm
             )
             paths.push(path.toPathData(2))
           }
@@ -69,19 +69,6 @@ export default function HarfBuzzTest({ word }) {
         }
 
         // Cleanup harfbuzz resources
-                // --- DEBUG LOGS — remove after diagnosis ---
-        console.log('paths built:', paths.length, 'of', glyphs.length)
-        console.log('font metrics:', {
-          unitsPerEm: otFont.unitsPerEm,
-          ascender: otFont.ascender,
-          descender: otFont.descender,
-        })
-        console.log('cursorX (total advance):', cursorX)
-        console.log('first path:', paths[0] ? paths[0].slice(0, 100) : '(none)')
-        // --- END DEBUG LOGS ---
-
-        // Cleanup harfbuzz resources
-        
         buffer.destroy()
         hbFont.destroy()
         face.destroy()
@@ -94,20 +81,32 @@ export default function HarfBuzzTest({ word }) {
         if (!svg) return
         svg.innerHTML = ''
 
-        // The viewBox needs to cover the full font vertical range.
-        // HarfBuzz advances (ax) are in font units, and getPath with
-        // fontSize = unitsPerEm produces paths in font units — so
-        // totalWidth and the viewBox are in the same coordinate space.
         const totalWidth = cursorX || otFont.unitsPerEm
         const viewBoxHeight = otFont.ascender - otFont.descender
         const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${viewBoxHeight}`
         svg.setAttribute('viewBox', viewBox)
 
-        // Stroke width should scale with the viewBox. At unitsPerEm
-        // scale, ~8 is thin; ~30 reads well.
         const strokeWidth = otFont.unitsPerEm * 0.03
 
-        for (const d of paths) {
+        // Inject the keyframe animation definition once
+        const style = document.createElementNS('http://www.w3.org/2000/svg', 'style')
+        style.textContent = `
+          @keyframes handwrite {
+            to { stroke-dashoffset: 0; }
+          }
+        `
+        svg.appendChild(style)
+
+        // Animation config
+        const PER_PATH_DURATION = 0.6   // seconds per glyph
+        const PER_PATH_DELAY = 0.6      // seconds between glyphs
+
+        // Draw order is visual right-to-left. The paths array is in logical
+        // order (first letter = rightmost visually). Reverse for the draw
+        // sequence so the animation starts on the right.
+        const drawOrder = paths.slice().reverse()
+
+        drawOrder.forEach((d, i) => {
           const pathEl = document.createElementNS(
             'http://www.w3.org/2000/svg',
             'path'
@@ -118,8 +117,21 @@ export default function HarfBuzzTest({ word }) {
           pathEl.setAttribute('stroke-width', String(strokeWidth))
           pathEl.setAttribute('stroke-linejoin', 'round')
           pathEl.setAttribute('stroke-linecap', 'round')
+
+          // Add to DOM so we can measure it
           svg.appendChild(pathEl)
-        }
+
+          // Measure the real path length and hide it
+          const length = pathEl.getTotalLength()
+          pathEl.setAttribute('stroke-dasharray', String(length))
+          pathEl.setAttribute('stroke-dashoffset', String(length))
+
+          // Animate this path to reveal it. Delay shifts each one
+          // so they draw in sequence, right to left.
+          const delay = i * PER_PATH_DELAY
+          pathEl.style.animation =
+            `handwrite ${PER_PATH_DURATION}s ease-out ${delay}s forwards`
+        })
 
         setStatus('done')
       } catch (err) {
