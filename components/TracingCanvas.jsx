@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { STROKE_ORDER } from '../lib/arabicStrokeOrder'
 
 /**
  * A tracing canvas. Renders the guide text as a large dotted stroke and
@@ -180,11 +179,6 @@ const maxHeight = rect.height * 0.68   // leave a 16% margin top and bottom
   ctx.fillStyle = 'rgba(14, 42, 71, 0.045)'
   ctx.fillText(guide, rect.width / 2, rect.height / 2)
 
-  // Optional stroke-order overlay.
-  if (showStrokeOrder && strokeOrderKey) {
-    const strokes = STROKE_ORDER[strokeOrderKey] || []
-    drawStrokeBadges(ctx, strokes, rect.width, rect.height)
-  }
 }
 
 /**

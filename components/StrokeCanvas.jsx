@@ -38,16 +38,28 @@ export default function StrokeCanvas({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       ctx.clearRect(0, 0, rect.width, rect.height)
 
-      // Map normalized [0..100] coordinates to canvas pixels,
-      // fit to a square region inside the canvas so the shape isn't
-      // stretched when the canvas is wide and short.
-      const side = Math.min(rect.width, rect.height) * 0.72
-      const ox = rect.width / 2 - side / 2
-      const oy = rect.height / 2 - side / 2
-      const toXY = (pt) => ({
-        x: ox + (pt[0] / 100) * side,
-        y: oy + (pt[1] / 100) * side,
-      })
+      // ---- Per-form slot layout ----
+      // Each form gets its own horizontal slot. The word's letters sit
+      // side by side, right to left. Each form's 0-100 coordinates are
+      // mapped into its own slot, so forms no longer stack.
+      const slotHeight = rect.height * 0.72
+      const slotWidth = slotHeight
+      const gapBetweenSlots = slotWidth * 0.05
+      const formCount = formData.length
+      const totalWidth = formCount * slotWidth + (formCount - 1) * gapBetweenSlots
+      const startX = rect.width / 2 - totalWidth / 2
+      const slotY = rect.height / 2 - slotHeight / 2
+
+      // Returns a coordinate mapper for a specific form index.
+      // Arabic is right-to-left, so formData[0] is drawn rightmost.
+      const makeToXY = (formIndex) => (pt) => {
+        const slotLeft =
+          startX + (formCount - 1 - formIndex) * (slotWidth + gapBetweenSlots)
+        return {
+          x: slotLeft + (pt[0] / 100) * slotWidth,
+          y: slotY + (pt[1] / 100) * slotHeight,
+        }
+      }
 
       // --- Pass 1: faint dotted guide from the full strokes ---
       ctx.save()
@@ -56,7 +68,9 @@ export default function StrokeCanvas({
       ctx.strokeStyle = 'rgba(14, 42, 71, 0.20)'
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
-      for (const form of formData) {
+      for (let fi = 0; fi < formData.length; fi++) {
+        const form = formData[fi]
+        const toXY = makeToXY(fi)
         for (const stroke of form.strokes) {
           if (stroke.length === 0) continue
           if (stroke.length === 1) {
@@ -80,7 +94,7 @@ export default function StrokeCanvas({
       // --- Pass 2: solid ink up to current progress ---
       const revealed = totalPoints * progress
       ctx.strokeStyle = drawColor
-      ctx.lineWidth = Math.max(3, side * 0.035)
+      ctx.lineWidth = Math.max(3, slotHeight * 0.035)
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
       ctx.setLineDash([])
@@ -88,8 +102,10 @@ export default function StrokeCanvas({
       let drawn = 0
       let penTip = null
 
-      for (const form of formData) {
+      for (let fi = 0; fi < formData.length; fi++) {
+        const form = formData[fi]
         if (drawn >= revealed) break
+        const toXY = makeToXY(fi)
         const localRevealed = Math.min(form.pointCount, revealed - drawn)
         let strokeDrawn = 0
 
