@@ -60,7 +60,7 @@ export default function HarfBuzzTest({ word }) {
           if (otGlyph) {
             const path = otGlyph.getPath(
               cursorX + xDisplacement,
-              otFont.ascender,       // baseline sits at ascender height
+              0,       // baseline sits at ascender height
               otFont.unitsPerEm      // paths come out in font units
             )
             paths.push(path.toPathData(2))
@@ -99,7 +99,8 @@ export default function HarfBuzzTest({ word }) {
         // fontSize = unitsPerEm produces paths in font units — so
         // totalWidth and the viewBox are in the same coordinate space.
         const totalWidth = cursorX || otFont.unitsPerEm
-        const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${otFont.unitsPerEm}`
+        const viewBoxHeight = otFont.ascender - otFont.descender
+        const viewBox = `0 ${-otFont.ascender} ${totalWidth} ${viewBoxHeight}`
         svg.setAttribute('viewBox', viewBox)
 
         // Stroke width should scale with the viewBox. At unitsPerEm
