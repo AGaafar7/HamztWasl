@@ -209,7 +209,7 @@ export default function LetterDetailClient({
   <TegakiRenderer
     key={activeExampleWord?.word || letter.arabic}
     font={amiri}
-    style={{ fontSize: 'clamp(20px, 12vw, 20px)', color: '#0E2A47', direction: "rtl", }}
+    style={{ fontSize: 'clamp(20px, 20vw, 70px)', color: '#0E2A47', direction: "rtl", }}
   >
     {activeExampleWord?.word || letter.arabic}
   </TegakiRenderer>
