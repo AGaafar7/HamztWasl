@@ -4569,3 +4569,14 @@ padding: 24px 22px 22px;
   width: 100%;
 }
 
+.arabic-handwriting-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+}
