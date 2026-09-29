@@ -2817,7 +2817,7 @@ padding: 24px 22px 22px;
 }
 .tracing-clear {
   position: absolute;
-  top: 12px;
+  bottom: 12px;
   inset-inline-end: 12px;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);

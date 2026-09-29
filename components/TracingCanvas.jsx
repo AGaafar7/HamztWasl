@@ -24,15 +24,28 @@ export default function TracingCanvas({
   const drawingRef = useRef(false)
   const [hasDrawn, setHasDrawn] = useState(false)
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    setupCanvas(canvas, guide, {
-      showStrokeOrder,
-      strokeOrderKey,
-    })
+useEffect(() => {
+  const canvas = canvasRef.current
+  if (!canvas) return
+
+  let cancelled = false
+  const draw = () => {
+    if (cancelled) return
+    setupCanvas(canvas, guide, { showStrokeOrder, strokeOrderKey })
     setHasDrawn(false)
-  }, [guide, showStrokeOrder, strokeOrderKey])
+  }
+
+  // Wait for the webfont to be ready before measuring, otherwise
+  // measureText runs against a fallback font and the guide comes out
+  // the wrong size.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(draw)
+  } else {
+    draw()
+  }
+
+  return () => { cancelled = true }
+}, [guide, showStrokeOrder, strokeOrderKey])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -137,8 +150,8 @@ function setupCanvas(canvas, guide, { showStrokeOrder, strokeOrderKey } = {}) {
   ctx.clearRect(0, 0, rect.width, rect.height)
 
   const fontFamily = '"Cairo", "Noto Naskh Arabic", system-ui, sans-serif'
-  const maxWidth = rect.width * 0.85     // leave a 7.5% margin each side
-  const maxHeight = rect.height * 0.80   // leave a 10% margin top and bottom
+const maxWidth = rect.width * 0.72     // leave a 14% margin each side
+const maxHeight = rect.height * 0.68   // leave a 16% margin top and bottom
 
   // Start with a font size based on height, then shrink it until the
   // rendered word actually fits within maxWidth.
