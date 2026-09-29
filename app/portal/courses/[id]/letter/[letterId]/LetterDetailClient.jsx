@@ -8,7 +8,7 @@ import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
 import WordRevealCanvas from '../../../../../../components/WordRevealCanvas'
-
+import HarfBuzzTest from '../../../../../../components/HarfBuzzTest'
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
@@ -158,6 +158,7 @@ export default function LetterDetailClient({
           )}
         </div>
       </div>
+      <HarfBuzzTest word={activeExampleWord?.word || letter.arabic} />
 
       {/* ---------- Example words (original position) ---------- */}
       <div className="letter-examples">
