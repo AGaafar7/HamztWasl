@@ -69,6 +69,19 @@ export default function HarfBuzzTest({ word }) {
         }
 
         // Cleanup harfbuzz resources
+                // --- DEBUG LOGS — remove after diagnosis ---
+        console.log('paths built:', paths.length, 'of', glyphs.length)
+        console.log('font metrics:', {
+          unitsPerEm: otFont.unitsPerEm,
+          ascender: otFont.ascender,
+          descender: otFont.descender,
+        })
+        console.log('cursorX (total advance):', cursorX)
+        console.log('first path:', paths[0] ? paths[0].slice(0, 100) : '(none)')
+        // --- END DEBUG LOGS ---
+
+        // Cleanup harfbuzz resources
+        
         buffer.destroy()
         hbFont.destroy()
         face.destroy()
