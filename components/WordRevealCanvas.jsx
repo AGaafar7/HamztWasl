@@ -2,11 +2,18 @@
 
 import { useEffect, useRef } from 'react'
 
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
+
 export default function WordRevealCanvas({
   word,
   height = 260,
-  durationMs = 2200,
+  durationMs = 1800,
   autoPlayKey = 0,
+  inkColor = '#0E2A47',
+  guideColor = 'rgba(14, 42, 71, 0.18)',
+  wetInkColor = '#2F9E64',
 }) {
   const canvasRef = useRef(null)
   const rafRef = useRef(null)
@@ -15,7 +22,7 @@ export default function WordRevealCanvas({
     const canvas = canvasRef.current
     if (!canvas || !word) return
 
-    const draw = (progress) => {
+    const draw = (rawProgress) => {
       const rect = canvas.getBoundingClientRect()
       const dpr = window.devicePixelRatio || 1
       canvas.width = rect.width * dpr
@@ -49,48 +56,82 @@ export default function WordRevealCanvas({
       ctx.save()
       ctx.setLineDash([7, 9])
       ctx.lineWidth = 2
-      ctx.strokeStyle = 'rgba(14, 42, 71, 0.18)'
+      ctx.strokeStyle = guideColor
       ctx.strokeText(word, cx, cy)
       ctx.restore()
 
-      // --- Layer 2: solid ink, clipped to a moving circular window ---
-      // The marker travels right-to-left along the glyph baseline.
-      // Its reveal radius is large enough to cover the full glyph
-      // height, so as it sweeps, the solid form appears to be drawn.
-      const markerX = textRight - (textRight - textLeft) * progress
-      const markerY = cy
-      const revealRadius = fontSize * 0.75
+      // --- Layer 2: solid ink, revealed by a jagged leading edge -----
+      // Progress eases so the pen speeds through the middle and slows
+      // at the ends — much more "handwriting" than a linear sweep.
+      const progress = easeInOutCubic(Math.max(0, Math.min(1, rawProgress)))
 
+      // The leading edge travels right-to-left across the word.
+      const penX = textRight - (textRight - textLeft) * progress
+
+      // Vertical margin for the clip region. We need this to cover
+      // the full height of the tallest glyph plus its dots.
+      const clipTop = 0
+      const clipBottom = rect.height
+
+      // Build a jagged clip path. For each horizontal row band, we
+      // offset the vertical boundary by a small random-looking value
+      // (deterministic per-frame seed, so it doesn't shimmer).
       ctx.save()
       ctx.beginPath()
-      ctx.arc(markerX, markerY, revealRadius, 0, Math.PI * 2)
+      ctx.moveTo(rect.width, clipTop)
+
+      const jitterSeed = Math.floor(rawProgress * 40)
+      const step = 4
+
+      // Right edge down to bottom-right
+      ctx.lineTo(rect.width, clipBottom)
+
+      // Bottom edge from right to penX, then jagged boundary going up
+      const boundaryPoints = []
+      for (let y = clipBottom; y >= clipTop; y -= step) {
+        // Deterministic pseudo-random jitter based on y + seed
+        const noise = Math.sin((y + jitterSeed * 37) * 0.7) * 3
+        boundaryPoints.push({ x: penX + noise, y })
+      }
+
+      // Bottom boundary: from right edge to the last boundary point
+      ctx.lineTo(boundaryPoints[0].x, boundaryPoints[0].y)
+      for (const p of boundaryPoints) {
+        ctx.lineTo(p.x, p.y)
+      }
+      // Close along the top back to the right edge
+      ctx.lineTo(rect.width, clipTop)
+      ctx.closePath()
       ctx.clip()
 
+      // Fill the glyph solid within the clip.
       ctx.setLineDash([])
-      ctx.fillStyle = '#0E2A47'
+      ctx.fillStyle = inkColor
       ctx.fillText(word, cx, cy)
       ctx.restore()
 
-      // --- Layer 3: the marker dot itself ----------------------------
-      if (progress > 0 && progress < 1) {
+      // --- Layer 3: wet ink at the leading edge ----------------------
+      // A short vertical glow where the pen is currently "writing".
+      if (rawProgress > 0 && rawProgress < 1) {
         ctx.save()
-        // Outer glow
-        ctx.beginPath()
-        ctx.arc(markerX, markerY, 14, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(47, 158, 100, 0.18)'
-        ctx.fill()
+        const glowGradient = ctx.createLinearGradient(
+          penX - 20, 0,
+          penX + 8, 0
+        )
+        glowGradient.addColorStop(0, 'rgba(47, 158, 100, 0)')
+        glowGradient.addColorStop(0.6, 'rgba(47, 158, 100, 0.35)')
+        glowGradient.addColorStop(1, 'rgba(47, 158, 100, 0.75)')
+        ctx.fillStyle = glowGradient
+        ctx.fillRect(penX - 20, clipTop, 28, clipBottom - clipTop)
 
-        // Inner dot
+        // The bright tip itself
         ctx.beginPath()
-        ctx.arc(markerX, markerY, 8, 0, Math.PI * 2)
-        ctx.fillStyle = '#2F9E64'
+        ctx.arc(penX, cy, 6, 0, Math.PI * 2)
+        ctx.fillStyle = wetInkColor
         ctx.fill()
-
-        // Small highlight
         ctx.beginPath()
-        ctx.arc(markerX - 2, markerY - 2, 3, 0, Math.PI * 2)
-        ctx.fillStyle = '#ffffff'
-        ctx.globalAlpha = 0.7
+        ctx.arc(penX - 2, cy - 2, 2, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(255,255,255,0.85)'
         ctx.fill()
         ctx.restore()
       }
@@ -102,9 +143,7 @@ export default function WordRevealCanvas({
       const elapsed = ts - start
       const progress = Math.min(1, elapsed / durationMs)
       draw(progress)
-      if (progress < 1) {
-        rafRef.current = requestAnimationFrame(tick)
-      }
+      if (progress < 1) rafRef.current = requestAnimationFrame(tick)
     }
 
     const startAnim = () => {
@@ -113,7 +152,7 @@ export default function WordRevealCanvas({
       rafRef.current = requestAnimationFrame(tick)
     }
 
-    if (document.fonts && document.fonts.ready) {
+    if (document.fonts?.ready) {
       document.fonts.ready.then(startAnim)
     } else {
       startAnim()
@@ -122,7 +161,7 @@ export default function WordRevealCanvas({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [word, durationMs, autoPlayKey])
+  }, [word, durationMs, autoPlayKey, inkColor, guideColor, wetInkColor])
 
   return (
     <div className="word-reveal-wrap">
