@@ -8,6 +8,8 @@ import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
 import WordRevealCanvas from '../../../../../../components/WordRevealCanvas'
+import StrokeCanvas from '../../../../../../components/StrokeCanvas'
+import strokeData from '../../../../../../data/letter-strokes.json'
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
