@@ -4533,3 +4533,15 @@ padding: 24px 22px 22px;
   outline: 2px solid var(--gold);
   outline-offset: -2px;
 }
+
+.tegaki-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  overflow: hidden;
+}
