@@ -8,8 +8,7 @@ import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
 import WordRevealCanvas from '../../../../../../components/WordRevealCanvas'
-import StrokeCanvas from '../../../../../../components/StrokeCanvas'
-import strokesData from '../../../../../../data/letter-strokes.json'
+
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
@@ -202,27 +201,6 @@ export default function LetterDetailClient({
 
       {/* ---------- Example-word canvases (see + write) ---------- */}
       <div className="letter-canvases-row">
-        <div className="letter-canvas-col">
-  <h3>See it written</h3>
-  <p className="letter-canvas-hint">
-    Watch the word being written stroke by stroke.
-  </p>
-  <StrokeCanvas
-    word={activeExampleWord?.word || letter.arabic}
-    strokesData={strokesData}
-    height={260}
-    durationMs={2400}
-    autoPlayKey={`${activeExampleWord?.word || letter.arabic}-${replayKey}`}
-  />
-  <button
-    type="button"
-    className="btn btn-ghost btn-small"
-    style={{ marginTop: 8 }}
-    onClick={() => setReplayKey((k) => k + 1)}
-  >
-    ↻ Replay
-  </button>
-</div>
        <div className="letter-canvas-col">
   <h3>See it written</h3>
   <p className="letter-canvas-hint">
