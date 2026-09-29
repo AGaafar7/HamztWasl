@@ -4520,3 +4520,16 @@ padding: 24px 22px 22px;
     grid-template-columns: 1fr;
   }
 }
+
+.example-card {
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.example-card:hover {
+  background: var(--bg);
+}
+.example-card-active {
+  background: var(--bg-soft);
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
