@@ -81,10 +81,6 @@ export default function LetterDetailClient({
     playWithFallback(v.arabic)
   }
 
-  useEffect(() => {
-  ensureTegakiShaper()
-}, [])
-
   return (
     <div className="letter-detail">
       <Link href={`/portal/courses/${courseId}`} className="back-link">
