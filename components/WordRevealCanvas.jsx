@@ -5,8 +5,8 @@ import { useEffect, useRef } from 'react'
 export default function WordRevealCanvas({
   word,
   height = 260,
-  durationMs = 1600,
-  autoPlayKey = 0,   // change this to replay the animation
+  durationMs = 2200,
+  autoPlayKey = 0,
 }) {
   const canvasRef = useRef(null)
   const rafRef = useRef(null)
@@ -41,39 +41,57 @@ export default function WordRevealCanvas({
       const cx = rect.width / 2
       const cy = rect.height / 2
 
-      // Progressively reveal the glyph using a right-to-left clip.
-      // The word is centered; the clip rectangle starts at the right
-      // edge of the canvas and grows leftward as progress goes 0→1.
-      const fullWidth = rect.width
-      const clipWidth = fullWidth * progress
-      const clipX = fullWidth - clipWidth
+      const textWidth = ctx.measureText(word).width
+      const textLeft = cx - textWidth / 2
+      const textRight = cx + textWidth / 2
 
+      // --- Layer 1: faint dotted guide, always visible ---------------
       ctx.save()
-      ctx.beginPath()
-      ctx.rect(clipX, 0, clipWidth, rect.height)
-      ctx.clip()
-
-      // Faint dotted guide underneath (always visible within the clip)
       ctx.setLineDash([7, 9])
       ctx.lineWidth = 2
       ctx.strokeStyle = 'rgba(14, 42, 71, 0.18)'
       ctx.strokeText(word, cx, cy)
+      ctx.restore()
 
-      // Solid ink on top — this is what "appears" as the wipe progresses
+      // --- Layer 2: solid ink, clipped to a moving circular window ---
+      // The marker travels right-to-left along the glyph baseline.
+      // Its reveal radius is large enough to cover the full glyph
+      // height, so as it sweeps, the solid form appears to be drawn.
+      const markerX = textRight - (textRight - textLeft) * progress
+      const markerY = cy
+      const revealRadius = fontSize * 0.75
+
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(markerX, markerY, revealRadius, 0, Math.PI * 2)
+      ctx.clip()
+
       ctx.setLineDash([])
       ctx.fillStyle = '#0E2A47'
       ctx.fillText(word, cx, cy)
       ctx.restore()
 
-      // Optional: a moving vertical "pen tip" line at the clip edge
+      // --- Layer 3: the marker dot itself ----------------------------
       if (progress > 0 && progress < 1) {
         ctx.save()
-        ctx.strokeStyle = '#2F9E64'
-        ctx.lineWidth = 2
+        // Outer glow
         ctx.beginPath()
-        ctx.moveTo(clipX, rect.height * 0.2)
-        ctx.lineTo(clipX, rect.height * 0.8)
-        ctx.stroke()
+        ctx.arc(markerX, markerY, 14, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(47, 158, 100, 0.18)'
+        ctx.fill()
+
+        // Inner dot
+        ctx.beginPath()
+        ctx.arc(markerX, markerY, 8, 0, Math.PI * 2)
+        ctx.fillStyle = '#2F9E64'
+        ctx.fill()
+
+        // Small highlight
+        ctx.beginPath()
+        ctx.arc(markerX - 2, markerY - 2, 3, 0, Math.PI * 2)
+        ctx.fillStyle = '#ffffff'
+        ctx.globalAlpha = 0.7
+        ctx.fill()
         ctx.restore()
       }
     }
@@ -89,7 +107,6 @@ export default function WordRevealCanvas({
       }
     }
 
-    // Wait for fonts so the glyph is measured with Cairo loaded.
     const startAnim = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       start = null
