@@ -7,7 +7,6 @@ import { gloss } from '../../../../../../i18n/gloss.js'
 import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
-import WordRevealCanvas from '../../../../../../components/WordRevealCanvas'
 import ArabicHandwriting from '../../../../../../components/ArabicHandwriting.jsx'
 
 const DIALECTS = [
@@ -158,12 +157,6 @@ export default function LetterDetailClient({
           )}
         </div>
       </div>
-      <ArabicHandwriting
-  word={activeExampleWord?.word || letter.arabic}
-  height={260}
-  durationMs={2200}
-  autoPlayKey={`${activeExampleWord?.word || letter.arabic}-${replayKey}`}
-/>
 
       {/* ---------- Example words (original position) ---------- */}
       <div className="letter-examples">
@@ -207,20 +200,17 @@ export default function LetterDetailClient({
 
       {/* ---------- Example-word canvases (see + write) ---------- */}
       <div className="letter-canvases-row">
-       <div className="letter-canvas-col">
+        <div className="letter-canvas-col">
   <h3>See it written</h3>
   <p className="letter-canvas-hint">
     Watch the word being written right to left.
   </p>
-  <WordRevealCanvas
+  <ArabicHandwriting
     word={activeExampleWord?.word || letter.arabic}
     height={260}
-    durationMs={1600}
+    durationMs={2200}
     autoPlayKey={`${activeExampleWord?.word || letter.arabic}-${replayKey}`}
   />
-  <div className="tegaki-reference arabic">
-    {activeExampleWord?.word || letter.arabic}
-  </div>
   <button
     type="button"
     className="btn btn-ghost btn-small"
