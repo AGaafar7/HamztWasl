@@ -7,8 +7,7 @@ import { gloss } from '../../../../../../i18n/gloss.js'
 import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
-import { TegakiRenderer } from 'tegaki/react'
-import amiri from 'tegaki/fonts/amiri'
+import WordRevealCanvas from '../../../../../../components/WordRevealCanvas'
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
@@ -32,6 +31,7 @@ export default function LetterDetailClient({
   const [completed, setCompleted] = useState(initialCompleted)
   const [imageFailed, setImageFailed] = useState(false)
   const [, startTransition] = useTransition()
+  const [replayKey, setReplayKey] = useState(0)
 
   // Example-word canvases — driven by clicking example word cards.
   const [activeExampleWord, setActiveExampleWord] = useState(
@@ -80,6 +80,10 @@ export default function LetterDetailClient({
     setActiveVocabWord(v)
     playWithFallback(v.arabic)
   }
+
+  useEffect(() => {
+  ensureTegakiShaper()
+}, [])
 
   return (
     <div className="letter-detail">
@@ -200,23 +204,28 @@ export default function LetterDetailClient({
 
       {/* ---------- Example-word canvases (see + write) ---------- */}
       <div className="letter-canvases-row">
-        <div className="letter-canvas-col">
+       <div className="letter-canvas-col">
   <h3>See it written</h3>
   <p className="letter-canvas-hint">
-     Watch the word being written stroke by stroke.
+    Watch the word being written right to left.
   </p>
-  <div className="tegaki-wrapper">
-  <TegakiRenderer
-    key={activeExampleWord?.word || letter.arabic}
-    font={amiri}
-    style={{ fontSize: 'clamp(20px, 50vw, 70px)', color: '#0E2A47', direction: "rtl", }}
-  >
-    {activeExampleWord?.word || letter.arabic}
-  </TegakiRenderer>
+  <WordRevealCanvas
+    word={activeExampleWord?.word || letter.arabic}
+    height={260}
+    durationMs={1600}
+    autoPlayKey={`${activeExampleWord?.word || letter.arabic}-${replayKey}`}
+  />
   <div className="tegaki-reference arabic">
     {activeExampleWord?.word || letter.arabic}
   </div>
-</div>
+  <button
+    type="button"
+    className="btn btn-ghost btn-small"
+    style={{ marginTop: 8 }}
+    onClick={() => setReplayKey((k) => k + 1)}
+  >
+    ↻ Replay
+  </button>
 </div>
         <div className="letter-canvas-col">
           <h3>Write it yourself</h3>
