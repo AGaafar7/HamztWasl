@@ -7,6 +7,8 @@ import { gloss } from '../../../../../../i18n/gloss.js'
 import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
+import { TegakiRenderer } from 'tegaki/react'
+import amiri from 'tegaki/fonts/amiri'
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
@@ -199,17 +201,20 @@ export default function LetterDetailClient({
       {/* ---------- Example-word canvases (see + write) ---------- */}
       <div className="letter-canvases-row">
         <div className="letter-canvas-col">
-          <h3>See it written</h3>
-          <p className="letter-canvas-hint">
-            Follow the numbered strokes in order.
-          </p>
-          <TracingCanvas
-            guide={activeExampleWord?.word || letter.arabic}
-            showStrokeOrder
-            strokeOrderKey={letter.id}
-            height={260}
-          />
-        </div>
+  <h3>See it written</h3>
+  <p className="letter-canvas-hint">
+    Watch the word being written stroke by stroke.
+  </p>
+  <div className="tegaki-wrapper">
+    <TegakiRenderer
+      key={activeExampleWord?.word || letter.arabic}
+      font={amiri}
+      style={{ fontSize: 'clamp(48px, 12vw, 96px)', color: '#0E2A47' }}
+    >
+      {activeExampleWord?.word || letter.arabic}
+    </TegakiRenderer>
+  </div>
+</div>
         <div className="letter-canvas-col">
           <h3>Write it yourself</h3>
           <p className="letter-canvas-hint">
