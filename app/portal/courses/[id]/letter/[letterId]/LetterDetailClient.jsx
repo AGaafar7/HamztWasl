@@ -6,6 +6,7 @@ import { useLanguage } from '../../../../../../i18n/LanguageContext.jsx'
 import { gloss } from '../../../../../../i18n/gloss.js'
 import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
+import TracingCanvas from '../../../../../../components/TracingCanvas'
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
@@ -29,6 +30,13 @@ export default function LetterDetailClient({
   const [completed, setCompleted] = useState(initialCompleted)
   const [imageFailed, setImageFailed] = useState(false)
   const [, startTransition] = useTransition()
+
+  // "Active word" for the write-along area. Defaults to the letter itself.
+  const [activeWord, setActiveWord] = useState({
+    arabic: letter.arabic,
+    transliteration: letter.transliteration,
+    meaning: letter.name,
+  })
 
   const playWithFallback = (text) => {
     const audioUrl = letter.pronunciations?.[dialect]
@@ -59,6 +67,7 @@ export default function LetterDetailClient({
         ← {L.backToCourse}
       </Link>
 
+      {/* ---------- Header ---------- */}
       <div className="letter-header">
         <span className="letter-big arabic">{letter.arabic}</span>
         <div className="letter-info">
@@ -79,6 +88,7 @@ export default function LetterDetailClient({
         </div>
       </div>
 
+      {/* ---------- Dialects ---------- */}
       <div className="dialect-selector">
         {DIALECTS.map((d) => (
           <button
@@ -91,6 +101,7 @@ export default function LetterDetailClient({
         ))}
       </div>
 
+      {/* ---------- Video + articulation ---------- */}
       <div className="letter-media">
         <div className="letter-video">
           <h3>{L.pronunciation}</h3>
@@ -118,6 +129,111 @@ export default function LetterDetailClient({
         </div>
       </div>
 
+      {/* ---------- Watch-it / write-it canvases ---------- */}
+      <div className="letter-canvases-row">
+        <div className="letter-canvas-col">
+          <h3>See it written</h3>
+          <p className="letter-canvas-hint">
+            Follow the numbered strokes in order.
+          </p>
+          <TracingCanvas
+            guide={activeWord.arabic}
+            showStrokeOrder
+            strokeOrderKey={letter.id}
+            height={260}
+          />
+        </div>
+        <div className="letter-canvas-col">
+          <h3>Write it yourself</h3>
+          <p className="letter-canvas-hint">
+            Trace over the guide with your finger or stylus.
+          </p>
+          <TracingCanvas
+            guide={activeWord.arabic}
+            height={260}
+          />
+        </div>
+      </div>
+
+      {/* ---------- Vocabulary + write-again canvas ---------- */}
+      <div className="letter-vocab-row">
+        <div className="letter-vocab-col">
+          <h3>More words with {letter.arabic}</h3>
+          <div className="letter-vocab-list">
+            {(letter.vocabulary || []).map((v) => (
+              <button
+                type="button"
+                key={v.id}
+                className={`letter-vocab-item ${activeWord.arabic === v.arabic ? 'active' : ''}`}
+                onClick={() =>
+                  setActiveWord({
+                    arabic: v.arabic,
+                    transliteration: v.transliteration,
+                    meaning: v.meaning,
+                  })
+                }
+              >
+                <div className="letter-vocab-text">
+                  <span className="letter-vocab-arabic arabic">{v.arabic}</span>
+                  <span className="letter-vocab-translit">{v.transliteration}</span>
+                  <span className="letter-vocab-meaning">{v.meaning}</span>
+                </div>
+                <span
+                  className="letter-vocab-play"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    playWithFallback(v.arabic)
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      playWithFallback(v.arabic)
+                    }
+                  }}
+                >
+                  🔊
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="letter-vocab-canvas-col">
+          <h3>Write it</h3>
+          <p className="letter-canvas-hint">
+            Currently showing: <span className="arabic">{activeWord.arabic}</span>
+          </p>
+          <TracingCanvas guide={activeWord.arabic} height={260} />
+        </div>
+      </div>
+
+      {/* ---------- Expressions ---------- */}
+      <div className="letter-expressions">
+        <h3>Expressions with {letter.arabic}</h3>
+        <div className="letter-expression-list">
+          {(letter.expressions || []).map((e) => (
+            <div className="letter-expression-item" key={e.id}>
+              <div className="letter-expression-text">
+                <span className="letter-expression-arabic arabic">{e.arabic}</span>
+                <span className="letter-expression-translit">{e.transliteration}</span>
+                <span className="letter-expression-meaning">{e.meaning}</span>
+              </div>
+              <button
+                type="button"
+                className="letter-expression-play"
+                onClick={() => playWithFallback(e.arabic)}
+                aria-label="Play"
+              >
+                🔊
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ---------- Original examples ---------- */}
       <div className="letter-examples">
         <h3>{L.exampleWords}</h3>
         <div className="examples-grid">
@@ -147,6 +263,7 @@ export default function LetterDetailClient({
         </button>
       </div>
 
+      {/* ---------- Nav ---------- */}
       <div className="letter-navigation">
         {prevLetter && (
           <Link href={`/portal/courses/${courseId}/letter/${prevLetter.id}`} className="btn btn-ghost">
