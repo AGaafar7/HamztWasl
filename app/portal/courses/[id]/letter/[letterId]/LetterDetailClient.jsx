@@ -8,7 +8,7 @@ import { speak } from '../../../../../../utils/speak.js'
 import { toggleLessonCompleteAction } from '../../../../../actions/progress'
 import TracingCanvas from '../../../../../../components/TracingCanvas'
 import WordRevealCanvas from '../../../../../../components/WordRevealCanvas'
-import HarfBuzzTest from '../../../../../../components/ArabicHandwriting.jsx'
+import ArabicHandwriting from '../../../../../../components/ArabicHandwriting.jsx'
 
 const DIALECTS = [
   { id: 'msa', label: 'فصحى', badge: 'MSA' },
