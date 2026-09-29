@@ -203,17 +203,20 @@ export default function LetterDetailClient({
         <div className="letter-canvas-col">
   <h3>See it written</h3>
   <p className="letter-canvas-hint">
-    Watch the letter {letter.transliteration} being written.
+     Watch the word being written stroke by stroke.
   </p>
   <div className="tegaki-wrapper">
-    <TegakiRenderer
-      key={letter.arabic}
-      font={amiri}
-      style={{ fontSize: 'clamp(72px, 18vw, 140px)', color: '#0E2A47' }}
-    >
-      {letter.arabic}
-    </TegakiRenderer>
+  <TegakiRenderer
+    key={activeExampleWord?.word || letter.arabic}
+    font={amiri}
+    style={{ fontSize: 'clamp(48px, 12vw, 96px)', color: '#0E2A47' }}
+  >
+    {activeExampleWord?.word || letter.arabic}
+  </TegakiRenderer>
+  <div className="tegaki-reference arabic">
+    {activeExampleWord?.word || letter.arabic}
   </div>
+</div>
 </div>
         <div className="letter-canvas-col">
           <h3>Write it yourself</h3>

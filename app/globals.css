@@ -4536,12 +4536,19 @@ padding: 24px 22px 22px;
 
 .tegaki-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   min-height: 260px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
   padding: 16px;
   overflow: hidden;
+}
+.tegaki-reference {
+  font-size: 28px;
+  color: var(--grey);
+  opacity: 0.6;
 }
