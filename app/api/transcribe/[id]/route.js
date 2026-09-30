@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getTranscription, normalizeTranscript } from '../../../../lib/assemblyai.js'
 import { reviseTranscript } from '../../../../lib/transcript-revision.js'
+
 /**
  * GET /api/transcribe/[id]
  *
@@ -10,12 +11,18 @@ import { reviseTranscript } from '../../../../lib/transcript-revision.js'
  *   { status: "completed", lines }                                — done; `lines`
  *     is already normalized into this app's data/videos.js transcript shape
  *     (seconds, not milliseconds — see lib/assemblyai.js normalizeTranscript).
+ *
+ * Optional query param: ?title=...  — the video's title, passed to Gemini
+ * as context for the ASR revision pass. Without it, Gemini can only fix
+ * errors that are internally inconsistent.
  */
-export async function GET(_request, { params }) {
+export async function GET(request, { params }) {
   const { id } = await params
   if (!id) {
     return NextResponse.json({ error: 'Transcript id is required.' }, { status: 400 })
   }
+
+  const videoTitle = request.nextUrl.searchParams.get('title') || ''
 
   try {
     const transcript = await getTranscription(id)
@@ -31,7 +38,11 @@ export async function GET(_request, { params }) {
 
     let correctedLines = rawLines
     try {
-      correctedLines = await reviseTranscript(rawLines, transcript.language_code)
+      correctedLines = await reviseTranscript(
+        rawLines,
+        transcript.language_code,
+        videoTitle
+      )
     } catch (err) {
       console.error('Gemini revision failed, returning raw transcript:', err)
       // Fall through — return the raw transcript rather than failing the whole job

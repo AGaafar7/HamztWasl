@@ -105,7 +105,7 @@ export default function NewVideoClient() {
         clearPoll()
         pollRef.current = setInterval(async () => {
           try {
-            const pollRes = await fetch(`/api/transcribe/${submitData.id}`)
+            const pollRes = await fetch(`/api/transcribe/${submitData.id}?title=${encodeURIComponent(form.titleEn)}`)
             const pollData = await pollRes.json()
             if (pollData.status === 'completed') {
               clearPoll()
