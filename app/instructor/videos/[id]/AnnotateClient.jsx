@@ -69,6 +69,7 @@ export default function AnnotateClient({ video }) {
   const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }))
 
   const draftsEqual = (a, b) =>
+    a.arabic === b.arabic &&
     a.meaningEn === b.meaningEn &&
     a.meaningZh === b.meaningZh &&
     a.grammarEn === b.grammarEn &&
