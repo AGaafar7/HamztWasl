@@ -31,6 +31,7 @@ export default function AnnotateClient({ video }) {
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [, startTransition] = useTransition()
   const [saving, setSaving] = useState(false)
+  const [autofilling, setAutofilling] = useState(false)
 
   const selected = wordsState[selectedIdx]
 
@@ -76,6 +77,7 @@ export default function AnnotateClient({ video }) {
 
   const saveWord = async (word, d) => {
         const normalized = {
+          arabic: d.arabic.trim(),
       meaningEn: d.meaningEn.trim(),
       meaningZh: d.meaningZh.trim(),
       grammarEn: d.grammarEn.trim(),
@@ -90,6 +92,7 @@ export default function AnnotateClient({ video }) {
     }
 
     await updateWordAction(word.id, {
+      arabic: normalized.arabic,
       gloss: { en: normalized.meaningEn, zh: normalized.meaningZh },
       grammar: { en: normalized.grammarEn, zh: normalized.grammarZh },
       root: normalized.root,
@@ -102,6 +105,7 @@ export default function AnnotateClient({ video }) {
         w.id === word.id
           ? {
               ...w,
+              arabic: normalized.arabic,
               gloss: { en: normalized.meaningEn, zh: normalized.meaningZh },
               grammar: { en: normalized.grammarEn, zh: normalized.grammarZh },
               root: normalized.root,
@@ -110,6 +114,66 @@ export default function AnnotateClient({ video }) {
       )
     )
   }
+
+  const runAutoAnnotate = async () => {
+  setAutofilling(true)
+  try {
+    // Build the payload: only unannotated words, with their line context
+    const payload = []
+    wordsState.forEach((w) => {
+      const isAnnotated = (w.gloss?.en || w.gloss?.zh || w.grammar?.en || w.grammar?.zh || w.root)
+      if (isAnnotated) return
+      const line = video.transcript[w.lineIdx]
+      payload.push({
+        id: w.id,
+        arabic: w.arabic,
+        lineId: String(w.lineIdx),
+        lineArabic: line?.arabic || '',
+      })
+    })
+
+    if (payload.length === 0) {
+      alert('All words are already annotated.')
+      return
+    }
+
+    const res = await fetch('/api/annotate-words', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ words: payload }),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error || 'Autofill failed')
+
+    // Update local state and persist each result
+    for (const ann of data.annotated) {
+      await updateWordAction(ann.id, {
+        gloss: { en: ann.meaning_en, zh: ann.meaning_zh },
+        grammar: { en: ann.grammar_en, zh: ann.grammar_zh },
+        root: ann.root,
+      })
+    }
+
+    // Refresh local state from the results
+    setWordsState((prev) =>
+      prev.map((w) => {
+        const match = data.annotated.find((a) => a.id === w.id)
+        if (!match) return w
+        return {
+          ...w,
+          gloss: { en: match.meaning_en, zh: match.meaning_zh },
+          grammar: { en: match.grammar_en, zh: match.grammar_zh },
+          root: match.root,
+        }
+      })
+    )
+  } catch (err) {
+    console.error('Autofill failed:', err)
+    alert('Autofill failed: ' + (err.message || 'unknown error'))
+  } finally {
+    setAutofilling(false)
+  }
+}
 
   const goToWord = (idx) => {
     if (idx < 0 || idx >= wordsState.length) return
@@ -240,8 +304,31 @@ export default function AnnotateClient({ video }) {
                   Word {selectedIdx + 1} / {wordsState.length}
                 </span>
               </div>
+              
+  <button
+    type="button"
+    className="btn btn-primary btn-small"
+    onClick={runAutoAnnotate}
+    disabled={autofilling}
+    style={{ marginBottom: 16, width: '100%' }}
+  >
+    {autofilling ? 'Annotating…' : '✨ Auto-fill with AI'}
+  </button>
+
 
               <div className="form-group">
+  <label className="form-label">Arabic word</label>
+  <input
+    className="form-input arabic"
+    dir="rtl"
+    value={draft.arabic}
+    onChange={(e) => updateDraft('arabic', e.target.value)}
+    placeholder="الكلمة"
+  />
+</div>
+
+              <div className="form-group">
+
                 <label className="form-label">Meaning (English)</label>
                 <input
                   className="form-input"
@@ -338,6 +425,7 @@ export default function AnnotateClient({ video }) {
 
 function makeDraft(w) {
   return {
+    arabic: w?.arabic || '',
     meaningEn: w?.gloss?.en || '',
     meaningZh: w?.gloss?.zh || '',
     grammarEn: w?.grammar?.en || '',

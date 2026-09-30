@@ -121,6 +121,7 @@ export async function updateWordAction(wordId, patch) {
   if (!user) throw new Error('Not authenticated')
 
   const update = {}
+  if ('arabic' in patch) update.arabic = patch.arabic
   if ('gloss' in patch) update.gloss = patch.gloss
   if ('grammar' in patch) update.grammar = patch.grammar
   if ('root' in patch) update.root = patch.root
