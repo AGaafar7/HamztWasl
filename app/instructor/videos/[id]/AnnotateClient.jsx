@@ -278,7 +278,7 @@ export default function AnnotateClient({ video }) {
                               goToWord(flatIdx)
                             }}
                           >
-                            {word.arabic}
+                            {w.arabic}
                           </span>
                           {wordIdx < line.words.length - 1 ? ' ' : ''}
                         </Fragment>
