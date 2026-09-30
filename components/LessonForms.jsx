@@ -553,6 +553,275 @@ export function WritingLessonForm({ content, onSave }) {
 }
 
 /* ============================================================
+   Multiple Choice
+   ============================================================ */
+
+export function MultipleChoiceLessonForm({ content, onSave }) {
+  const [local, setLocal] = useState({
+    title: content.title || { en: '', ar: '', zh: '' },
+    questions: content.questions || [],
+  })
+  const [validationError, setValidationError] = useState('')
+
+  const addQuestion = () => setLocal((c) => ({
+    ...c,
+    questions: [
+      ...c.questions,
+      {
+        id: `q${Date.now()}`,
+        prompt: '',
+        options: [
+          { id: `o${Date.now()}-a`, text: '' },
+          { id: `o${Date.now()}-b`, text: '' },
+          { id: `o${Date.now()}-c`, text: '' },
+        ],
+        correctOptionId: '',
+        whyCorrect: { en: '', ar: '', zh: '' },
+        whyWrong: {},
+      },
+    ],
+  }))
+
+  const updateQuestion = (qid, patch) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => (q.id === qid ? { ...q, ...patch } : q)),
+  }))
+
+  const removeQuestion = (qid) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.filter((q) => q.id !== qid),
+  }))
+
+  const addOption = (qid) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => {
+      if (q.id !== qid) return q
+      if (q.options.length >= 6) return q
+      const newOpt = { id: `o${Date.now()}-${q.options.length}`, text: '' }
+      return { ...q, options: [...q.options, newOpt] }
+    }),
+  }))
+
+  const updateOption = (qid, oid, text) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => {
+      if (q.id !== qid) return q
+      return {
+        ...q,
+        options: q.options.map((o) => (o.id === oid ? { ...o, text } : o)),
+      }
+    }),
+  }))
+
+  const removeOption = (qid, oid) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => {
+      if (q.id !== qid) return q
+      const options = q.options.filter((o) => o.id !== oid)
+      const whyWrong = { ...q.whyWrong }
+      delete whyWrong[oid]
+      const correctOptionId = q.correctOptionId === oid ? '' : q.correctOptionId
+      return { ...q, options, whyWrong, correctOptionId }
+    }),
+  }))
+
+  const setCorrect = (qid, oid) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => (q.id === qid ? { ...q, correctOptionId: oid } : q)),
+  }))
+
+  const updateWhyCorrect = (qid, lang, value) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => {
+      if (q.id !== qid) return q
+      return { ...q, whyCorrect: { ...(q.whyCorrect || {}), [lang]: value } }
+    }),
+  }))
+
+  const updateWhyWrong = (qid, oid, lang, value) => setLocal((c) => ({
+    ...c,
+    questions: c.questions.map((q) => {
+      if (q.id !== qid) return q
+      const whyWrong = { ...(q.whyWrong || {}) }
+      whyWrong[oid] = { ...(whyWrong[oid] || {}), [lang]: value }
+      return { ...q, whyWrong }
+    }),
+  }))
+
+  const handleSave = () => {
+    const errors = []
+    const titleEn = (local.title?.en || '').trim()
+    const titleAr = (local.title?.ar || '').trim()
+    if (!titleEn) errors.push('English title is required.')
+    if (!titleAr) errors.push('Arabic title is required.')
+    if (local.questions.length === 0) {
+      errors.push('Add at least one question.')
+    }
+    for (let i = 0; i < local.questions.length; i++) {
+      const q = local.questions[i]
+      const n = i + 1
+      if (!(q.prompt || '').trim()) errors.push(`Question ${n}: prompt is required.`)
+      const filled = q.options.filter((o) => (o.text || '').trim()).length
+      if (filled < 2) errors.push(`Question ${n}: at least 2 options are required.`)
+      if (!q.correctOptionId || !q.options.find((o) => o.id === q.correctOptionId && (o.text || '').trim())) {
+        errors.push(`Question ${n}: pick a correct option.`)
+      }
+    }
+    if (errors.length > 0) {
+      setValidationError(errors.join(' '))
+      throw new Error(errors.join(' '))
+    }
+    setValidationError('')
+    onSave(local)
+  }
+
+  return (
+    <div className="lesson-form">
+      <TitleFields
+        title={local.title}
+        onChange={(lang, v) => setLocal((c) => ({ ...c, title: { ...c.title, [lang]: v } }))}
+      />
+
+      <div className="question-list">
+        <h4>Questions</h4>
+
+        {local.questions.map((q, qi) => (
+          <div className="mc-question-block" key={q.id}>
+            <div className="question-block-head">
+              <span className="question-number">Question {qi + 1}</span>
+              <button
+                type="button"
+                className="mini-play"
+                onClick={() => removeQuestion(q.id)}
+                aria-label="Remove question"
+              >
+                ✕
+              </button>
+            </div>
+
+            <input
+              className="form-input arabic"
+              dir="rtl"
+              placeholder="السؤال (بالعربية)"
+              value={q.prompt}
+              onChange={(e) => updateQuestion(q.id, { prompt: e.target.value })}
+            />
+
+            <div className="mc-options-editor">
+              <span className="mc-field-label">Options (Arabic)</span>
+              {q.options.map((o, oi) => (
+                <div className="mc-option-editor-row" key={o.id}>
+                  <button
+                    type="button"
+                    className={`mc-correct-toggle ${q.correctOptionId === o.id ? 'active' : ''}`}
+                    onClick={() => setCorrect(q.id, o.id)}
+                    title="Mark as correct"
+                  >
+                    {q.correctOptionId === o.id ? '✓' : String.fromCharCode(65 + oi)}
+                  </button>
+                  <input
+                    className="form-input arabic"
+                    dir="rtl"
+                    placeholder={`الخيار ${oi + 1}`}
+                    value={o.text}
+                    onChange={(e) => updateOption(q.id, o.id, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="mini-play"
+                    onClick={() => removeOption(q.id, o.id)}
+                    aria-label="Remove option"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              {q.options.length < 6 && (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-small"
+                  onClick={() => addOption(q.id)}
+                >
+                  + Add option
+                </button>
+              )}
+            </div>
+
+            <div className="mc-why-correct">
+              <span className="mc-field-label">Why the correct answer is correct (trilingual)</span>
+              <textarea
+                className="form-input"
+                rows="2"
+                placeholder="Explanation (English)"
+                value={q.whyCorrect?.en || ''}
+                onChange={(e) => updateWhyCorrect(q.id, 'en', e.target.value)}
+              />
+              <textarea
+                className="form-input arabic"
+                dir="rtl"
+                rows="2"
+                placeholder="الشرح (بالعربية)"
+                value={q.whyCorrect?.ar || ''}
+                onChange={(e) => updateWhyCorrect(q.id, 'ar', e.target.value)}
+              />
+              <textarea
+                className="form-input"
+                rows="2"
+                placeholder="解释（中文）"
+                value={q.whyCorrect?.zh || ''}
+                onChange={(e) => updateWhyCorrect(q.id, 'zh', e.target.value)}
+              />
+            </div>
+
+            <div className="mc-why-wrong">
+              <span className="mc-field-label">Why each wrong answer is wrong (trilingual)</span>
+              {q.options
+                .filter((o) => o.id !== q.correctOptionId)
+                .map((o) => (
+                  <div className="mc-why-wrong-block" key={o.id}>
+                    <span className="mc-why-wrong-label arabic" dir="rtl">
+                      {o.text || '—'}
+                    </span>
+                    <textarea
+                      className="form-input"
+                      rows="2"
+                      placeholder="Explanation (English)"
+                      value={q.whyWrong?.[o.id]?.en || ''}
+                      onChange={(e) => updateWhyWrong(q.id, o.id, 'en', e.target.value)}
+                    />
+                    <textarea
+                      className="form-input arabic"
+                      dir="rtl"
+                      rows="2"
+                      placeholder="الشرح (بالعربية)"
+                      value={q.whyWrong?.[o.id]?.ar || ''}
+                      onChange={(e) => updateWhyWrong(q.id, o.id, 'ar', e.target.value)}
+                    />
+                    <textarea
+                      className="form-input"
+                      rows="2"
+                      placeholder="解释（中文）"
+                      value={q.whyWrong?.[o.id]?.zh || ''}
+                      onChange={(e) => updateWhyWrong(q.id, o.id, 'zh', e.target.value)}
+                    />
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
+
+        <button type="button" className="btn btn-ghost btn-small" onClick={addQuestion}>
+          + Add question
+        </button>
+      </div>
+
+      {validationError && <p className="form-error">{validationError}</p>}
+      <SaveButton onClick={handleSave} label="Save lesson" />
+    </div>
+  )
+}
+
+/* ============================================================
    Video
    ============================================================ */
 
@@ -599,6 +868,7 @@ export function LessonFormByKind({ kind, content, onSave, videoChoices = [] }) {
     case 'speaking':  return <SpeakingLessonForm content={content} onSave={onSave} />
     case 'writing':   return <WritingLessonForm content={content} onSave={onSave} />
     case 'video':     return <VideoLessonForm content={content} videoChoices={videoChoices} onSave={onSave} />
+    case 'multiplechoice':  return <MultipleChoiceLessonForm content={content} onSave={onSave} />
     default:          return <p className="portal-empty">Unknown lesson kind.</p>
   }
 }
@@ -611,4 +881,5 @@ export const KIND_LABELS = {
   reading: 'Reading',
   speaking: 'Speaking',
   writing: 'Writing',
+  multiplechoice: 'Multiple Choice',
 }

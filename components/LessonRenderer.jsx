@@ -68,6 +68,7 @@ const KIND_LABEL = {
   reading: 'Reading',
   speaking: 'Speaking',
   writing: 'Writing',
+  multiplechoice: 'Multiple Choice',
 }
 
 const PRACTICE_LABEL = {
@@ -159,6 +160,7 @@ const backLabel = course
           {lesson.kind === 'speaking' && <SpeakingLesson lesson={lesson} />}
           {lesson.kind === 'writing' && <WritingLesson lesson={lesson} />}
           {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
+          {lesson.kind === 'multiplechoice' && <MultipleChoiceLesson lesson={lesson} />}
         </div>
       </article>
 
@@ -349,6 +351,180 @@ function TestedLesson({ lesson }) {
                   <span className="quiz-reference-label">Reference answer</span>
                   <p className="quiz-reference-text arabic" dir="rtl">{q.answer}</p>
                   {q.hint && <p className="quiz-hint">Hint: {q.hint}</p>}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+
+/* ============================================================
+   Multiple Choice — with attempt-gating and Why explanations
+   ============================================================ */
+function MultipleChoiceLesson({ lesson }) {
+  const { lang } = useLanguage()
+  const c = lesson.content || {}
+  const questions = c.questions || []
+
+  // Per-question state
+  // picked[questionId]          — the option the student currently has selected
+  // submitted[questionId]       — array of option IDs they've already submitted (wrong ones)
+  // correct[questionId]         — true once they've picked the right one
+  // revealed[questionId]        — true after 2 wrong attempts, or once correct
+  // whyOpen[questionId]         — controls the Why panel
+  const [picked, setPicked] = useState({})
+  const [wrongAttempts, setWrongAttempts] = useState({})
+  const [correct, setCorrect] = useState({})
+  const [revealed, setRevealed] = useState({})
+  const [whyOpen, setWhyOpen] = useState({})
+
+  if (questions.length === 0) {
+    return <p className="portal-empty">This lesson has no questions yet.</p>
+  }
+
+  const onSubmit = (q) => {
+    const pickId = picked[q.id]
+    if (!pickId) return
+    const isCorrect = pickId === q.correctOptionId
+
+    if (isCorrect) {
+      setCorrect((s) => ({ ...s, [q.id]: true }))
+      setRevealed((s) => ({ ...s, [q.id]: true }))
+      return
+    }
+
+    const nextAttempts = (wrongAttempts[q.id] || 0) + 1
+    setWrongAttempts((s) => ({ ...s, [q.id]: nextAttempts }))
+    if (nextAttempts >= 2) {
+      setRevealed((s) => ({ ...s, [q.id]: true }))
+    }
+  }
+
+  const toggleWhy = (qid) => setWhyOpen((s) => ({ ...s, [qid]: !s[qid] }))
+
+  return (
+    <div className="lesson-multiplechoice">
+      <div className="lesson-questions">
+        {questions.map((q, i) => {
+          const isCorrect = correct[q.id] === true
+          const isRevealed = revealed[q.id] === true
+          const attempts = wrongAttempts[q.id] || 0
+          const currentPick = picked[q.id]
+          const isWrongPick = currentPick && currentPick !== q.correctOptionId && attempts > 0
+          const canSubmit = !!currentPick && !isCorrect && !isRevealed
+          const whyIsOpen = whyOpen[q.id] === true
+
+          return (
+            <div
+              className={`mc-card ${isCorrect ? 'mc-correct' : ''} ${isWrongPick && !isCorrect ? 'mc-wrong' : ''}`}
+              key={q.id || i}
+            >
+              <div className="mc-card-head">
+                <span className="mc-card-num">Question {i + 1}</span>
+                {isCorrect && (
+                  <span className="mc-badge mc-badge-correct">✓ Correct</span>
+                )}
+                {!isCorrect && isRevealed && (
+                  <span className="mc-badge mc-badge-revealed">Answer revealed</span>
+                )}
+                {!isCorrect && !isRevealed && attempts > 0 && (
+                  <span className="mc-badge mc-badge-wrong">
+                    Try again ({2 - attempts} left)
+                  </span>
+                )}
+              </div>
+
+              <p className="mc-card-prompt arabic" dir="rtl">{q.prompt}</p>
+
+              <div className="mc-options">
+                {q.options.map((o) => {
+                  const isTheCorrectOne = o.id === q.correctOptionId
+                  const isThisPicked = currentPick === o.id
+                  const showAsCorrect = isRevealed && isTheCorrectOne
+                  const showAsWrong =
+                    (isRevealed && isThisPicked && !isTheCorrectOne) ||
+                    (isCorrect && isThisPicked && !isTheCorrectOne)
+
+                  const cls = [
+                    'mc-option',
+                    isThisPicked ? 'mc-option-picked' : '',
+                    showAsCorrect ? 'mc-option-correct' : '',
+                    showAsWrong ? 'mc-option-wrong' : '',
+                  ].filter(Boolean).join(' ')
+
+                  return (
+                    <button
+                      key={o.id}
+                      type="button"
+                      className={cls}
+                      disabled={isCorrect || isRevealed}
+                      onClick={() => setPicked((s) => ({ ...s, [q.id]: o.id }))}
+                    >
+                      <span className="mc-option-arabic arabic" dir="rtl">
+                        {o.text}
+                      </span>
+                      {showAsCorrect && <span className="mc-option-check">✓</span>}
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="mc-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-small"
+                  onClick={() => onSubmit(q)}
+                  disabled={!canSubmit}
+                >
+                  {isCorrect ? 'Correct' : isRevealed ? 'Answer revealed' : 'Check answer'}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-small"
+                  onClick={() => toggleWhy(q.id)}
+                >
+                  {whyIsOpen ? 'Hide why' : 'Why?'}
+                </button>
+              </div>
+
+              {whyIsOpen && (
+                <div className="mc-why">
+                  {isCorrect ? (
+                    <div className="mc-why-block mc-why-good">
+                      <span className="mc-why-label">Why this is correct</span>
+                      <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+                        {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
+                      </p>
+                    </div>
+                  ) : attempts > 0 ? (
+                    <>
+                      <div className="mc-why-block mc-why-bad">
+                        <span className="mc-why-label">Why your answer is wrong</span>
+                        <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+                          {q.whyWrong?.[currentPick]?.[lang] ||
+                            q.whyWrong?.[currentPick]?.en ||
+                            'This option does not fit.'}
+                        </p>
+                      </div>
+                      <div className="mc-why-block mc-why-good">
+                        <span className="mc-why-label">Why the other answer is correct</span>
+                        <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+                          {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mc-why-block">
+                      <span className="mc-why-label">Why this answer is correct</span>
+                      <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+                        {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

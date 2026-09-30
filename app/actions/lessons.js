@@ -11,6 +11,7 @@ const DEFAULT_CONTENT = {
   reading: { title: { en: '', ar: '', zh: '' }, passage: { en: '', ar: '', zh: '' }, questions: [] },
   speaking: { title: { en: '', ar: '', zh: '' }, words: [] },
   writing: { title: { en: '', ar: '', zh: '' }, items: [] },
+  multiplechoice: { title: { en: '', ar: '', zh: '' }, questions: [] },
 }
 
 function validateLessonContent(kind, content) {
