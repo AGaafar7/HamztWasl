@@ -4,6 +4,7 @@ import { fetchLesson } from '../../../../lib/queries/lessons'
 import { fetchVideo } from '../../../../lib/queries/videos'
 import { fetchStandaloneCompletedLessonKeys } from '../../../../lib/queries/user'
 import LessonRenderer from '../../../../components/LessonRenderer'
+import { fetchMultipleChoiceAttempts } from '../../../../lib/queries/practice'
 
 export default async function StandaloneLessonPage({ params, searchParams }) {
   const { lessonId } = await params
@@ -18,6 +19,10 @@ export default async function StandaloneLessonPage({ params, searchParams }) {
   let videoData = null
   if (lesson.kind === 'video' && lesson.content?.videoId) {
     videoData = await fetchVideo(lesson.content.videoId)
+  }
+  let persistedAttempts = null
+  if (lesson?.kind === 'multiplechoice') {
+    persistedAttempts = await fetchMultipleChoiceAttempts(lessonId)
   }
 
   return (

@@ -5,6 +5,7 @@ import { fetchLesson, fetchLessonSiblings } from '../../../../../../lib/queries/
 import { fetchCompletedLessonKeys } from '../../../../../../lib/queries/user'
 import { fetchVideo } from '../../../../../../lib/queries/videos'
 import LessonRenderer from '../../../../../../components/LessonRenderer'
+import { fetchMultipleChoiceAttempts } from '../../../../../../lib/queries/practice'
 
 export default async function LessonPage({ params }) {
   const { id, lessonId } = await params
@@ -23,6 +24,11 @@ export default async function LessonPage({ params }) {
     videoData = await fetchVideo(lesson.content.videoId)
   }
 
+  let persistedAttempts = null
+  if (lesson?.kind === 'multiplechoice') {
+    persistedAttempts = await fetchMultipleChoiceAttempts(lessonId)
+  }
+
   return (
     <LessonRenderer
       course={course}
@@ -30,6 +36,7 @@ export default async function LessonPage({ params }) {
       siblings={siblings}
       isCompleted={completedKeys.includes(`lesson:${lessonId}`)}
       videoData={videoData}
+      persistedAttempts={persistedAttempts}
     />
   )
 }

@@ -32,3 +32,32 @@ export async function recordPracticeAttemptAction({ type, refId, score, details 
   if (error) throw error
   return { recorded: true }
 }
+
+export async function recordMultipleChoiceAttemptAction({
+  lessonId,
+  questionId,
+  pickedOptionId,
+  correct,
+}) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
+
+  const { error } = await supabase
+    .from('practice_attempts')
+    .insert({
+      user_id: user.id,
+      practice_type: 'multiplechoice',
+      ref_id: `${lessonId}:${questionId}`,
+      score: correct ? 100 : 0,
+      details: {
+        lesson_id: lessonId,
+        question_id: questionId,
+        picked_option_id: pickedOptionId,
+        correct,
+      },
+    })
+
+  if (error) throw error
+  return { ok: true }
+}

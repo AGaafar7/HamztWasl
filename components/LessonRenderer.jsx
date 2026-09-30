@@ -7,6 +7,7 @@ import { gloss } from '../i18n/gloss.js'
 import { speak } from '../utils/speak.js'
 import { toggleLessonCompleteAction } from '../app/actions/progress'
 import dynamic from 'next/dynamic'
+import { recordMultipleChoiceAttemptAction } from '../app/actions/practice'
 const TracingCanvas = dynamic(() => import('./TracingCanvas'), { ssr: false })
 
 /* -------- similarity helper (used by listening lesson) -------- */
@@ -85,6 +86,7 @@ export default function LessonRenderer({
   isCompleted: initialCompleted = false,
   videoData = null,
   from = null,
+  persistedAttempts = null,
 }) {
   const { t, lang } = useLanguage()
   const [completed, setCompleted] = useState(initialCompleted)
@@ -160,7 +162,9 @@ const backLabel = course
           {lesson.kind === 'speaking' && <SpeakingLesson lesson={lesson} />}
           {lesson.kind === 'writing' && <WritingLesson lesson={lesson} />}
           {lesson.kind === 'video' && <VideoLesson lesson={lesson} videoData={videoData} />}
-          {lesson.kind === 'multiplechoice' && <MultipleChoiceLesson lesson={lesson} />}
+          {lesson.kind === 'multiplechoice' && (
+            <MultipleChoiceLesson lesson={lesson} persistedAttempts={persistedAttempts} />
+          )}
         </div>
       </article>
 
@@ -365,42 +369,79 @@ function TestedLesson({ lesson }) {
 /* ============================================================
    Multiple Choice — with attempt-gating and Why explanations
    ============================================================ */
-function MultipleChoiceLesson({ lesson }) {
+function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
   const { lang } = useLanguage()
   const c = lesson.content || {}
   const questions = c.questions || []
 
-  // Per-question state
-  // picked[questionId]          — the option the student currently has selected
-  // submitted[questionId]       — array of option IDs they've already submitted (wrong ones)
-  // correct[questionId]         — true once they've picked the right one
-  // revealed[questionId]        — true after 2 wrong attempts, or once correct
-  // whyOpen[questionId]         — controls the Why panel
-  const [picked, setPicked] = useState({})
-  const [wrongAttempts, setWrongAttempts] = useState({})
-  const [correct, setCorrect] = useState({})
-  const [revealed, setRevealed] = useState({})
+  // Initialize from persisted data so refreshes don't lose progress
+  const [picked, setPicked] = useState(() => {
+    const init = {}
+    for (const [qid, a] of Object.entries(persistedAttempts || {})) {
+      if (a.lastPickedId) init[qid] = a.lastPickedId
+    }
+    return init
+  })
+
+  const [wrongAttempts, setWrongAttempts] = useState(() => {
+    const init = {}
+    for (const [qid, a] of Object.entries(persistedAttempts || {})) {
+      if (!a.correct) init[qid] = a.attempts
+    }
+    return init
+  })
+
+  const [correct, setCorrect] = useState(() => {
+    const init = {}
+    for (const [qid, a] of Object.entries(persistedAttempts || {})) {
+      if (a.correct) init[qid] = true
+    }
+    return init
+  })
+
+  const [revealed, setRevealed] = useState(() => {
+    const init = {}
+    for (const [qid, a] of Object.entries(persistedAttempts || {})) {
+      if (a.correct || a.attempts >= 2) init[qid] = true
+    }
+    return init
+  })
+
   const [whyOpen, setWhyOpen] = useState({})
+  const [saving, setSaving] = useState({})
 
   if (questions.length === 0) {
     return <p className="portal-empty">This lesson has no questions yet.</p>
   }
 
-  const onSubmit = (q) => {
+  const onSubmit = async (q) => {
     const pickId = picked[q.id]
     if (!pickId) return
     const isCorrect = pickId === q.correctOptionId
 
+    // Optimistic update first
     if (isCorrect) {
       setCorrect((s) => ({ ...s, [q.id]: true }))
       setRevealed((s) => ({ ...s, [q.id]: true }))
-      return
+    } else {
+      const next = (wrongAttempts[q.id] || 0) + 1
+      setWrongAttempts((s) => ({ ...s, [q.id]: next }))
+      if (next >= 2) setRevealed((s) => ({ ...s, [q.id]: true }))
     }
 
-    const nextAttempts = (wrongAttempts[q.id] || 0) + 1
-    setWrongAttempts((s) => ({ ...s, [q.id]: nextAttempts }))
-    if (nextAttempts >= 2) {
-      setRevealed((s) => ({ ...s, [q.id]: true }))
+    // Persist to the DB. Fire-and-forget; failure doesn't roll back the UI.
+    setSaving((s) => ({ ...s, [q.id]: true }))
+    try {
+      await recordMultipleChoiceAttemptAction({
+        lessonId: lesson.id,
+        questionId: q.id,
+        pickedOptionId: pickId,
+        correct: isCorrect,
+      })
+    } catch (err) {
+      console.error('Failed to save attempt:', err)
+    } finally {
+      setSaving((s) => ({ ...s, [q.id]: false }))
     }
   }
 
@@ -414,13 +455,20 @@ function MultipleChoiceLesson({ lesson }) {
           const isRevealed = revealed[q.id] === true
           const attempts = wrongAttempts[q.id] || 0
           const currentPick = picked[q.id]
-          const isWrongPick = currentPick && currentPick !== q.correctOptionId && attempts > 0
-          const canSubmit = !!currentPick && !isCorrect && !isRevealed
+          const isWrongPick =
+            currentPick && currentPick !== q.correctOptionId && attempts > 0
+          const canSubmit =
+            !!currentPick && !isCorrect && !isRevealed && !saving[q.id]
           const whyIsOpen = whyOpen[q.id] === true
+
+          // Did this question have a persisted attempt from a previous session?
+          const hadPrevious = !!persistedAttempts?.[q.id]
 
           return (
             <div
-              className={`mc-card ${isCorrect ? 'mc-correct' : ''} ${isWrongPick && !isCorrect ? 'mc-wrong' : ''}`}
+              className={`mc-card ${isCorrect ? 'mc-correct' : ''} ${
+                isWrongPick && !isCorrect ? 'mc-wrong' : ''
+              }`}
               key={q.id || i}
             >
               <div className="mc-card-head">
@@ -429,16 +477,25 @@ function MultipleChoiceLesson({ lesson }) {
                   <span className="mc-badge mc-badge-correct">✓ Correct</span>
                 )}
                 {!isCorrect && isRevealed && (
-                  <span className="mc-badge mc-badge-revealed">Answer revealed</span>
+                  <span className="mc-badge mc-badge-revealed">
+                    Answer revealed
+                  </span>
                 )}
                 {!isCorrect && !isRevealed && attempts > 0 && (
                   <span className="mc-badge mc-badge-wrong">
                     Try again ({2 - attempts} left)
                   </span>
                 )}
+                {hadPrevious && !isCorrect && !isRevealed && attempts === 0 && (
+                  <span className="mc-badge mc-badge-correct">
+                    Previous attempt saved
+                  </span>
+                )}
               </div>
 
-              <p className="mc-card-prompt arabic" dir="rtl">{q.prompt}</p>
+              <p className="mc-card-prompt arabic" dir="rtl">
+                {q.prompt}
+              </p>
 
               <div className="mc-options">
                 {q.options.map((o) => {
@@ -454,7 +511,9 @@ function MultipleChoiceLesson({ lesson }) {
                     isThisPicked ? 'mc-option-picked' : '',
                     showAsCorrect ? 'mc-option-correct' : '',
                     showAsWrong ? 'mc-option-wrong' : '',
-                  ].filter(Boolean).join(' ')
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
 
                   return (
                     <button
@@ -480,7 +539,13 @@ function MultipleChoiceLesson({ lesson }) {
                   onClick={() => onSubmit(q)}
                   disabled={!canSubmit}
                 >
-                  {isCorrect ? 'Correct' : isRevealed ? 'Answer revealed' : 'Check answer'}
+                  {saving[q.id]
+                    ? 'Saving…'
+                    : isCorrect
+                    ? 'Correct'
+                    : isRevealed
+                    ? 'Answer revealed'
+                    : 'Check answer'}
                 </button>
                 <button
                   type="button"
@@ -511,7 +576,9 @@ function MultipleChoiceLesson({ lesson }) {
                         </p>
                       </div>
                       <div className="mc-why-block mc-why-good">
-                        <span className="mc-why-label">Why the other answer is correct</span>
+                        <span className="mc-why-label">
+                          Why the other answer is correct
+                        </span>
                         <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                           {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
                         </p>
