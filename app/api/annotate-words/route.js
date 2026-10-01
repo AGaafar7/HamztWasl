@@ -4,7 +4,16 @@ import { GoogleGenAI } from '@google/genai'
 const MODEL = 'gemini-3.5-flash'
 const BATCH_SIZE = 15
 
+function isQuotaExceeded(err) {
+  const msg = String(err?.message || '')
+  return msg.includes('RESOURCE_EXHAUSTED') || msg.includes('429')
+}
+
 function isRetryable(err) {
+  // Don't retry quota — retrying immediately never helps, it just
+  // burns another attempt against the same cap.
+  if (isQuotaExceeded(err)) return false
+
   const msg = String(err?.message || '')
   return (
     msg.includes('503') ||
@@ -104,15 +113,30 @@ export async function POST(request) {
   }
 
   const results = []
+  const failures = []
   for (let i = 0; i < toAnnotate.length; i += BATCH_SIZE) {
     const batch = toAnnotate.slice(i, i + BATCH_SIZE)
     try {
       const annotated = await annotateBatch(ai, batch)
       results.push(...annotated)
     } catch (err) {
-      console.error('Batch failed:', err.message || err)
+      const msg = String(err?.message || '')
+      const isQuota = isQuotaExceeded(err)
+const isOverload = !isQuota && (
+  msg.includes('503') ||
+  msg.includes('UNAVAILABLE') ||
+  msg.includes('high demand') ||
+  msg.includes('overload')
+)
+failures.push({ batchIndex: i / BATCH_SIZE, overloaded: isOverload, quota: isQuota })
     }
   }
 
-  return NextResponse.json({ annotated: results })
+return NextResponse.json({
+  annotated: results,
+  totalRequested: toAnnotate.length,
+  failed: failures.length,
+  anyOverload: failures.some((f) => f.overloaded),
+  anyQuota: failures.some((f) => f.quota),
+})
 }

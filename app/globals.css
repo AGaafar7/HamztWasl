@@ -4776,3 +4776,111 @@ padding: 24px 22px 22px;
   font-weight: 700;
   color: var(--navy-ink);
 }
+
+
+/* ---- Practice paywall ---- */
+.paywall-card {
+  max-width: 560px;
+  margin: 40px auto;
+  padding: 40px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -30px rgba(14, 42, 71, 0.2);
+  text-align: center;
+}
+.paywall-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  background: rgba(196, 149, 46, 0.12);
+  padding: 5px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.paywall-title {
+  font-size: 26px;
+  margin-bottom: 12px;
+  color: var(--navy-ink);
+}
+.paywall-lede {
+  font-size: 15px;
+  color: var(--grey);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+.paywall-features {
+  text-align: left;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.paywall-features li {
+  font-size: 14.5px;
+  color: var(--grey-dark);
+  padding: 10px 14px;
+  background: var(--bg-soft);
+  border-radius: 10px;
+}
+.paywall-cta {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 16px;
+}
+.paywall-foot {
+  font-size: 13px;
+  color: var(--grey);
+  margin-top: 20px;
+}
+.paywall-foot a {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* ---- Billing page ---- */
+.billing-card {
+  max-width: 560px;
+  padding: 32px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.billing-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.billing-badge {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.billing-badge.active {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.billing-badge.inactive {
+  background: rgba(231, 98, 30, 0.1);
+  color: var(--orange-dark);
+}
+.billing-renew {
+  font-size: 13.5px;
+  color: var(--grey);
+}
+.billing-desc {
+  font-size: 15px;
+  color: var(--grey-dark);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}

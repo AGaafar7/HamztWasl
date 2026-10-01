@@ -28,7 +28,6 @@ function verifySignature(rawBody, header, secret) {
   const signature = parts.v1
   if (!timestamp || !signature) return false
 
-  // Reject if older than 5 minutes
   const age = Math.abs(Date.now() / 1000 - Number(timestamp))
   if (age > 300) {
     console.error('XPay webhook timestamp out of tolerance:', age)
@@ -40,7 +39,6 @@ function verifySignature(rawBody, header, secret) {
     .update(`${timestamp}.${rawBody}`)
     .digest('hex')
 
-  // Timing-safe compare
   const a = Buffer.from(signature, 'hex')
   const b = Buffer.from(expected, 'hex')
   if (a.length !== b.length) return false
@@ -86,13 +84,60 @@ export async function POST(request) {
   }
 
   const userId = session.metadata?.user_id
-  const courseId = session.metadata?.course_id
-  if (!userId || !courseId) {
-    console.error('Missing metadata:', session.id, session.metadata)
+  const kind = session.metadata?.kind || 'course'
+  if (!userId) {
+    console.error('Missing user_id in session metadata:', session.id, session.metadata)
     return NextResponse.json({ ok: true })
   }
 
-  // Idempotent insert — safe if the webhook fires twice for the same session.
+  // ---- Branch 1: subscription payment ------------------------------
+  // Extends the user's subscription by 30 days. If they're already
+  // subscribed and haven't expired, the days stack on top of the
+  // existing expiry. If they're new or expired, it starts from today.
+  if (kind === 'subscription') {
+    const { data: profile, error: fetchErr } = await supabaseAdmin
+      .from('profiles')
+      .select('subscription_expires_at')
+      .eq('id', userId)
+      .single()
+
+    if (fetchErr) {
+      console.error('Profile lookup failed:', fetchErr)
+      return NextResponse.json({ error: 'DB error' }, { status: 500 })
+    }
+
+    const now = Date.now()
+    const current = profile?.subscription_expires_at
+      ? new Date(profile.subscription_expires_at).getTime()
+      : 0
+    const startFrom = Math.max(now, current)
+    const newExpiry = new Date(
+      startFrom + 30 * 24 * 60 * 60 * 1000
+    ).toISOString()
+
+    const { error: updateErr } = await supabaseAdmin
+      .from('profiles')
+      .update({ subscription_expires_at: newExpiry })
+      .eq('id', userId)
+
+    if (updateErr) {
+      console.error('Subscription extension failed:', updateErr)
+      return NextResponse.json({ error: 'DB error' }, { status: 500 })
+    }
+
+    console.log(
+      `Subscription extended for ${userId} — new expiry ${newExpiry}`
+    )
+    return NextResponse.json({ ok: true })
+  }
+
+  // ---- Branch 2: course enrollment (existing behavior) -------------
+  const courseId = session.metadata?.course_id
+  if (!courseId) {
+    console.error('Missing course_id in session metadata:', session.id, session.metadata)
+    return NextResponse.json({ ok: true })
+  }
+
   const { error } = await supabaseAdmin
     .from('enrollments')
     .insert({ user_id: userId, course_id: courseId })

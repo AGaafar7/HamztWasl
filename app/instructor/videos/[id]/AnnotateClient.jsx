@@ -168,6 +168,32 @@ export default function AnnotateClient({ video }) {
         }
       })
     )
+     const gotCount = (data.annotated || []).length
+    const wanted = data.totalRequested ?? payload.length
+    const failed = data.failed ?? 0
+    if (failed === 0) {
+      // Clean run — no message needed.
+      return
+    }
+    if (data.anyQuota) {
+  alert(
+    `The AI has hit its daily usage limit. ` +
+    `${gotCount} of ${wanted} words were annotated. ` +
+    `The limit resets overnight — please try the rest tomorrow.`
+  )
+} else if (data.anyOverload) {
+  alert(
+    `The AI is temporarily overloaded. ` +
+    `${gotCount} of ${wanted} words were annotated. ` +
+    `Please wait a minute and try again to fill in the rest.`
+  )
+} else {
+  alert(
+    `Something went wrong on ${failed} batch${failed === 1 ? '' : 'es'}. ` +
+    `${gotCount} of ${wanted} words were annotated. ` +
+    `Please try again.`
+  )
+}
   } catch (err) {
     console.error('Autofill failed:', err)
     alert('Autofill failed: ' + (err.message || 'unknown error'))
