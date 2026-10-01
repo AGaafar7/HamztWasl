@@ -119,24 +119,31 @@ export default function AnnotateClient({ video }) {
   const runAutoAnnotate = async () => {
   setAutofilling(true)
   try {
-    // Build the payload: only unannotated words, with their line context
-    const payload = []
-    wordsState.forEach((w) => {
-      const isAnnotated = (w.gloss?.en || w.gloss?.zh || w.grammar?.en || w.grammar?.zh || w.root)
-      if (isAnnotated) return
+    // Build the payload: only unannotated words, with their line context.
+    // Cap at 60 words per click so the request finishes inside Vercel's
+    // function timeout. If there are more, the user clicks again.
+    const MAX_PER_RUN = 60
+    const allUnannotated = wordsState.filter(
+      (w) => !(w.gloss?.en || w.gloss?.zh || w.grammar?.en || w.grammar?.zh || w.root)
+    )
+
+    if (allUnannotated.length === 0) {
+      alert('All words are already annotated.')
+      return
+    }
+
+    const chunk = allUnannotated.slice(0, MAX_PER_RUN)
+    const remaining = allUnannotated.length - chunk.length
+
+    const payload = chunk.map((w) => {
       const line = video.transcript[w.lineIdx]
-      payload.push({
+      return {
         id: w.id,
         arabic: w.arabic,
         lineId: String(w.lineIdx),
         lineArabic: line?.arabic || '',
-      })
+      }
     })
-
-    if (payload.length === 0) {
-      alert('All words are already annotated.')
-      return
-    }
 
     const res = await fetch('/api/annotate-words', {
       method: 'POST',
@@ -146,54 +153,62 @@ export default function AnnotateClient({ video }) {
     const data = await res.json()
     if (!res.ok) throw new Error(data.error || 'Autofill failed')
 
-    // Update local state and persist each result
-    for (const ann of data.annotated) {
+    // Persist each result — and update UI state as we go, so the user
+    // sees progress instead of waiting for the whole loop.
+    const annotated = data.annotated || []
+    for (const ann of annotated) {
       await updateWordAction(ann.id, {
         gloss: { en: ann.meaning_en, zh: ann.meaning_zh },
         grammar: { en: ann.grammar_en, zh: ann.grammar_zh },
         root: ann.root,
       })
+
+      // Update the specific word in local state immediately.
+      setWordsState((prev) =>
+        prev.map((w) =>
+          w.id === ann.id
+            ? {
+                ...w,
+                gloss: { en: ann.meaning_en, zh: ann.meaning_zh },
+                grammar: { en: ann.grammar_en, zh: ann.grammar_zh },
+                root: ann.root,
+              }
+            : w
+        )
+      )
     }
 
-    // Refresh local state from the results
-    setWordsState((prev) =>
-      prev.map((w) => {
-        const match = data.annotated.find((a) => a.id === w.id)
-        if (!match) return w
-        return {
-          ...w,
-          gloss: { en: match.meaning_en, zh: match.meaning_zh },
-          grammar: { en: match.grammar_en, zh: match.grammar_zh },
-          root: match.root,
-        }
-      })
-    )
-     const gotCount = (data.annotated || []).length
+    const gotCount = annotated.length
     const wanted = data.totalRequested ?? payload.length
     const failed = data.failed ?? 0
-    if (failed === 0) {
-      // Clean run — no message needed.
-      return
+
+    // Report results
+    if (failed > 0 && data.anyQuota) {
+      alert(
+        `The AI has hit its daily usage limit. ` +
+        `${gotCount} of ${wanted} words were annotated in this run. ` +
+        `The limit resets overnight.`
+      )
+    } else if (failed > 0 && data.anyOverload) {
+      alert(
+        `The AI is temporarily overloaded. ` +
+        `${gotCount} of ${wanted} words were annotated in this run. ` +
+        `Please wait a minute and try again.`
+      )
+    } else if (failed > 0) {
+      alert(
+        `Something went wrong on ${failed} batch${failed === 1 ? '' : 'es'}. ` +
+        `${gotCount} of ${wanted} words were annotated in this run. ` +
+        `Please try again.`
+      )
+    } else if (remaining > 0) {
+      // Clean run, but there's more to do.
+      alert(
+        `${gotCount} words annotated. ` +
+        `${remaining} more to go — click the button again to continue.`
+      )
     }
-    if (data.anyQuota) {
-  alert(
-    `The AI has hit its daily usage limit. ` +
-    `${gotCount} of ${wanted} words were annotated. ` +
-    `The limit resets overnight — please try the rest tomorrow.`
-  )
-} else if (data.anyOverload) {
-  alert(
-    `The AI is temporarily overloaded. ` +
-    `${gotCount} of ${wanted} words were annotated. ` +
-    `Please wait a minute and try again to fill in the rest.`
-  )
-} else {
-  alert(
-    `Something went wrong on ${failed} batch${failed === 1 ? '' : 'es'}. ` +
-    `${gotCount} of ${wanted} words were annotated. ` +
-    `Please try again.`
-  )
-}
+    // If remaining === 0 and no failures: silent success
   } catch (err) {
     console.error('Autofill failed:', err)
     alert('Autofill failed: ' + (err.message || 'unknown error'))
@@ -251,6 +266,8 @@ export default function AnnotateClient({ video }) {
       playerRef.current.seekTo(sec, true)
     }
   }
+
+  const unannotatedCount = wordsState.length - annotatedCount
 
   return (
     <section>
@@ -331,6 +348,13 @@ export default function AnnotateClient({ video }) {
                   Word {selectedIdx + 1} / {wordsState.length}
                 </span>
               </div>
+
+                {unannotatedCount > 0 && (
+    <p className="annotate-remaining">
+      {unannotatedCount} {unannotatedCount === 1 ? 'word' : 'words'} still need annotation
+    </p>
+  )}
+
               
   <button
     type="button"
