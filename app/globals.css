@@ -4884,3 +4884,13 @@ padding: 24px 22px 22px;
   margin-bottom: 24px;
   line-height: 1.6;
 }
+
+.billing-cancel-btn {
+  width: 100%;
+  color: var(--orange-dark);
+  border-color: rgba(231, 98, 30, 0.3);
+}
+.billing-cancel-btn:hover:not(:disabled) {
+  background: rgba(231, 98, 30, 0.05);
+  border-color: var(--orange);
+}

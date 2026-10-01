@@ -95,41 +95,31 @@ export async function POST(request) {
   // subscribed and haven't expired, the days stack on top of the
   // existing expiry. If they're new or expired, it starts from today.
   if (kind === 'subscription') {
-    const { data: profile, error: fetchErr } = await supabaseAdmin
-      .from('profiles')
-      .select('subscription_expires_at')
-      .eq('id', userId)
-      .single()
+  // Every payment buys exactly 30 days from today. No stacking, no
+  // preservation of previous dates. Buying again after a cancel
+  // starts a fresh period.
+  const newExpiry = new Date(
+    Date.now() + 30 * 24 * 60 * 60 * 1000
+  ).toISOString()
 
-    if (fetchErr) {
-      console.error('Profile lookup failed:', fetchErr)
-      return NextResponse.json({ error: 'DB error' }, { status: 500 })
-    }
+  const { error: updateErr } = await supabaseAdmin
+    .from('profiles')
+    .update({
+      subscription_expires_at: newExpiry,
+      subscription_cancelled: false,
+    })
+    .eq('id', userId)
 
-    const now = Date.now()
-    const current = profile?.subscription_expires_at
-      ? new Date(profile.subscription_expires_at).getTime()
-      : 0
-    const startFrom = Math.max(now, current)
-    const newExpiry = new Date(
-      startFrom + 30 * 24 * 60 * 60 * 1000
-    ).toISOString()
-
-    const { error: updateErr } = await supabaseAdmin
-      .from('profiles')
-      .update({ subscription_expires_at: newExpiry })
-      .eq('id', userId)
-
-    if (updateErr) {
-      console.error('Subscription extension failed:', updateErr)
-      return NextResponse.json({ error: 'DB error' }, { status: 500 })
-    }
-
-    console.log(
-      `Subscription extended for ${userId} — new expiry ${newExpiry}`
-    )
-    return NextResponse.json({ ok: true })
+  if (updateErr) {
+    console.error('Subscription extension failed:', updateErr)
+    return NextResponse.json({ error: 'DB error' }, { status: 500 })
   }
+
+  console.log(
+    `Subscription set for ${userId} — expires ${newExpiry}`
+  )
+  return NextResponse.json({ ok: true })
+}
 
   // ---- Branch 2: course enrollment (existing behavior) -------------
   const courseId = session.metadata?.course_id
