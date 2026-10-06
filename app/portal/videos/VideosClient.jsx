@@ -15,8 +15,20 @@ export default function VideosClient({ videos, initialFavorites }) {
   const v = t.learn.videos
   const [levelFilter, setLevelFilter] = useState([])
   const [dialectFilter, setDialectFilter] = useState([])
+  const [topicFilter, setTopicFilter] = useState([])
   const [favorites, setFavorites] = useState(initialFavorites)
   const [, startTransition] = useTransition()
+
+  // Every distinct topic that actually appears on at least one video.
+  // Sorted for stable chip order. If the library has no topics yet,
+  // this is [] and the topic filter group is hidden entirely.
+  const availableTopics = useMemo(() => {
+    const set = new Set()
+    for (const vid of videos) {
+      for (const t of vid.topics || []) set.add(t)
+    }
+    return [...set].sort()
+  }, [videos])
 
   const toggleList = (list, setList, value) => {
     setList(list.includes(value) ? list.filter((x) => x !== value) : [...list, value])
@@ -24,7 +36,6 @@ export default function VideosClient({ videos, initialFavorites }) {
 
   const toggleFavorite = (id) => {
     const wasFavorited = favorites.includes(id)
-    // Optimistic: flip the heart instantly.
     setFavorites((prev) =>
       wasFavorited ? prev.filter((x) => x !== id) : [...prev, id]
     )
@@ -33,7 +44,6 @@ export default function VideosClient({ videos, initialFavorites }) {
         await toggleFavoriteAction(id)
       } catch (err) {
         console.error('Favorite toggle failed:', err)
-        // Roll back on error.
         setFavorites((prev) =>
           wasFavorited ? [...prev, id] : prev.filter((x) => x !== id)
         )
@@ -46,11 +56,25 @@ export default function VideosClient({ videos, initialFavorites }) {
       const levelOk = levelFilter.length === 0 || levelFilter.includes(vid.level)
       const dialectOk =
         dialectFilter.length === 0 || vid.dialects.some((d) => dialectFilter.includes(d))
-      return levelOk && dialectOk
+      const topics = vid.topics || []
+      const topicOk =
+        topicFilter.length === 0 || topics.some((tp) => topicFilter.includes(tp))
+      return levelOk && dialectOk && topicOk
     })
-  }, [videos, levelFilter, dialectFilter])
+  }, [videos, levelFilter, dialectFilter, topicFilter])
 
-  const hasFilters = levelFilter.length > 0 || dialectFilter.length > 0
+  const hasFilters =
+    levelFilter.length > 0 || dialectFilter.length > 0 || topicFilter.length > 0
+
+  const clearAll = () => {
+    setLevelFilter([])
+    setDialectFilter([])
+    setTopicFilter([])
+  }
+
+  // Translate a topic id via i18n if we have a mapping; otherwise show
+  // the raw id. Safe for free-form instructor-entered topics.
+  const topicLabel = (id) => v.topics?.[id] || id
 
   return (
     <section>
@@ -93,12 +117,26 @@ export default function VideosClient({ videos, initialFavorites }) {
           </div>
         </div>
 
+        {availableTopics.length > 0 && (
+          <div className="filter-group">
+            <span className="filter-label">{v.topic}</span>
+            <div className="filter-chips">
+              {availableTopics.map((tp) => (
+                <button
+                  key={tp}
+                  type="button"
+                  className={`chip ${topicFilter.includes(tp) ? 'active' : ''}`}
+                  onClick={() => toggleList(topicFilter, setTopicFilter, tp)}
+                >
+                  {topicLabel(tp)}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {hasFilters && (
-          <button
-            type="button"
-            className="filter-clear"
-            onClick={() => { setLevelFilter([]); setDialectFilter([]) }}
-          >
+          <button type="button" className="filter-clear" onClick={clearAll}>
             {v.clearFilters}
           </button>
         )}
@@ -119,7 +157,10 @@ export default function VideosClient({ videos, initialFavorites }) {
               <button
                 type="button"
                 className={`fav-heart ${favorites.includes(vid.id) ? 'active' : ''}`}
-                onClick={(e) => { e.preventDefault(); toggleFavorite(vid.id) }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  toggleFavorite(vid.id)
+                }}
                 aria-label="favorite"
               >
                 ♥
@@ -128,7 +169,9 @@ export default function VideosClient({ videos, initialFavorites }) {
                 <h3>{gloss(vid.title, lang)}</h3>
                 <div className="video-tags">
                   {vid.dialects.map((d) => (
-                    <span className="tag" key={d}>{v[d]}</span>
+                    <span className="tag" key={d}>
+                      {v[d]}
+                    </span>
                   ))}
                   <span className="tag tag-level">{v[vid.level]}</span>
                 </div>

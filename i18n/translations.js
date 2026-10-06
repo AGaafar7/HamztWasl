@@ -160,6 +160,15 @@ export const translations = {
         clearFilters: 'Clear filters',
         noResults: 'No videos match these filters yet.',
         watch: 'Watch',
+        topic: 'Topic',
+topics: {
+  greetings: 'Greetings & Introductions',
+  everyday: 'Everyday Conversation',
+  alphabet: 'Alphabet & Pronunciation',
+  culture: 'Culture & Society',
+  travel: 'Travel & Places',
+  work: 'Work & Study',
+},
       },
       videoDetail: {
         back: 'Back to videos',
@@ -423,6 +432,15 @@ export const translations = {
         clearFilters: 'مسح الفلاتر',
         noResults: 'لا توجد فيديوهات مطابقة لهذه الفلاتر بعد.',
         watch: 'مشاهدة',
+        topic: 'الموضوع',
+topics: {
+  greetings: 'التحيات والتعريف',
+  everyday: 'محادثة يومية',
+  alphabet: 'الحروف والنطق',
+  culture: 'الثقافة والمجتمع',
+  travel: 'السفر والأماكن',
+  work: 'العمل والدراسة',
+},
       },
       videoDetail: {
         back: 'العودة إلى الفيديوهات',
@@ -654,6 +672,15 @@ export const translations = {
         clearFilters: '清除筛选',
         noResults: '暂无符合筛选条件的视频。',
         watch: '观看',
+        topic: '主题',
+topics: {
+  greetings: '问候与自我介绍',
+  everyday: '日常对话',
+  alphabet: '字母与发音',
+  culture: '文化与社会',
+  travel: '旅行与地点',
+  work: '工作与学习',
+},
       },
       videoDetail: {
         back: '返回视频列表',
