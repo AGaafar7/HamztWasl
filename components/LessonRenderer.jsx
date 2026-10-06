@@ -8,6 +8,7 @@ import { speak } from '../utils/speak.js'
 import { toggleLessonCompleteAction } from '../app/actions/progress'
 import dynamic from 'next/dynamic'
 import { recordMultipleChoiceAttemptAction } from '../app/actions/practice'
+import ResetLessonProgressButton from './ResetLessonProgressButton.jsx'
 const TracingCanvas = dynamic(() => import('./TracingCanvas'), { ssr: false })
 
 /* -------- similarity helper (used by listening lesson) -------- */
@@ -191,6 +192,13 @@ const backLabel = course
         </div>
 
         
+             <div className="lesson-page-foot-actions">
+          {lesson.kind === 'multiplechoice' && (
+            <ResetLessonProgressButton
+  lessonId={lesson.id}
+  courseId={course?.id ?? null}
+/>
+          )}
           <button
             type="button"
             className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
@@ -198,6 +206,7 @@ const backLabel = course
           >
             {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
           </button>
+        </div>
       
       </div>
     </section>

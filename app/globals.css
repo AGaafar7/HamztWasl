@@ -4902,3 +4902,38 @@ padding: 24px 22px 22px;
   padding: 0;
   text-align: center;
 }
+
+.lesson-page-foot-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.reset-progress-btn {
+  color: var(--grey-dark);
+}
+
+.reset-progress-confirm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reset-progress-confirm-text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--grey-dark);
+}
+
+.reset-progress-danger {
+  background: rgba(194, 59, 59, 0.1) !important;
+  color: #C23B3B !important;
+  border: 1.5px solid rgba(194, 59, 59, 0.3) !important;
+}
+.reset-progress-danger:hover:not(:disabled) {
+  background: rgba(194, 59, 59, 0.18) !important;
+  border-color: #C23B3B !important;
+}
