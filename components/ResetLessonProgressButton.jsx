@@ -14,7 +14,7 @@ import { resetLessonAction } from '../app/actions/progress'
  * components initialise their state with useState(() => ...) and that
  * initialiser only runs on mount.
  */
-export default function ResetLessonProgressButton({ lessonId }) {
+export default function ResetLessonProgressButton({ lessonId, courseId }) {
   const [confirming, setConfirming] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
