@@ -494,11 +494,16 @@ html[dir="rtl"] .letter-card::after { background: radial-gradient(circle at 20% 
 .course-body h3 { font-size: 17.5px; margin-bottom: 8px; }
 .course-body p { font-size: 14px; margin-bottom: 18px; }
 .course-foot {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 16px; border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; 
+  
+  padding-top: 16px; 
+  border-top: 1px solid var(--line);
   margin-top: auto;
-  gap: 10px;
+  gap: 12px;
 }
+.course-foot .btn { width: 100%; }
 .instructor { display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1; }
 .instructor .avatar {
   width: 30px; height: 30px; border-radius: 50%;
