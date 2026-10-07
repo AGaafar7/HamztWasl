@@ -157,7 +157,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
         </div>
       )}
 
-      <p className="portal-note">{p.comingSoonNote}</p>
+      {/*<p className="portal-note">{p.comingSoonNote}</p>*/}
     </section>
   )
 }
