@@ -138,7 +138,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
 
                     {c.enrolled ? (
                       <Link href={`/portal/courses/${c.id}`} className="btn btn-primary btn-small">
-                        {p.continueBtn}
+                        {(c.progress ?? 0) > 0 ? p.continueBtn : 'Start course'}
                       </Link>
                     ) : (
                       <button

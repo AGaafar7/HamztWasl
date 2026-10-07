@@ -13,7 +13,7 @@ const base = [
     theme: 't1',
     level: 'beginner',
     type: 'free',
-    price: 0,
+    price: 40,
     progress: 0,
     lessons: 28,
   },
