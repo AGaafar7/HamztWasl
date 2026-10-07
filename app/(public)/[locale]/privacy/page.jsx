@@ -1,6 +1,21 @@
-export const metadata = { title: 'Privacy Policy' }
+// app/(public)/[locale]/privacy/page.jsx
+import { metadataFor, privacyPath, LOCALES } from '@/i18n/metadata.js'
+import { notFound } from 'next/navigation'
 
-export default function PrivacyPage() {
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }))
+}
+
+export async function generateMetadata({ params }) {
+  const { locale } = await params
+  if (!LOCALES.includes(locale)) return {}
+  return metadataFor('privacy', locale, privacyPath)
+}
+
+export default async function PrivacyPage({ params }) {
+  const { locale } = await params
+  if (!LOCALES.includes(locale)) notFound()
+
   return (
     <section className="section">
       <div className="wrap" style={{ maxWidth: 780 }}>

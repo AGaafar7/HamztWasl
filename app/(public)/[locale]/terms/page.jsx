@@ -1,6 +1,21 @@
-export const metadata = { title: 'Terms of Service' }
+// app/(public)/[locale]/terms/page.jsx
+import { metadataFor, termsPath, LOCALES } from '@/i18n/metadata.js'
+import { notFound } from 'next/navigation'
 
-export default function TermsPage() {
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }))
+}
+
+export async function generateMetadata({ params }) {
+  const { locale } = await params
+  if (!LOCALES.includes(locale)) return {}
+  return metadataFor('terms', locale, termsPath)
+}
+
+export default async function TermsPage({ params }) {
+  const { locale } = await params
+  if (!LOCALES.includes(locale)) notFound()
+
   return (
     <section className="section">
       <div className="wrap" style={{ maxWidth: 780 }}>
@@ -26,19 +41,19 @@ export default function TermsPage() {
           <p>Paid courses are currently in preview. When payments go live, additional terms will apply and will be presented at purchase.</p>
 
           <h2>6. Acceptable use</h2>
-          <p>You agree not to misuse the service — including attempting to access other users' accounts, scraping content at scale, or uploading unlawful material.</p>
+          <p>You agree not to misuse the service — including attempting to access other users&apos; accounts, scraping content at scale, or uploading unlawful material.</p>
 
           <h2>7. Termination</h2>
           <p>You may delete your account at any time. We may suspend or terminate accounts that violate these terms.</p>
 
           <h2>8. Disclaimer</h2>
-          <p>The service is provided "as is" without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from use of the service.</p>
+          <p>The service is provided &quot;as is&quot; without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from use of the service.</p>
 
           <h2>9. Changes</h2>
           <p>We may update these terms from time to time. Continued use after changes constitutes acceptance of the updated terms.</p>
 
           <h2>10. Contact</h2>
-          <p>Questions? Email <a href="mailto:hello@hamztwasl.app">hello@hamztwasl.app</a>.</p>
+          <p>Questions? Email <a href="mailto:a.gaafar.junior@gmail.com">a.gaafar.junior@gmail.com</a>.</p>
         </div>
       </div>
     </section>

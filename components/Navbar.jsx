@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 
@@ -57,10 +57,25 @@ export default function Navbar() {
 
         <div className="nav-actions">
           <div className="lang-switch" role="group" aria-label="Switch language">
-            <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
-            <button type="button" className={lang === 'ar' ? 'active' : ''} onClick={() => setLang('ar')}>ع</button>
-            <button type="button" className={lang === 'zh' ? 'active' : ''} onClick={() => setLang('zh')}>中</button>
-          </div>
+  {['en', 'ar', 'zh'].map((code) => {
+    const label = code === 'en' ? 'EN' : code === 'ar' ? 'ع' : '中'
+    const target = code === 'en' ? '/' : `/${code}`
+    const active = lang === code
+    return (
+      <button
+        key={code}
+        type="button"
+        className={active ? 'active' : ''}
+        onClick={() => {
+          if (active) return
+          router.push(target)
+        }}
+      >
+        {label}
+      </button>
+    )
+  })}
+</div>
 
           {!loading && (user ? (
             <>
