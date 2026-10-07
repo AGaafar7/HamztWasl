@@ -876,8 +876,8 @@ html[dir="rtl"] .letter-card::after { background: radial-gradient(circle at 20% 
 /* ---------------- Filters bar ---------------- */
 .filter-bar, .listen-picker {
   display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
+  flex-direction: column;
+  gap: 18px;
   align-items: flex-start;
   margin-bottom: 32px;
   padding-bottom: 24px;
@@ -911,6 +911,9 @@ html[dir="rtl"] .letter-card::after { background: radial-gradient(circle at 20% 
   font-size: 13px;
   cursor: pointer;
   padding: 8px 0;
+}
+.filter-bar .filter-group + .filter-group {
+  margin-top: 2px;
 }
 
 /* ---------------- Video grid + cards ---------------- */
