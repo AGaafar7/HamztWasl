@@ -17,16 +17,19 @@ const TITLES = {
     home: 'Hamzat Wasl — Learn Arabic, Letter by Letter',
     terms: 'Terms of Service',
     privacy: 'Privacy Policy',
+    contact: 'Contact Us',
   },
   ar: {
     home: 'همزة وصل — تعلّم العربية حرفًا حرفًا',
     terms: 'شروط الخدمة',
     privacy: 'سياسة الخصوصية',
+    contact: 'اتصل بنا',
   },
   zh: {
     home: 'Hamzat Wasl — 一个字母一个字母地学阿拉伯语',
     terms: '服务条款',
     privacy: '隐私政策',
+    contact: '联系我们',
   },
 }
 
@@ -35,16 +38,19 @@ const DESCRIPTIONS = {
     home: 'Hamzat Wasl helps learners everywhere learn Arabic from the alphabet up, with native instructors, real video lessons, and structured courses.',
     terms: 'Terms of service for the Hamzat Wasl Arabic learning platform.',
     privacy: 'Privacy policy for the Hamzat Wasl Arabic learning platform.',
+    contact: 'Get in touch with the Hamzat Wasl team — email or phone.',
   },
   ar: {
     home: 'همزة وصل تساعد المتعلمين في كل مكان على تعلّم العربية من الأبجدية، مع مدرّسين أصليين ودروس فيديو حقيقية ودورات منظمة.',
     terms: 'شروط استخدام منصة همزة وصل لتعلم اللغة العربية.',
     privacy: 'سياسة الخصوصية لمنصة همزة وصل لتعلم اللغة العربية.',
+    contact: 'تواصل مع فريق همزة وصل — بالبريد الإلكتروني أو الهاتف.',
   },
   zh: {
     home: 'Hamzat Wasl 帮助世界各地的学习者从字母表开始学习阿拉伯语，配有母语导师、真实视频课程和系统化学习路径。',
     terms: 'Hamzat Wasl 阿拉伯语学习平台的服务条款。',
     privacy: 'Hamzat Wasl 阿拉伯语学习平台的隐私政策。',
+    contact: '通过电子邮件或电话联系 Hamzat Wasl 团队。',
   },
 }
 
@@ -94,3 +100,7 @@ export const termsPath = (locale) =>
 /** Path helper for privacy. */
 export const privacyPath = (locale) =>
   locale === DEFAULT_LOCALE ? '/privacy' : `/${locale}/privacy`
+
+/** Path helper for contact. */
+export const contactPath = (locale) =>
+  locale === DEFAULT_LOCALE ? '/contact' : `/${locale}/contact`
