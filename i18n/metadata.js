@@ -19,6 +19,7 @@ const TITLES = {
     privacy: 'Privacy Policy',
     contact: 'Contact Us',
     refund: 'Refund Policy',
+    pricing: 'Pricing',
   },
   ar: {
     home: 'همزة وصل — تعلّم العربية حرفًا حرفًا',
@@ -26,6 +27,7 @@ const TITLES = {
     privacy: 'سياسة الخصوصية',
     contact: 'اتصل بنا',
     refund: 'سياسة الاسترداد',
+    pricing: 'الأسعار',
   },
   zh: {
     home: 'Hamzat Wasl — 一个字母一个字母地学阿拉伯语',
@@ -33,6 +35,7 @@ const TITLES = {
     privacy: '隐私政策',
     contact: '联系我们',
     refund: '退款政策',
+    pricing: '价格',
   },
 }
 
@@ -43,6 +46,7 @@ const DESCRIPTIONS = {
     privacy: 'Privacy policy for the Hamzat Wasl Arabic learning platform.',
     contact: 'Get in touch with the Hamzat Wasl team — email or phone.',
     refund: 'Refund policy for Hamzat Wasl — all purchases are non-refundable, with narrow exceptions.',
+    pricing: 'Simple, transparent pricing for Hamzat Wasl — free courses, one-time paid courses, and a monthly subscription that unlocks every practice section.',
   },
   ar: {
     home: 'همزة وصل تساعد المتعلمين في كل مكان على تعلّم العربية من الأبجدية، مع مدرّسين أصليين ودروس فيديو حقيقية ودورات منظمة.',
@@ -50,6 +54,7 @@ const DESCRIPTIONS = {
     privacy: 'سياسة الخصوصية لمنصة همزة وصل لتعلم اللغة العربية.',
     contact: 'تواصل مع فريق همزة وصل — بالبريد الإلكتروني أو الهاتف.',
     refund: 'سياسة استرداد الأموال لمنصة همزة وصل — جميع عمليات الشراء غير قابلة للاسترداد، مع استثناءات محدودة.',
+    pricing: 'أسعار بسيطة وواضحة لمنصة همزة وصل — دورات مجانية، ودورات مدفوعة لمرة واحدة، واشتراك شهري يفتح جميع أقسام التدريب.',
   },
   zh: {
     home: 'Hamzat Wasl 帮助世界各地的学习者从字母表开始学习阿拉伯语，配有母语导师、真实视频课程和系统化学习路径。',
@@ -57,6 +62,7 @@ const DESCRIPTIONS = {
     privacy: 'Hamzat Wasl 阿拉伯语学习平台的隐私政策。',
     contact: '通过电子邮件或电话联系 Hamzat Wasl 团队。',
     refund: 'Hamzat Wasl 的退款政策 — 所有购买均不予退款，仅有少量例外情况。',
+    pricing: 'Hamzat Wasl 简单透明的定价 — 免费课程、一次性付费课程，以及解锁所有练习板块的月度订阅。',
   },
 }
 
@@ -113,4 +119,8 @@ export const contactPath = (locale) =>
 
 /** Path helper for refund policy. */
 export const refundPath = (locale) =>
-  locale === DEFAULT_LOCALE ? '/refund-policy' : `/${locale}/refund-policy`;
+  locale === DEFAULT_LOCALE ? '/refund-policy' : `/${locale}/refund-policy`
+
+/** Path helper for pricing. */
+export const pricingPath = (locale) =>
+  locale === DEFAULT_LOCALE ? '/pricing' : `/${locale}/pricing`

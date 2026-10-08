@@ -45,6 +45,78 @@ export const translations = {
   addressLabel: 'Address',
 addressHint: 'Visits by appointment only.',
 },
+pricing: {
+  eyebrow: 'Pricing',
+  title: 'Simple, honest pricing',
+  lede: 'Start free. Pay only for what you need. No hidden fees, no surprise charges.',
+  free: {
+    name: 'Free',
+    price: '$0',
+    tagline: 'Everything you need to start learning Arabic.',
+    features: [
+      'All alphabet lessons (28 letters)',
+      'Video library with full transcripts',
+      'Audio dictionary across five dialects',
+      'Courses marked "Free" in the catalog',
+    ],
+    cta: 'Create a free account',
+  },
+  subscription: {
+    name: 'Practice Subscription',
+    badge: 'Most popular',
+    priceUsd: '25',
+    priceEgp: 'EGP 1,299',
+    period: 'month',
+    tagline: 'Unlocks every practice section. Cancel anytime — cancel is final.',
+    features: [
+      'Listening practice — real audio dictation',
+      'Reading practice — AI-graded comprehension',
+      'Speaking practice — pronunciation scoring',
+      'Writing practice — trace letters and words',
+      'New practice content added regularly',
+    ],
+    cta: 'Subscribe in your portal',
+  },
+  courses: {
+    name: 'Individual Courses',
+    fromUsd: '25',
+    fromEgp: 'EGP 1,299',
+    tagline: 'One-time purchase. Lifetime access to the course.',
+    features: [
+      'Pay once — no recurring charge',
+      'Keep access forever, including future updates',
+      'Grammar-intensive courses (like Arabic Rules)',
+      'Full alphabet course with 28 lessons',
+    ],
+    cta: 'Browse courses',
+  },
+  faq: {
+    title: 'Common questions',
+    items: [
+      {
+        q: 'Do I need a subscription to learn Arabic on Hamzat Wasl?',
+        a: 'No. The alphabet lessons, the video library, the audio dictionary, and all free courses are available without a subscription. The subscription only unlocks the four practice sections — Listening, Reading, Speaking, and Writing.',
+      },
+      {
+        q: 'Can I cancel my subscription?',
+        a: 'Yes, at any time from the Billing page in your portal. Cancellation is immediate — access to the practice sections ends the moment you cancel, and you will not be charged again.',
+      },
+      {
+        q: 'What currency am I charged in?',
+        a: 'Prices are listed in US dollars, but you will be charged in Egyptian pounds at checkout. The EGP price shown is an estimate and reflects the current exchange rate used by our payment processor.',
+      },
+      {
+        q: 'Are purchases refundable?',
+        a: 'All purchases are final and non-refundable, with a few narrow exceptions (duplicate charge, unauthorized charge, sustained service failure). See our full refund policy for details.',
+      },
+      {
+        q: 'Do I keep course access if I cancel my subscription?',
+        a: 'Yes. Course purchases are separate from the subscription and are yours forever, whether or not your subscription is active.',
+      },
+    ],
+  },
+  note: 'Prices are charged in Egyptian pounds at checkout. USD amounts shown are for reference and may vary slightly depending on the exchange rate at the time of purchase.',
+},
     stats: [
       { value: '378', label: 'Active learners this month' },
       { value: '19', label: 'Native Arabic instructors' },
@@ -87,7 +159,7 @@ addressHint: 'Visits by appointment only.',
       title: 'Your first Arabic lesson is free — no card required',
       lede: 'Join 12,400+ learners everywhere and get matched with a native instructor this week.',
       primary: 'Start Free Lesson',
-      ghost: 'Talk to an Advisor',
+      ghost: 'See pricing',
     },
     footer: {
       tagline: 'Helping learners everywhere go from the Arabic alphabet to real conversation, one letter at a time.',
@@ -329,6 +401,79 @@ topics: {
   addressLabel: 'العنوان',
 addressHint: 'الزيارات بموعد مسبق فقط.',
 },
+
+pricing: {
+  eyebrow: 'الأسعار',
+  title: 'أسعار واضحة وبسيطة',
+  lede: 'ابدأ مجانًا. وادفع فقط مقابل ما تحتاجه. لا رسوم خفية، ولا مفاجآت.',
+  free: {
+    name: 'مجاني',
+    price: '0$',
+    tagline: 'كل ما تحتاجه لبدء تعلم العربية.',
+    features: [
+      'جميع دروس الأبجدية (28 حرفًا)',
+      'مكتبة الفيديو مع النصوص الكاملة',
+      'القاموس الصوتي بخمس لهجات',
+      'الدورات المُعلَّمة بـ"مجانية" في الكتالوج',
+    ],
+    cta: 'أنشئ حسابًا مجانيًا',
+  },
+  subscription: {
+    name: 'اشتراك التدريب',
+    badge: 'الأكثر شعبية',
+    priceUsd: '25',
+    priceEgp: '1,299 جنيهًا',
+    period: 'شهريًا',
+    tagline: 'يفتح جميع أقسام التدريب. يمكنك الإلغاء متى شئت — الإلغاء نهائي.',
+    features: [
+      'تدريب الاستماع — إملاء من صوت حقيقي',
+      'تدريب القراءة — فهم مُقيَّم بالذكاء الاصطناعي',
+      'تدريب النطق — تقييم مخارج الحروف',
+      'تدريب الكتابة — تتبع الحروف والكلمات',
+      'محتوى تدريبي جديد يُضاف بانتظام',
+    ],
+    cta: 'اشترك من لوحتك',
+  },
+  courses: {
+    name: 'الدورات الفردية',
+    fromUsd: '25',
+    fromEgp: '1,299 جنيهًا',
+    tagline: 'دفعة واحدة. وصول مدى الحياة إلى الدورة.',
+    features: [
+      'تدفع مرة واحدة — بلا رسوم متكررة',
+      'تحتفظ بالوصول دائمًا، مع التحديثات المستقبلية',
+      'دورات مكثفة في القواعد (مثل القواعد العربية)',
+      'دورة الأبجدية الكاملة بـ28 درسًا',
+    ],
+    cta: 'تصفح الدورات',
+  },
+  faq: {
+    title: 'أسئلة شائعة',
+    items: [
+      {
+        q: 'هل أحتاج إلى اشتراك لتعلم العربية على همزة وصل؟',
+        a: 'لا. دروس الأبجدية ومكتبة الفيديو والقاموس الصوتي وجميع الدورات المجانية متاحة بدون اشتراك. الاشتراك يفتح فقط أقسام التدريب الأربعة: الاستماع والقراءة والنطق والكتابة.',
+      },
+      {
+        q: 'هل يمكنني إلغاء اشتراكي؟',
+        a: 'نعم، في أي وقت من صفحة الفواتير في لوحتك. الإلغاء فوري — ينتهي الوصول إلى أقسام التدريب لحظة الإلغاء، ولن تُفرض عليك رسوم مرة أخرى.',
+      },
+      {
+        q: 'بأي عملة سيتم تحصيل المبلغ؟',
+        a: 'الأسعار معروضة بالدولار الأمريكي، ولكن سيتم تحصيل المبلغ بالجنيه المصري عند الدفع. سعر الجنيه المعروض تقديري ويعكس سعر الصرف الحالي الذي تستخدمه بوابة الدفع.',
+      },
+      {
+        q: 'هل عمليات الشراء قابلة للاسترداد؟',
+        a: 'جميع عمليات الشراء نهائية وغير قابلة للاسترداد، مع استثناءات محدودة (رسوم مكررة، رسوم غير مصرح بها، فشل خدمة مستمر). راجع سياسة الاسترداد الكاملة للتفاصيل.',
+      },
+      {
+        q: 'هل أحتفظ بالوصول إلى الدورات إذا ألغيت اشتراكي؟',
+        a: 'نعم. شراء الدورات منفصل عن الاشتراك، وهو ملكك للأبد، سواء كان اشتراكك نشطًا أم لا.',
+      },
+    ],
+  },
+  note: 'يتم تحصيل الأسعار بالجنيه المصري عند الدفع. المبالغ بالدولار معروضة للمراجعة وقد تختلف قليلاً وفقًا لسعر الصرف وقت الشراء.',
+},
     stats: [
       { value: '378', label: 'متعلم نشط هذا الشهر' },
       { value: '19', label: 'مدرّس عربي أصلي' },
@@ -371,7 +516,7 @@ addressHint: 'الزيارات بموعد مسبق فقط.',
       title: 'درسك الأول في العربية مجاني — بدون بطاقة ائتمان',
       lede: 'انضم إلى أكثر من 12,400 متعلم حول العالم واحصل على مدرّس أصلي هذا الأسبوع.',
       primary: 'ابدأ درسًا مجانيًا',
-      ghost: 'تحدّث مع مستشار',
+      ghost: 'شاهد الأسعار',
     },
     footer: {
       tagline: 'نساعد المتعلمين في كل مكان على الانتقال من الأبجدية العربية إلى محادثة حقيقية، حرفًا بعد حرف.',
@@ -596,6 +741,79 @@ topics: {
   addressLabel: '地址',
 addressHint: '仅限预约到访。',
 },
+
+pricing: {
+  eyebrow: '价格',
+  title: '简单透明的价格',
+  lede: '免费开始。只为需要的部分付费。没有隐藏费用，没有意外收费。',
+  free: {
+    name: '免费',
+    price: '$0',
+    tagline: '开始学习阿拉伯语所需的一切。',
+    features: [
+      '全部字母课程（28个字母）',
+      '带完整文字稿的视频库',
+      '五种方言的语音词典',
+      '课程目录中标记为"免费"的课程',
+    ],
+    cta: '创建免费账号',
+  },
+  subscription: {
+    name: '练习订阅',
+    badge: '最受欢迎',
+    priceUsd: '25',
+    priceEgp: '约 1,299 埃及镑',
+    period: '月',
+    tagline: '解锁全部练习板块。可随时取消——取消立即生效。',
+    features: [
+      '听力练习 — 真实音频听写',
+      '阅读练习 — AI 评分理解题',
+      '口语练习 — 发音评分',
+      '书写练习 — 描摹字母和单词',
+      '定期添加新练习内容',
+    ],
+    cta: '在个人面板中订阅',
+  },
+  courses: {
+    name: '单独课程',
+    fromUsd: '25',
+    fromEgp: '约 1,299 埃及镑',
+    tagline: '一次性购买。终身访问该课程。',
+    features: [
+      '一次付费 — 无重复收费',
+      '永久访问，包括未来的更新',
+      '语法强化课程（如《阿拉伯语规则》）',
+      '完整的字母课程，共28节课',
+    ],
+    cta: '浏览课程',
+  },
+  faq: {
+    title: '常见问题',
+    items: [
+      {
+        q: '在 Hamzat Wasl 学阿拉伯语需要订阅吗？',
+        a: '不需要。字母课程、视频库、语音词典以及所有免费课程都无需订阅即可访问。订阅仅解锁四个练习板块——听力、阅读、口语和书写。',
+      },
+      {
+        q: '我可以取消订阅吗？',
+        a: '可以，随时可在个人面板的账单页面取消。取消立即生效——取消的那一刻练习板块的访问即结束，之后不会再被收费。',
+      },
+      {
+        q: '我以什么货币被收费？',
+        a: '价格以美元显示，但在结账时以埃及镑收费。显示的埃及镑价格为估算值，反映支付处理商当前使用的汇率。',
+      },
+      {
+        q: '购买可以退款吗？',
+        a: '所有购买均为最终交易，不予退款，仅有少量例外（重复收费、未经授权的收费、持续的服务故障）。详见完整的退款政策。',
+      },
+      {
+        q: '取消订阅后我还能保留课程访问吗？',
+        a: '可以。课程购买与订阅是分开的，无论您的订阅是否有效，都永久归您所有。',
+      },
+    ],
+  },
+  note: '结账时以埃及镑收费。显示的美元金额仅供参考，可能因购买时的汇率而略有差异。',
+},
     stats: [
       { value: '378', label: '本月活跃学习者' },
       { value: '19', label: '阿拉伯语母语导师' },
@@ -628,7 +846,7 @@ addressHint: '仅限预约到访。',
         { quote: '"我的导师每周都会当面纠正我的发音。仅这一点就比用一年的App更有价值。"', name: 'Siti R.', place: '印度尼西亚雅加达 · 对话课程' },
       ],
     },
-    ctaSection: { title: '第一节阿拉伯语课程免费——无需信用卡', lede: '加入12,400多名世界各地的学习者，本周就能匹配到一位母语导师。', primary: '开始免费试听', ghost: '咨询顾问' },
+    ctaSection: { title: '第一节阿拉伯语课程免费——无需信用卡', lede: '加入12,400多名世界各地的学习者，本周就能匹配到一位母语导师。', primary: '开始免费试听', ghost: '查看价格' },
     footer: {
       tagline: '帮助世界各地的学习者从阿拉伯字母表逐步走向真正的对话，一个字母，一个字母地积累。',
       learn: '学习', learnLinks: ['课程', '学习路径', '导师'],

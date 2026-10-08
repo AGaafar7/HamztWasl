@@ -16,7 +16,7 @@ export default function CTA() {
           </div>
           <div className="cta-actions">
             <a href="#courses" className="btn btn-primary">{c.primary}</a>
-            <a href="#" className="btn btn-on-navy">{c.ghost}</a>
+            <a href="/pricing" className="btn btn-on-navy">{c.ghost}</a>
           </div>
         </div>
       </div>
