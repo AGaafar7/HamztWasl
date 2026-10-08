@@ -42,6 +42,8 @@ export const translations = {
   phoneLabel: 'Phone',
   phoneHint: 'Weekdays, 9am–6pm Cairo time.',
   note: "For press, partnerships, or anything else that isn't covered here, email is the fastest way to reach the right person.",
+  addressLabel: 'Address',
+addressHint: 'Visits by appointment only.',
 },
     stats: [
       { value: '378', label: 'Active learners this month' },
@@ -324,6 +326,8 @@ topics: {
   phoneLabel: 'الهاتف',
   phoneHint: 'أيام الأسبوع، من ٩ صباحًا إلى ٦ مساءً بتوقيت القاهرة.',
   note: 'للصحافة أو الشراكات أو أي أمر آخر غير مذكور هنا، البريد الإلكتروني هو أسرع وسيلة للوصول إلى الشخص المناسب.',
+  addressLabel: 'العنوان',
+addressHint: 'الزيارات بموعد مسبق فقط.',
 },
     stats: [
       { value: '378', label: 'متعلم نشط هذا الشهر' },
@@ -589,6 +593,8 @@ topics: {
   phoneLabel: '电话',
   phoneHint: '工作日，开罗时间上午 9 点至下午 6 点。',
   note: '如需媒体、合作或其他未在此列出的咨询，电子邮件是联系到对应负责人最快的方式。',
+  addressLabel: '地址',
+addressHint: '仅限预约到访。',
 },
     stats: [
       { value: '378', label: '本月活跃学习者' },

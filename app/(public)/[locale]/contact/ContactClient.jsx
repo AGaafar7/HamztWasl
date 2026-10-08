@@ -37,6 +37,19 @@ export default function ContactClient() {
               <span className="contact-card-hint">{c.phoneHint}</span>
             </div>
           </a>
+
+          <div className="contact-card contact-card-static">
+  <span className="contact-card-icon" aria-hidden="true">📍</span>
+  <div className="contact-card-body">
+    <span className="contact-card-label">{c.addressLabel}</span>
+    <span className="contact-card-value contact-card-value-sm" dir="ltr">
+      Cleopatra
+      <br />
+      Alexandria, Egypt
+    </span>
+    <span className="contact-card-hint">{c.addressHint}</span>
+  </div>
+</div>
         </div>
 
         <div className="contact-note">

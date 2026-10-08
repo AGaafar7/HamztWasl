@@ -4965,6 +4965,7 @@ padding: 24px 22px 22px;
 }
 
 /* ---------------- Contact page ---------------- */
+/* ---------------- Contact page ---------------- */
 .contact-head {
   text-align: center;
   margin-bottom: 48px;
@@ -4989,8 +4990,16 @@ padding: 24px 22px 22px;
   gap: 20px;
   margin-bottom: 32px;
 }
+
+/* If there are three or more cards, the last one spans the full width
+   on two-column layouts so it doesn't sit alone in a half-width slot. */
+.contact-card:nth-child(3):last-child {
+  grid-column: 1 / -1;
+}
+
 @media (max-width: 640px) {
   .contact-grid { grid-template-columns: 1fr; }
+  .contact-card:nth-child(3):last-child { grid-column: auto; }
 }
 
 .contact-card {
@@ -5003,10 +5012,22 @@ padding: 24px 22px 22px;
   border-radius: 18px;
   transition: all 0.15s ease;
 }
+
 .contact-card:hover {
   border-color: var(--gold);
   box-shadow: 0 14px 28px -18px rgba(14, 42, 71, 0.28);
   transform: translateY(-2px);
+}
+
+/* Non-clickable contact cards (address) shouldn't lift on hover,
+   since there's no destination. */
+.contact-card-static {
+  cursor: default;
+}
+.contact-card-static:hover {
+  border-color: var(--line);
+  box-shadow: none;
+  transform: none;
 }
 
 .contact-card-icon {
@@ -5041,6 +5062,10 @@ padding: 24px 22px 22px;
   font-size: 18px;
   color: var(--navy-ink);
   overflow-wrap: anywhere;
+}
+.contact-card-value-sm {
+  font-size: 15px;
+  line-height: 1.5;
 }
 .contact-card-hint {
   font-size: 13px;
