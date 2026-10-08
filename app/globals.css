@@ -4945,3 +4945,21 @@ padding: 24px 22px 22px;
   background: rgba(194, 59, 59, 0.18) !important;
   border-color: #C23B3B !important;
 }
+
+
+/* EGP price, shown under the USD badge on paid course cards */
+.price-badge-egp {
+  position: absolute;
+  top: 44px;              /* just below the price-badge's own top: 14px + its height */
+  inset-inline-end: 14px; /* aligned with the USD badge on the right */
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(2px);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}

@@ -8,6 +8,7 @@ import { gloss } from '@/i18n/gloss.js'
 import { useAuth } from '@/context/AuthContext.jsx'
 import { enrollAction } from '@/app/actions/enrollments'
 import { createCheckoutSessionAction } from '@/app/actions/payments'
+import { formatEgp } from '@/lib/currency.js'
 
 const TABS = ['all', 'free', 'paid', 'inProgress']
 
@@ -110,6 +111,9 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
                   <span className={`price-badge ${c.type === 'free' ? 'is-free' : 'is-paid'}`}>
                     {c.type === 'free' ? p.priceFree : `$${c.price}`}
                   </span>
+                  {c.type === 'paid' && (
+  <span className="price-badge-egp">{formatEgp(c.price)}</span>
+)}
                 </div>
                 <div className="course-body">
                   <h3>{title}</h3>

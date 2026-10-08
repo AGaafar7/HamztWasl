@@ -1,13 +1,9 @@
 'use server'
 
 import { createClient } from '../../lib/supabase/server'
+import { USD_TO_EGP } from '@/lib/currency'
 
 const XPAY_BASE = 'https://api.xpay.app'
-
-// Fixed exchange rate for converting DB (USD) prices into EGP at checkout.
-// Update when the rate drifts. If you later move prices to EGP in the DB,
-// delete this and use course.price directly.
-const USD_TO_EGP = 51.94
 
 export async function createCheckoutSessionAction(courseId) {
   const supabase = await createClient()

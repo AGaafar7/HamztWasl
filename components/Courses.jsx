@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { getCourses } from '../data/courses.js'
+import { formatEgp } from '../lib/currency.js'
 
 export default function Courses() {
   const { t, lang } = useLanguage()
@@ -27,6 +28,9 @@ export default function Courses() {
                 <span className={`price-badge ${course.type === 'free' ? 'is-free' : 'is-paid'}`}>
                   {course.type === 'free' ? t.portal.priceFree : `$${course.price}`}
                 </span>
+                {course.type === 'paid' && (
+  <span className="price-badge-egp">{formatEgp(course.price)}</span>
+)}
               </div>
               <div className="course-body">
                 <h3>{course.title}</h3>
