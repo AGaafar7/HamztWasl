@@ -156,7 +156,7 @@ pricing: {
       ],
     },
     ctaSection: {
-      title: 'Your first Arabic lesson is free — no card required',
+      title: 'Your first Arabic letter and course',
       lede: 'Join 12,400+ learners everywhere and get matched with a native instructor this week.',
       primary: 'Start Free Lesson',
       ghost: 'See pricing',
@@ -513,7 +513,7 @@ pricing: {
       ],
     },
     ctaSection: {
-      title: 'درسك الأول في العربية مجاني — بدون بطاقة ائتمان',
+      title: 'حرفك العربي الأول ودورتك التعليمية',
       lede: 'انضم إلى أكثر من 12,400 متعلم حول العالم واحصل على مدرّس أصلي هذا الأسبوع.',
       primary: 'ابدأ درسًا مجانيًا',
       ghost: 'شاهد الأسعار',
@@ -846,7 +846,12 @@ pricing: {
         { quote: '"我的导师每周都会当面纠正我的发音。仅这一点就比用一年的App更有价值。"', name: 'Siti R.', place: '印度尼西亚雅加达 · 对话课程' },
       ],
     },
-    ctaSection: { title: '第一节阿拉伯语课程免费——无需信用卡', lede: '加入12,400多名世界各地的学习者，本周就能匹配到一位母语导师。', primary: '开始免费试听', ghost: '查看价格' },
+    ctaSection: { 
+      title: '您的第一个阿拉伯字母与课程',
+      lede: '加入12,400多名世界各地的学习者，本周就能匹配到一位母语导师。', 
+      primary: '开始免费试听', 
+      ghost: '查看价格'
+    },
     footer: {
       tagline: '帮助世界各地的学习者从阿拉伯字母表逐步走向真正的对话，一个字母，一个字母地积累。',
       learn: '学习', learnLinks: ['课程', '学习路径', '导师'],
