@@ -12,7 +12,7 @@ const base = [
     glyph: 'ا',
     theme: 't1',
     level: 'beginner',
-    type: 'free',
+    type: 'paid',
     price: 40,
     progress: 0,
     lessons: 28,
