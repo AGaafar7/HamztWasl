@@ -17,33 +17,6 @@ export default function PricingClient() {
         </div>
 
         <div className="pricing-grid">
-          {/* Free tier */}
-          <article className="pricing-card">
-            <header className="pricing-card-head">
-              <h2 className="pricing-card-name">{p.free.name}</h2>
-              <div className="pricing-card-price">
-                <span className="pricing-card-amount">{p.free.price}</span>
-              </div>
-              <p className="pricing-card-tagline">{p.free.tagline}</p>
-            </header>
-
-            <ul className="pricing-features">
-              {p.free.features.map((feature, i) => (
-                <li key={i}>
-                  <span className="pricing-check" aria-hidden="true">✓</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <Link
-              href={`/register`}
-              className="btn btn-ghost pricing-cta"
-            >
-              {p.free.cta}
-            </Link>
-          </article>
-
           {/* Subscription (highlighted) */}
           <article className="pricing-card pricing-card-featured">
             <span className="pricing-badge">{p.subscription.badge}</span>
