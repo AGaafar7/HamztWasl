@@ -95,7 +95,7 @@ pricing: {
     items: [
       {
         q: 'Do I need a subscription to learn Arabic on Hamzat Wasl?',
-        a: 'No. The alphabet lessons, the video library, the audio dictionary, and all free courses are available without a subscription. The subscription only unlocks the four practice sections — Listening, Reading, Speaking, and Writing.',
+        a: 'You can start with the free tier: the video library with full transcripts and the audio dictionary across five dialects are open to everyone, no card required. To go further, there are two paid options. Individual courses — like the 28-letter alphabet course, Arabic Rules, or Everyday Conversation — are a one-time purchase with lifetime access. The practice subscription separately unlocks Listening, Reading, Speaking, and Writing practice for a monthly fee. You can pick one or both, and you only pay for what you actually need.',
       },
       {
         q: 'Can I cancel my subscription?',
@@ -452,7 +452,7 @@ pricing: {
     items: [
       {
         q: 'هل أحتاج إلى اشتراك لتعلم العربية على همزة وصل؟',
-        a: 'لا. دروس الأبجدية ومكتبة الفيديو والقاموس الصوتي وجميع الدورات المجانية متاحة بدون اشتراك. الاشتراك يفتح فقط أقسام التدريب الأربعة: الاستماع والقراءة والنطق والكتابة.',
+        a: 'يمكنك البدء بالمستوى المجاني: مكتبة الفيديو مع نصوصها الكاملة، والقاموس الصوتي بخمس لهجات — كلاهما متاح للجميع دون بطاقة ائتمان. وللمتابعة إلى ما هو أبعد، هناك خياران مدفوعان. الدورات الفردية — مثل دورة الأبجدية الثمانية والعشرين حرفًا، و"القواعد العربية"، و"محادثة يومية" — بشراء لمرة واحدة مع وصول مدى الحياة. واشتراك التدريب يفتح بشكل منفصل أقسام الاستماع والقراءة والنطق والكتابة مقابل رسم شهري. يمكنك اختيار أحدهما أو كليهما، وتدفع فقط مقابل ما تحتاجه فعلاً.',
       },
       {
         q: 'هل يمكنني إلغاء اشتراكي؟',
@@ -792,7 +792,7 @@ pricing: {
     items: [
       {
         q: '在 Hamzat Wasl 学阿拉伯语需要订阅吗？',
-        a: '不需要。字母课程、视频库、语音词典以及所有免费课程都无需订阅即可访问。订阅仅解锁四个练习板块——听力、阅读、口语和书写。',
+        a: '您可以从免费部分开始：带完整文字稿的视频库，以及涵盖五种方言的语音词典，对所有人开放，无需绑定信用卡。若要继续深入学习，有两种付费选择。单独课程——如28个字母的字母课程、《阿拉伯语规则》或《日常对话》——为一次性购买，终身可访问。练习订阅则单独以月费解锁听力、阅读、口语和书写练习。您可以任选其一或两者兼选，只为真正需要的部分付费。',
       },
       {
         q: '我可以取消订阅吗？',

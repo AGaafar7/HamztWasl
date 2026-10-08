@@ -16,7 +16,7 @@ export default function PricingClient() {
           <p className="pricing-lede">{p.lede}</p>
         </div>
 
-        <div className="pricing-grid">
+        <div className="pricing-grid pricing-grid-two">
           {/* Subscription (highlighted) */}
           <article className="pricing-card pricing-card-featured">
             <span className="pricing-badge">{p.subscription.badge}</span>
