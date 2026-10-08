@@ -1,0 +1,141 @@
+letter_position,letter_name,arabic,transliteration,meaning,sort_order
+1,أَلِف,أَهْلًا وَسَهْلًا,ahlan wa sahlan,Welcome,0
+1,أَلِف,أَنَا بِخَيْر,ana bikhayr,I am fine,1
+1,أَلِف,أَحْبَبْتُ هَذَا,ahbabtu haadhaa,I liked this,2
+1,أَلِف,أَرَاكَ غَدًا,araaka ghadan,See you tomorrow,3
+1,أَلِف,أَسْكُنُ هُنَا,askunu hunaa,I live here,4
+2,بَاء,بِسْمِ اللهِ,bismillah,In the name of God,0
+2,بَاء,بَارَكَ اللهُ فِيك,baaraka allahu feek,God bless you,1
+2,بَاء,بِكَمْ هَذَا؟,bikam haadhaa?,How much is this?,2
+2,بَاء,بَيْتِي قَرِيب,baytee qareeb,My house is close,3
+2,بَاء,بِالتَّوْفِيق,bit-tawfeeq,Good luck,4
+3,تَاء,تَشَرَّفْنَا,tasharrafnaa,Nice to meet you,0
+3,تَاء,تَعَالَ هُنَا,taʿaala hunaa,Come here,1
+3,تَاء,تَمَام,tamaam,Perfect / okay,2
+3,تَاء,تَحْيَا مِصْر,tahyaa misr,Long live Egypt,3
+3,تَاء,تَقْدِيرِي لَك,taqdeeree lak,My appreciation to you,4
+4,ثَاء,ثَلَاثَة أَيَّام,thalaathat ayyaam,Three days,0
+4,ثَاء,شُكْرًا جَزِيلًا,shukran jazeelan,Thanks a lot,1
+4,ثَاء,كَثِيرًا جِدًّا,katheeran jiddan,Very much,2
+4,ثَاء,ثُمَّ مَاذَا؟,thumma maadhaa?,And then what?,3
+4,ثَاء,مِثْل هَذَا,mithl haadhaa,Like this,4
+5,جِيم,جَزَاكَ اللهُ خَيْرًا,jazaaka allahu khayran,May God reward you,0
+5,جِيم,جَمِيل جِدًّا,jameel jiddan,Very beautiful,1
+5,جِيم,جَاهِز,jaahiz,Ready,2
+5,جِيم,مَعَ السَّلَامَة,maʿa as-salaama,Goodbye,3
+5,جِيم,نَجْتَمِعُ غَدًا,najtamiʿu ghadan,We meet tomorrow,4
+6,حَاء,الحَمْدُ لِله,alhamdulillah,Praise be to God,0
+6,حَاء,حَبِيبِي,habeebee,My dear (m.),1
+6,حَاء,حَسَنًا,hasanan,Okay / well,2
+6,حَاء,حَيَّاكَ الله,hayyaaka Allah,May God greet you,3
+6,حَاء,هَذَا حَقًّا,haadhaa haqqan,This is true,4
+7,خَاء,خَيْر إِنْ شَاءَ الله,khayr in shaa Allah,"It will be fine, God willing",0
+7,خَاء,خَلَاص,khalaas,Done / enough,1
+7,خَاء,خُذْ هَذَا,khudh haadhaa,Take this,2
+7,خَاء,أَخِي الكَبِير,akhee al-kabeer,My older brother,3
+7,خَاء,خَمْسَة دَقَائِق,khamsa daqaa’iq,Five minutes,4
+8,دَال,دَقِيقَة وَاحِدَة,daqeeqa waahida,One minute,0
+8,دَال,مَا عِنْدِي دَرْس,maa ʿindee dars,I have no lesson,1
+8,دَال,أَنَا دَائِمًا هُنَا,ana daa’iman hunaa,I am always here,2
+8,دَال,دَخَلَ البَيْت,dakhala al-bayt,He entered the house,3
+8,دَال,دُرْ يَمِينًا,dur yameenan,Turn right,4
+9,ذَال,هَذَا هُوَ,haadhaa huwa,This is him,0
+9,ذَال,مَاذَا تَقْصِد؟,maadhaa taqsid?,What do you mean?,1
+9,ذَال,ذَهَبْتُ هُنَاك,dhahabtu hunaak,I went there,2
+9,ذَال,أَنْتَ ذَكِيّ,anta dhakiyy,You are clever,3
+9,ذَال,فِي ذَلِك اليَوْم,fee dhaalika al-yawm,On that day,4
+10,رَاء,رَأْيِي صَحِيح,ra’yee saheeh,My opinion is right,0
+10,رَاء,أَرْجُوك,arjook,Please (I beg you),1
+10,رَاء,رُبَّمَا,rubbamaa,Perhaps,2
+10,رَاء,أُرِيدُ هَذَا,ureedu haadhaa,I want this,3
+10,رَاء,مَرْحَبًا بِك,marhaban bik,Welcome,4
+11,زَاي,زَيْن,zayn,Beautiful / good,0
+11,زَاي,مَزْبُوط,mazboot,Precise / exactly,1
+11,زَاي,زَمَن جَمِيل,zaman jameel,Beautiful times,2
+11,زَاي,مِيزَان عَدْل,meezaan ʿadl,A just scale,3
+11,زَاي,زِيَارَة سَعِيدَة,ziyaara saʿeeda,Happy visit,4
+12,سِين,سَبَاحَة سَعِيدَة,sabaaha saʿeeda,Good morning,0
+12,سِين,سُوق الخُضَر,sooq al-khudar,Vegetable market,1
+12,سِين,سَاعَة وَاحِدَة,saaʿa waahida,One hour,2
+12,سِين,مُمْكِن سُؤَال؟,mumkin su’aal?,Can I ask?,3
+12,سِين,سِرْ عَلَى طُول,sir ʿalaa tool,Go straight,4
+13,شِين,شُكْرًا جَزِيلًا,shukran jazeelan,Thanks a lot,0
+13,شِين,شَهْر مُبَارَك,shahr mubaarak,Blessed month,1
+13,شِين,شُرْب المَاء مُهِمّ,shurb al-maa’ muhimm,Drinking water is important,2
+13,شِين,أُشَاهِد الفِيلْم,ushaahid al-film,I watch the film,3
+13,شِين,شَخْص طَيِّب,shakhs tayyib,A kind person,4
+14,صَاد,صَبَاح الخَيْر,sabaah al-khayr,Good morning,0
+14,صَاد,صِفْر,sifr,Zero,1
+14,صَاد,صَدِيقِي العَزِيز,sadeeqee al-ʿazeez,My dear friend,2
+14,صَاد,صَلَاة الفَجْر,salaat al-fajr,Dawn prayer,3
+14,صَاد,بِعَقْل صَافِي,bi-ʿaql saafee,With a clear mind,4
+15,ضَاد,أَرْض الوَطَن,ard al-watan,The homeland,0
+15,ضَاد,ضَرْبَة وَاحِدَة,darba waahida,One strike,1
+15,ضَاد,أَنَا مَرِيض قَلِيلًا,ana mareed qaleelan,I am a little sick,2
+15,ضَاد,أَبْيَض وَأَسْوَد,abyad wa aswad,White and black,3
+15,ضَاد,الرِّيَاضَة مُهِمَّة,ar-riyaada muhimma,Sport is important,4
+16,طَاء,طَيِّب,tayyib,Okay / good,0
+16,طَاء,طَبْعًا,tabʿan,Of course,1
+16,طَاء,طَرِيق طَوِيل,tareeq taweel,A long road,2
+16,طَاء,طَعَام لَذِيذ,taʿaam ladheedh,Delicious food,3
+16,طَاء,طَابَ يَوْمُك,taaba yawmuk,Have a nice day,4
+17,ظَاء,ظِلّ الشَّجَرَة,thill ash-shajara,The shade of the tree,0
+17,ظَاء,بِالظَّبْط,bith-thabt,Exactly,1
+17,ظَاء,ظَاهِر أَنَّك,thaahir annak,It seems that you,2
+17,ظَاء,مُنْتَظِر رَدَّك,muntathir raddak,Waiting for your reply,3
+17,ظَاء,ظَرْف صَغِير,tharf sagheer,A small envelope,4
+18,عَيْن,عَلَى الرَّحْب وَالسَّعَة,ʿalaa ar-rahb was-saʿa,You are most welcome,0
+18,عَيْن,عِنْدِي سُؤَال,ʿindee su’aal,I have a question,1
+18,عَيْن,مَعَ السَّلَامَة,maʿa as-salaama,Goodbye,2
+18,عَيْن,عَسَل طَبِيعِي,ʿasal tabeeʿee,Natural honey,3
+18,عَيْن,عِنْدَك وَقْت؟,ʿindak waqt?,Do you have time?,4
+19,غَيْن,غَدًا بِإِذْنِ الله,ghadan bi-idhni Allah,"Tomorrow, God willing",0
+19,غَيْن,غُرْفَة نَوْم,ghurfat nawm,Bedroom,1
+19,غَيْن,مَغْرِب جَمِيل,maghrib jameel,Beautiful sunset,2
+19,غَيْن,غَلَط صَغِير,ghalat sagheer,A small mistake,3
+19,غَيْن,غَنِيّ بِالحُبّ,ghaniyy bil-hubb,Rich in love,4
+20,فَاء,فِي أَمَانِ الله,fee amaan Allah,In God's protection,0
+20,فَاء,فَرْق كَبِير,farq kabeer,A big difference,1
+20,فَاء,فَكِّر بِخَيْر,fakkir bikhayr,Think positively,2
+20,فَاء,فَاتَ الوَقْت,faata al-waqt,The time passed,3
+20,فَاء,فَضْلًا وَكَرَمًا,fadlan wa karama,Please,4
+21,قَاف,قَبْلَ أَيَّام,qabla ayyaam,A few days ago,0
+21,قَاف,قَلْب طَيِّب,qalb tayyib,A kind heart,1
+21,قَاف,بِقَدْرِ الإِمْكَان,biqadr al-imkaan,As much as possible,2
+21,قَاف,قَاعِدَة مُهِمَّة,qaaʿida muhimma,An important rule,3
+21,قَاف,قَرِيب جِدًّا,qareeb jiddan,Very close,4
+22,كَاف,كَيْفَ حَالُك؟,kayfa haaluk?,How are you?,0
+22,كَاف,كُلَّ يَوْم,kulla yawm,Every day,1
+22,كَاف,كَلِمَة وَاحِدَة,kalima waahida,One word,2
+22,كَاف,كَثِير الشُّكْر,katheer ash-shukr,Many thanks,3
+22,كَاف,كُنْ بِخَيْر,kun bikhayr,Be well,4
+23,لاَم,لَا بَأْس,laa ba’s,No problem,0
+23,لاَم,لَيْلَة سَعِيدَة,layla saʿeeda,Good night,1
+23,لاَم,لَحْظَة وَاحِدَة,lahza waahida,One moment,2
+23,لاَم,لَعَلَّ ذَلِك,laʿalla dhaalik,Perhaps that,3
+23,لاَم,لُغَة جَمِيلَة,lugha jameela,A beautiful language,4
+24,مِيم,مَعَ السَّلَامَة,maʿa as-salaama,Goodbye,0
+24,مِيم,مَا شَاءَ الله,maa shaa Allah,What God has willed,1
+24,مِيم,مُمْكِن أُسَاعِدك؟,mumkin usaaʿidak?,Can I help you?,2
+24,مِيم,مِنْ فَضْلِك,min fadlik,Please,3
+24,مِيم,مِنْ أَيْن أَنْتَ؟,min ayna anta?,Where are you from?,4
+25,نُون,نَتَشَرَّف,natasharraf,We are honored,0
+25,نُون,نَعَمْ شُكْرًا,naʿam shukran,"Yes, thank you",1
+25,نُون,نَظْرَة سَرِيعَة,nathra sareeʿa,A quick look,2
+25,نُون,نَجْتَمِعُ لَاحِقًا,najtamiʿu laahiqan,We meet later,3
+25,نُون,نُصْف سَاعَة,nusf saaʿa,Half an hour,4
+26,هَاء,هَذَا هُوَ,haadhaa huwa,This is it,0
+26,هَاء,هَلْ عِنْدَك وَقْت؟,hal ʿindak waqt?,Do you have time?,1
+26,هَاء,هَيَّا بِنَا,hayyaa binaa,Let's go,2
+26,هَاء,هُنَا وَهُنَاك,hunaa wa hunaak,Here and there,3
+26,هَاء,هَدِيَّة صَغِيرَة,hadiyya sagheera,A small gift,4
+27,وَاو,وَاللهِ,wallahi,By God,0
+27,وَاو,وَاحِد اثْنَان,waahid ithnaan,"One, two",1
+27,وَاو,وَقْت جَيِّد,waqt jayyid,Good time,2
+27,وَاو,وَعَلَيْكُم السَّلَام,wa ʿalaykum as-salaam,And peace be upon you,3
+27,وَاو,وَجْه السَّعَادَة,wajh as-saʿaada,Face of happiness,4
+28,يَاء,يَا الله,yaa Allah,O God,0
+28,يَاء,يَوْم جَمِيل,yawm jameel,A beautiful day,1
+28,يَاء,يَدًا بِيَد,yadan bi-yad,Hand in hand,2
+28,يَاء,يَعْنِي,yaʿnee,It means,3
+28,يَاء,يَسَار وَيَمِين,yasaar wa yameen,Left and right,4

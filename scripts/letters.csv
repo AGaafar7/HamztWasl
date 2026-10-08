@@ -1,0 +1,29 @@
+id,position,glyph,name,transliteration
+alif,1,ا,أَلِف,alif
+baa,2,ب,بَاء,baa
+taa,3,ت,تَاء,taa
+thaa,4,ث,ثَاء,thaa
+jeem,5,ج,جِيم,jeem
+haa,6,ح,حَاء,haa
+khaa,7,خ,خَاء,khaa
+daal,8,د,دَال,daal
+dhaal,9,ذ,ذَال,dhaal
+raa,10,ر,رَاء,raa
+zaay,11,ز,زَاي,zaay
+seen,12,س,سِين,seen
+sheen,13,ش,شِين,sheen
+saad,14,ص,صَاد,saad
+daad,15,ض,ضَاد,daad
+taa-emphatic,16,ط,طَاء,taa (emphatic)
+thaa-emphatic,17,ظ,ظَاء,thaa (emphatic)
+ayn,18,ع,عَيْن,ayn
+ghayn,19,غ,غَيْن,ghayn
+faa,20,ف,فَاء,faa
+qaaf,21,ق,قَاف,qaaf
+kaaf,22,ك,كَاف,kaaf
+laam,23,ل,لاَم,laam
+meem,24,م,مِيم,meem
+noon,25,ن,نُون,noon
+haa-final,26,ه,هَاء,haa
+waaw,27,و,وَاو,waaw
+yaa,28,ي,يَاء,yaa
