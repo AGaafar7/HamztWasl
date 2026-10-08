@@ -46,7 +46,7 @@ export default function Footer() {
               <li><Link href="/terms">{f.supportLinks[0]}</Link></li>
               <li><Link href="/terms">{f.supportLinks[1]}</Link></li>
               <li><Link href="/refund-policy">{f.supportLinks[2]}</Link></li>
-              <li><Link href="/contact">{f.supportLinks[3]}</Link>.</li>
+              <li><Link href="/contact">{f.supportLinks[3]}</Link></li>
               <li><a href="/pricing">{f.supportLinks[4]}</a></li>
             </ul>
           </div>
