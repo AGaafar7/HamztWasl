@@ -1,5 +1,5 @@
 // app/sitemap.js
-import { SITE_URL, LOCALES, homePath, termsPath, privacyPath, contactPath } from '@/i18n/metadata.js'
+import { SITE_URL, LOCALES, homePath, termsPath, privacyPath, contactPath, refundPath } from '@/i18n/metadata.js'
 
 export default function sitemap() {
   const now = new Date()
@@ -9,6 +9,7 @@ export default function sitemap() {
     { page: 'terms', pathFor: termsPath },
     { page: 'privacy', pathFor: privacyPath },
     { page: 'contact', pathFor: contactPath },
+     { page: 'refund', pathFor: refundPath },
   ]
 
   const entries = []
