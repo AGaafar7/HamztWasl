@@ -4,7 +4,7 @@
 // Chinese national Arabic-major exams and Alexandria University grammar
 // quizzes.
 //
-// Idempotent: matches each lesson by (course_id, content->>title->>ar).
+// Idempotent: matches each lesson by (course_id, content->'title'->>'ar').
 // If a lesson with the same Arabic title exists, it is updated in place.
 // Otherwise, it is inserted.
 //
@@ -71,18 +71,28 @@ async function main() {
   // 4. Insert / update each lesson.
   let inserted = 0
   let updated = 0
+  let failed = 0
 
   for (const lesson of arabicRulesLessons) {
     const titleAr = lesson.title.ar
 
     // Look for existing lesson with this Arabic title in this course.
-    const { data: existing } = await supabase
+    // NOTE: the path uses `->` (jsonb navigation) then `->>` (text
+    // extraction). Chaining `->>` twice is invalid: `content->>'title'`
+    // already returns text, and Postgres refuses to apply `->>` to text.
+    const { data: existing, error: lookupErr } = await supabase
       .from('course_lessons')
       .select('id')
       .eq('course_id', COURSE_ID)
       .eq('kind', 'multiplechoice')
-      .eq('content->>title->>ar', titleAr)
+      .filter('content->title->>ar', 'eq', titleAr)
       .maybeSingle()
+
+    if (lookupErr) {
+      console.warn(`  ⚠ lookup "${titleAr}": ${lookupErr.message}`)
+      failed += 1
+      continue
+    }
 
     const content = {
       title: lesson.title,
@@ -96,6 +106,7 @@ async function main() {
         .eq('id', existing.id)
       if (upErr) {
         console.warn(`  ⚠ update "${titleAr}": ${upErr.message}`)
+        failed += 1
         continue
       }
       updated += 1
@@ -112,6 +123,7 @@ async function main() {
         })
       if (insErr) {
         console.warn(`  ⚠ insert "${titleAr}": ${insErr.message}`)
+        failed += 1
         continue
       }
       nextOrder += 1
@@ -120,7 +132,9 @@ async function main() {
     }
   }
 
-  console.log(`\nDone. Inserted ${inserted}, updated ${updated}, total ${arabicRulesLessons.length}.`)
+  console.log(
+    `\nDone. Inserted ${inserted}, updated ${updated}, failed ${failed}, total ${arabicRulesLessons.length}.`
+  )
 }
 
 main().catch((err) => {

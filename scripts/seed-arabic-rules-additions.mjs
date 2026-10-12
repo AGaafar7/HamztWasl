@@ -34,25 +34,32 @@ async function main() {
   let addedTotal = 0
   let skippedTotal = 0
   let lessonsTouched = 0
+  let failed = 0
 
   for (const addition of arabicRulesAdditions) {
     const titleAr = addition.titleAr
 
     // Find the existing lesson by Arabic title.
+    // NOTE: `content->'title'->>'ar'` — `->` for the intermediate step
+    // (stays jsonb), `->>` for the final extraction (returns text).
+    // The previous `content->>title->>ar` chained `->>` twice, which
+    // Postgres rejects because `->>` already returns text.
     const { data: existing, error: fetchErr } = await supabase
       .from('course_lessons')
       .select('id, content')
       .eq('course_id', COURSE_ID)
       .eq('kind', 'multiplechoice')
-      .eq('content->>title->>ar', titleAr)
+      .filter('content->title->>ar', 'eq', titleAr)
       .maybeSingle()
 
     if (fetchErr) {
       console.warn(`  ⚠ ${titleAr}: ${fetchErr.message}`)
+      failed += 1
       continue
     }
     if (!existing) {
       console.warn(`  ⚠ ${titleAr}: not found in course — skipping`)
+      failed += 1
       continue
     }
 
@@ -77,6 +84,7 @@ async function main() {
 
     if (upErr) {
       console.warn(`  ⚠ ${titleAr}: ${upErr.message}`)
+      failed += 1
       continue
     }
 
@@ -86,7 +94,9 @@ async function main() {
     console.log(`  + ${titleAr}: +${toAdd.length} new (${merged.length} total, ${skipped} skipped)`)
   }
 
-  console.log(`\nDone. ${addedTotal} questions added across ${lessonsTouched} lessons. ${skippedTotal} already present.`)
+  console.log(
+    `\nDone. ${addedTotal} questions added across ${lessonsTouched} lessons. ${skippedTotal} already present. Failed: ${failed}.`
+  )
 }
 
 main().catch((err) => {

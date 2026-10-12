@@ -556,7 +556,84 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
+  // 2. كان وأخواتها — Kāna and its sisters
+  // ============================================================
+  {
+    title: {
+      en: 'Kāna and its sisters',
+      ar: 'كان وأخواتها',
+      zh: 'كان及其姊妹词',
+    },
+    questions: [
+      {
+        id: 'kana-01',
+        prompt: 'كان المفروض أن يحضر اللقاء مدير الشركة ولكنه لم ____ بما وعد.',
+        options: [
+          { id: 'a', text: 'يَفِ' },
+          { id: 'b', text: 'وَفَى' },
+          { id: 'c', text: 'يَفِي' },
+          { id: 'd', text: 'يُفِ' },
+        ],
+        correctOptionId: 'a',
+        whyCorrect: {
+          en: 'After لم, the defective verb وفي takes the jussive with the final yāʾ dropped: يَفِ.',
+          ar: 'بعد "لم" يُجزم الفعل الناقص "وفي" بحذف الياء: لم يفِ.',
+          zh: 'لم 后缺陷动词省略结尾 ي 为 يفِ。',
+        },
+        whyWrong: {
+          b: { en: 'وَفَى is the past tense; لم requires the jussive.', ar: 'الماضي لا يجتمع مع "لم".', zh: 'لم 后不能接过去式。' },
+          c: { en: 'يَفِي is marfūʿ — the yāʾ remains.', ar: 'الرفع يقتضي وجود الياء.', zh: '主格保留 ي。' },
+          d: { en: 'يُفِ is not a valid jussive form.', ar: 'ليست صيغة جزم صحيحة.', zh: '不是有效的切格形式。' },
+        },
+      },
+      {
+        id: 'kana-02',
+        prompt: 'ما زال البدوي يسكن بيوت الشعر ____ سكنها أجداده من قبل.',
+        options: [
+          { id: 'a', text: 'لما' },
+          { id: 'b', text: 'منذ' },
+          { id: 'c', text: 'كما' },
+          { id: 'd', text: 'حيث' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'كما = "just as / the same way that" — a comparative conjunction introducing the manner clause.',
+          ar: '"كما" للتشبيه: يسكنها كما سكنها أجداده.',
+          zh: 'كما 表比喻：“就像……那样”。',
+        },
+        whyWrong: {
+          a: { en: '"لما" is a temporal negative particle, not a comparison.', ar: '"لما" للزمن والنفي.', zh: 'لما 是时间/否定虚词。' },
+          b: { en: '"منذ" = "since", does not fit.', ar: '"منذ" للزمن.', zh: 'منذ 表时间起点。' },
+          d: { en: '"حيث" = "where", does not fit.', ar: '"حيث" للمكان.', zh: 'حيث 表地点。' },
+        },
+      },
+      {
+        id: 'kana-03',
+        prompt: 'لما سمع حسن هذا الخبر السار كاد يطير ____.',
+        options: [
+          { id: 'a', text: 'فرحٌ' },
+          { id: 'b', text: 'فَرَحٌ' },
+          { id: 'c', text: 'فَرَحًا' },
+          { id: 'd', text: 'فَرِحًا' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'كاد is a sister of كان; its khabar is a present verb (يطير) plus an optional مفعول له/حال. فرحًا is the manṣūb adverbial expressing the reason/manner.',
+          ar: '"كاد" من أخوات "كان"، و"فرحًا" مفعول لأجله أو حال منصوب.',
+          zh: 'كاد 是 كان 的姊妹词；فرحًا 作宾格状语。',
+        },
+        whyWrong: {
+          a: { en: 'Marfūʿ with tanwīn, wrong case.', ar: 'الرفع لا يصح.', zh: '主格不对。' },
+          b: { en: 'Same as (a).', ar: 'الرفع لا يصح.', zh: '主格不对。' },
+          d: { en: 'فَرِحًا is the active participle, but the maṣdar/state form is expected here.', ar: '"فَرِحًا" اسم فاعل، والأليق المصدر "فرحًا".', zh: 'فَرِحًا 是主动分词，此处更宜用动词名词。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
   // 3. إنّ وأخواتها — Inna and its sisters
   // ============================================================
   {
@@ -778,7 +855,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 4. الأسماء الموصولة — Relative pronouns
   // ============================================================
   {
@@ -958,7 +1036,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 5. الأعداد والمعدود — Numbers and counted nouns
   // ============================================================
   {
@@ -1180,7 +1259,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 6. أدوات النفي والنهي — Negation and prohibition particles
   // ============================================================
   {
@@ -1444,7 +1524,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 7. النواصب والجوازم — Subjunctive and jussive triggers
   // ============================================================
   {
@@ -1771,7 +1852,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 8. الممنوع من الصرف — Diptotes
   // ============================================================
   {
@@ -1909,7 +1991,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 9. التمييز والحال — Tamyīz and Ḥāl
   // ============================================================
   {
@@ -2089,7 +2172,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 10. المبتدأ والخبر — Subject and predicate of a nominal sentence
   // ============================================================
   {
@@ -2311,7 +2395,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 11. إعراب الفعل المضارع — Iʿrāb of the present-tense verb
   // ============================================================
   {
@@ -2575,7 +2660,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 12. النعت والمنعوت — Adjective-noun agreement
   // ============================================================
   {
@@ -2713,7 +2799,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 13. الضمائر والأسماء الإشارية — Pronouns and demonstratives
   // ============================================================
   {
@@ -2852,7 +2939,7 @@ export const arabicRulesLessons = [
     ],
   },
 
-    // ============================================================
+  // ============================================================
   // 14. تعدّي الفعل ومفعولاته — Verb transitivity and objects
   // ============================================================
   {
@@ -3032,7 +3119,8 @@ export const arabicRulesLessons = [
       },
     ],
   },
-    // ============================================================
+
+  // ============================================================
   // 15. الاستثناء والأعداد المركّبة — Exception and compound numbers
   // ============================================================
   {
@@ -3171,6 +3259,600 @@ export const arabicRulesLessons = [
     ],
   },
 
+  // ============================================================
+  // 16. حروف العطف — Conjunctions
+  // ============================================================
+  {
+    title: {
+      en: 'Conjunctions — Ḥurūf al-ʿAṭf',
+      ar: 'حروف العطف',
+      zh: '连词',
+    },
+    questions: [
+      {
+        id: 'new-atf-01',
+        prompt: 'يستيقظ أحمد الساعة السابعة صباحا .... يتناول الفطور الساعة الثامنة.',
+        options: [
+          { id: 'a', text: 'أو' },
+          { id: 'b', text: 'ثم' },
+          { id: 'c', text: 'قد' },
+          { id: 'd', text: 'لا' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'ثم marks sequence with a gap in time: "he wakes at seven, then eats breakfast at eight". The hour between the two actions is the gap that ثم conveys.',
+          ar: '"ثم" للترتيب مع التراخي، وهو المناسب هنا: يستيقظ في السابعة ثم يتناول الفطور في الثامنة.',
+          zh: 'ثم 表“然后”，强调有时间间隔：“他七点起床，然后八点吃早饭”。中间一小时就是 ثم 所表达的间隔。',
+        },
+        whyWrong: {
+          a: { en: 'أو marks choice, not sequence.', ar: '"أو" للتخيير.', zh: 'أو 表选择，不表顺序。' },
+          c: { en: 'قد is a particle of emphasis or expectation, not a conjunction.', ar: '"قد" حرف تحقيق، لا عطف.', zh: 'قد 是强调虚词，不是连词。' },
+          d: { en: 'لا is negation, not a conjunction here.', ar: '"لا" للنفي.', zh: 'لا 是否定虚词。' },
+        },
+      },
+      {
+        id: 'new-atf-02',
+        prompt: 'نشترك أنا وإخوتي في كل شيء إلا الهوايات فأنا أحب الرسم أمّا أختي الصغيرة....تحب الموسيقى وكذلك أخي.',
+        options: [
+          { id: 'a', text: 'التي' },
+          { id: 'b', text: 'فـ' },
+          { id: 'c', text: 'أنّ' },
+          { id: 'd', text: 'إنّ' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'After أمّا ("as for"), the response is introduced by فـ: أمّا أختي الصغيرة فـتحب الموسيقى.',
+          ar: '"أمّا" يليها جوابها مقترنًا بالفاء: أمّا أختي الصغيرة فتحب الموسيقى.',
+          zh: 'أمّا（至于）后面的答句要用 فـ 连接：أمّا أختي الصغيرة فتحب الموسيقى。',
+        },
+        whyWrong: {
+          a: { en: 'التي is a relative pronoun; it does not connect the two clauses here.', ar: '"التي" اسم موصول، لا تصلح للربط هنا.', zh: 'التي 是关系代词，不能作此连接。' },
+          c: { en: 'أنّ introduces a nominal complement, not a response clause after أمّا.', ar: '"أنّ" للتعليق الاسمي.', zh: 'أنّ 引出名词化从句。' },
+          d: { en: 'إنّ does not fit the أمّا construction.', ar: '"إنّ" لا تصلح مع "أمّا".', zh: 'إنّ 不用于 أمّا 结构。' },
+        },
+      },
+      {
+        id: 'new-atf-03',
+        prompt: 'هل نقول كسر الزجاج ..... انكسر؟',
+        options: [
+          { id: 'a', text: 'و' },
+          { id: 'b', text: 'ثم' },
+          { id: 'c', text: 'أم' },
+          { id: 'd', text: 'أو' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'After a question with هل, the disjunctive أم separates two alternatives: "do we say the glass broke (actively) أم it broke (by itself)?" — أم is the interrogative "or".',
+          ar: '"أم" المعادلة تأتي بعد همزة الاستفهام أو "هل" للتفريق بين أمرين: هل نقول كسر أم انكسر؟',
+          zh: 'أم 是疑问性的“还是”，在 هل 之后用来区分两个选项：هل نقول كسر أم انكسر？',
+        },
+        whyWrong: {
+          a: { en: 'و is plain "and", not a disjunctive after a question.', ar: '"و" للجمع، لا للتفريق.', zh: 'و 是“和”，不能用于疑问句中的“还是”。' },
+          b: { en: 'ثم marks sequence, not a choice.', ar: '"ثم" للترتيب.', zh: 'ثم 表顺序，不表选择。' },
+          d: { en: 'أو is disjunctive but for non-interrogative choice; after هل the standard is أم.', ar: '"أو" للتخيير غير الاستفهامي، والصواب هنا "أم".', zh: 'أو 用于非疑问的选择；هل 之后的标准用 أم。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
+  // 17. الإضافة — Iḍāfah (possessive construct)
+  // ============================================================
+  {
+    title: {
+      en: 'Iḍāfah — the possessive construct',
+      ar: 'الإضافة',
+      zh: '正偏组合',
+    },
+    questions: [
+      {
+        id: 'new-idafa-01',
+        prompt: 'هي أستاذة متخصصة في .........',
+        options: [
+          { id: 'a', text: 'علمُ النفسِ' },
+          { id: 'b', text: 'علمِ النفسِ' },
+          { id: 'c', text: 'علمُ النفسُ' },
+          { id: 'd', text: 'علمِ النفسَ' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'After في, the head of the iḍāfah (علم) is majrūr: علمِ. The مضاف إليه النفس is also majrūr: النفسِ.',
+          ar: 'بعد حرف الجر "في" يكون المضاف مجرورًا: علمِ، والمضاف إليه مجرور أيضًا: النفسِ.',
+          zh: '介词 في 后的正偏组合第一项（المضاف）用属格：علمِ；第二项（المضاف إليه）也用属格：النفسِ。',
+        },
+        whyWrong: {
+          a: { en: 'علمُ is marfūʿ, but after في it must be majrūr.', ar: 'الرفع لا يصح بعد حرف الجر.', zh: 'في 后不能用主格。' },
+          c: { en: 'Both words in rafʿ — wrong case.', ar: 'الرفع في الكلمتين خطأ.', zh: '两项都用主格，错。' },
+          d: { en: 'النفسَ is manṣūb; the مضاف إليه must be majrūr.', ar: 'المضاف إليه مجرور، لا منصوب.', zh: '正偏组合第二项要用属格，不是宾格。' },
+        },
+      },
+      {
+        id: 'new-idafa-02',
+        prompt: 'أخي أستاذ في الجامعة يعمل في قسم.......',
+        options: [
+          { id: 'a', text: 'الشرق أوسط' },
+          { id: 'b', text: 'شرق الأوسط' },
+          { id: 'c', text: 'شرق أوسط' },
+          { id: 'd', text: 'الشرق الأوسط' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'The idiomatic proper noun is شرق الأوسط ("the Middle East"), an iḍāfah where the مضاف is indefinite and the مضاف إليه is definite.',
+          ar: 'الاسم الفصيح: "شرق الأوسط"، وهو مركّب إضافي فيه المضاف نكرة والمضاف إليه معرفة.',
+          zh: '标准专有名词是 شرق الأوسط（中东），正偏组合中第一项不定、第二项确指。',
+        },
+        whyWrong: {
+          a: { en: 'الشرق أوسط reverses which word gets ال — wrong construct.', ar: 'التعريف في غير موضعه.', zh: 'ال 位置颠倒，正偏组合错误。' },
+          c: { en: 'شرق أوسط lacks the ال on أوسط — wrong form.', ar: 'ناقص "ال" في المضاف إليه.', zh: '第二项缺 ال，形式不对。' },
+          d: { en: 'الشرق الأوسط puts ال on both words, breaking the iḍāfah convention.', ar: 'التعريف في المضاف خطأ.', zh: '第一项加 ال 破坏了正偏组合的规则。' },
+        },
+      },
+      {
+        id: 'new-idafa-03',
+        prompt: 'من يكتب رسائل إلى ..... دائما؟',
+        options: [
+          { id: 'a', text: 'أسرتِه' },
+          { id: 'b', text: 'أسرتُه' },
+          { id: 'c', text: 'أسرتَه' },
+          { id: 'd', text: 'أسرتْه' },
+        ],
+        correctOptionId: 'a',
+        whyCorrect: {
+          en: 'After إلى, the noun is majrūr, so أسرتِه takes kasrah on the ت before the pronoun suffix ه.',
+          ar: 'بعد حرف الجر "إلى" يكون الاسم مجرورًا، فتكسر التاء: أسرتِه.',
+          zh: 'إلى 后名词用属格，所以 ت 上标齐齿符：أسرتِه。',
+        },
+        whyWrong: {
+          b: { en: 'أسرتُه has ḍammah — wrong case after إلى.', ar: 'الضم لا يصح بعد حرف الجر.', zh: 'إلى 后不能用主格。' },
+          c: { en: 'أسرتَه has fatḥah — wrong case.', ar: 'الفتح لا يصح بعد حرف الجر.', zh: 'إلى 后不能用宾格。' },
+          d: { en: 'أسرتْه has sukūn on the ت — not a valid case ending.', ar: 'السكون لا يكون علامة إعراب.', zh: '静符不是格位符号。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
+  // 18. المفعول لأجله والمفعول المطلق — Causative & absolute objects
+  // ============================================================
+  {
+    title: {
+      en: 'Absolute and causative objects',
+      ar: 'المفعول لأجله والمفعول المطلق',
+      zh: '绝对宾语与原因宾语',
+    },
+    questions: [
+      {
+        id: 'new-maf-01',
+        prompt: 'شكرتُ الموظف على مساعدته .......كبيرا.',
+        options: [
+          { id: 'a', text: 'الشكرُ' },
+          { id: 'b', text: 'يشكرُ' },
+          { id: 'c', text: 'شكرًا' },
+          { id: 'd', text: 'شاكرًا' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'شكرًا is a مفعول مطلق (absolute object): the maṣdar of the verb repeated to intensify it, in manṣūb. The adjective كبيرًا modifies it.',
+          ar: '"شكرًا" مفعول مطلق منصوب مؤكِّد لفعله، و"كبيرًا" صفته.',
+          zh: 'شكرًا 是“绝对宾语”（动词名词的重复强调），用宾格。形容词 كبيرًا 修饰它。',
+        },
+        whyWrong: {
+          a: { en: 'الشكرُ is marfūʿ and definite — wrong case and definiteness for مفعول مطلق.', ar: 'الرفع والتعريف خطأ.', zh: '主格且确指，双重错误。' },
+          b: { en: 'يشكرُ is a verb, cannot occupy this slot.', ar: 'الفعل لا يصلح هنا.', zh: '此处不能放动词。' },
+          d: { en: 'شاكرًا is ḥāl for the speaker, but the sentence is thanking, not describing the speaker.', ar: '"شاكرًا" حال للمتكلم، والمعنى مختلف.', zh: 'شاكرًا 是说话者的状语，语义不符。' },
+        },
+      },
+      {
+        id: 'new-maf-02',
+        prompt: 'أعمل كثيرا ......في النجاح.',
+        options: [
+          { id: 'a', text: 'أرغب' },
+          { id: 'b', text: 'رغبةٌ' },
+          { id: 'c', text: 'رغبةً' },
+          { id: 'd', text: 'راغبٌ' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'رغبةً is a مفعول لأجله (causative object): the maṣdar expressing the reason for working, in manṣūb without ال and without iḍāfah.',
+          ar: '"رغبةً" مفعول لأجله منصوب، وهو مصدر يبين سبب العمل.',
+          zh: 'رغبةً 是“原因宾语”，用宾格，说明“工作”的原因：因为想在成功方面有所成就。',
+        },
+        whyWrong: {
+          a: { en: 'أرغب is a verb, cannot occupy this slot.', ar: 'الفعل لا يصلح هنا.', zh: '此处不能放动词。' },
+          b: { en: 'رغبةٌ is marfūʿ — the مفعول لأجله is manṣūb.', ar: 'الرفع لا يصح.', zh: '原因宾语要用宾格。' },
+          d: { en: 'راغبٌ is an active participle ("wishing"), not the maṣdar required here.', ar: 'اسم الفاعل لا يصلح.', zh: '主动分词不符合此处要求。' },
+        },
+      },
+      {
+        id: 'new-maf-03',
+        prompt: 'انطلقت صافرة الإنذار........قويًّا.',
+        options: [
+          { id: 'a', text: 'منطلقٌ' },
+          { id: 'b', text: 'انطلاقةً' },
+          { id: 'c', text: 'انطلاقًا' },
+          { id: 'd', text: 'انطلاقةٌ' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'انطلاقًا is the مفعول مطلق (maṣdar of the verb انطلق, manṣūb), confirming the verb: "the siren went off — a strong going-off".',
+          ar: '"انطلاقًا" مفعول مطلق منصوب مؤكِّد لفعله "انطلقت".',
+          zh: 'انطلاقًا 是绝对宾语（动词 انطلق 的动词名词），用宾格，强调动词。',
+        },
+        whyWrong: {
+          a: { en: 'منطلقٌ is a participle, not the maṣdar needed here.', ar: 'اسم الفاعل لا يصلح.', zh: '主动分词不符合要求。' },
+          b: { en: 'انطلاقةً is a "single-instance" noun; the standard مفعول مطلق uses the maṣdar انطلاقًا.', ar: 'اسم المرة لا يصلح، والصواب المصدر.', zh: '单次名词不对，应用动词名词 انطلاقًا。' },
+          d: { en: 'Marfūʿ with tanwīn — the مفعول مطلق must be manṣūb.', ar: 'الرفع لا يصح للمفعول المطلق.', zh: '绝对宾语要用宾格。' },
+        },
+      },
+      {
+        id: 'new-maf-04',
+        prompt: 'حفظت الكلمات الجديدة.........',
+        options: [
+          { id: 'a', text: 'الحفظِ' },
+          { id: 'b', text: 'حفظًا' },
+          { id: 'c', text: 'حفظُ' },
+          { id: 'd', text: 'الحفظَ' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'حفظًا is a مفعول مطلق confirming the verb حفظت: "I memorized the new words — memorizing them fully".',
+          ar: '"حفظًا" مفعول مطلق منصوب مؤكِّد لفعله "حفظت".',
+          zh: 'حفظًا 是绝对宾语，用宾格强调动词 حفظت。',
+        },
+        whyWrong: {
+          a: { en: 'الحفظِ is definite and majrūr — wrong case and definiteness.', ar: 'الجرّ والتعريف خطأ.', zh: '属格且确指，双重错误。' },
+          c: { en: 'حفظُ is marfūʿ without tanwīn — ungrammatical.', ar: 'الرفع بلا تنوين خطأ.', zh: '主格且缺鼻音。' },
+          d: { en: 'الحفظَ is definite — the مفعول مطلق is normally indefinite.', ar: 'التعريف يخالف القاعدة.', zh: '绝对宾语通常不定。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
+  // 19. الفعل والفاعل — Verb–subject agreement
+  // ============================================================
+  {
+    title: {
+      en: 'Verb–subject agreement',
+      ar: 'الفعل والفاعل',
+      zh: '动词与主语一致',
+    },
+    questions: [
+      {
+        id: 'new-fil-01',
+        prompt: 'أنا.........الفتاة السيئة أمس.',
+        options: [
+          { id: 'a', text: 'ضربتْ' },
+          { id: 'b', text: 'ضربتِ' },
+          { id: 'c', text: 'ضربتَ' },
+          { id: 'd', text: 'ضربتُ' },
+        ],
+        correctOptionId: 'd',
+        whyCorrect: {
+          en: 'The subject is أنا (1st person singular), so the past verb takes the tāʾ of the speaker: ضربتُ.',
+          ar: 'الفاعل ضمير المتكلم "أنا"، فالفعل الماضي يتصل بتاء الفاعل: ضربتُ.',
+          zh: '主语是“我”，所以过去式动词加说话者的 ت：ضربتُ。',
+        },
+        whyWrong: {
+          a: { en: 'ضربتْ is 3rd person feminine singular ("she hit").', ar: 'ضربتْ للغائبة.', zh: 'ضربتْ 是“她打了”。' },
+          b: { en: 'ضربتِ is 2nd person feminine singular.', ar: 'ضربتِ للمخاطبة.', zh: 'ضربتِ 是“你（女）打了”。' },
+          c: { en: 'ضربتَ is 2nd person masculine singular.', ar: 'ضربتَ للمخاطب.', zh: 'ضربتَ 是“你（男）打了”。' },
+        },
+      },
+      {
+        id: 'new-fil-02',
+        prompt: 'كُتبت ......بخط عربي جميل، فأعجبت كل من رآها.',
+        options: [
+          { id: 'a', text: 'الرسائلُ' },
+          { id: 'b', text: 'الرسائلَ' },
+          { id: 'c', text: 'رسائلٌ' },
+          { id: 'd', text: 'رسائلَ' },
+        ],
+        correctOptionId: 'a',
+        whyCorrect: {
+          en: 'The verb كُتبت is passive feminine singular, agreeing with the non-human plural الرسائل, which is treated as feminine singular. The subject of a passive verb is marfūʿ (nāʾib fāʿil): الرسائلُ.',
+          ar: 'الفعل "كُتبت" مبني للمجهول مؤنث، والفاعل (نائب الفاعل) مرفوع: الرسائلُ.',
+          zh: '动词 كُتبت 是被动阴性形式，与非人类复数 الرسائل 一致（按阴性单数处理）。被动动词的主语（نائب فاعل）用主格：الرسائلُ。',
+        },
+        whyWrong: {
+          b: { en: 'الرسائلَ is manṣūb — the nāʾib fāʿil must be marfūʿ.', ar: 'النصب لا يصح في نائب الفاعل.', zh: '被动主语要用主格。' },
+          c: { en: 'رسائلٌ is indefinite; the referent here is definite.', ar: 'نكرة، والمراد معرفة.', zh: '不定，此处应为确指。' },
+          d: { en: 'رسائلَ is indefinite and manṣūb — doubly wrong.', ar: 'نكرة ومنصوبة، خطأ مزدوج.', zh: '不定 + 宾格，双重错误。' },
+        },
+      },
+      {
+        id: 'new-fil-03',
+        prompt: 'الولدان ...... مع بعض باللغة الفرنسية.',
+        options: [
+          { id: 'a', text: 'يتكلمون' },
+          { id: 'b', text: 'يتكلمان' },
+          { id: 'c', text: 'تتكلمان' },
+          { id: 'd', text: 'تتكلمين' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'الولدان is masculine dual, so the present verb takes the dual alif: يتكلمان.',
+          ar: '"الولدان" مثنى مذكر، فالفعل المضارع مرفوع بالألف: يتكلمان.',
+          zh: 'الولدان 是阳性双数，所以现在时动词用 alif 表双数：يتكلمان。',
+        },
+        whyWrong: {
+          a: { en: 'يتكلمون is masculine plural — wrong number.', ar: 'الجمع لا يصح، والفاعل مثنى.', zh: '阳性复数，双数才正确。' },
+          c: { en: 'تتكلمان is 3rd person feminine dual — wrong gender.', ar: 'للمؤنث المثنى، والفاعل مذكر.', zh: '阴性双数，但主语是阳性。' },
+          d: { en: 'تتكلمين is 2nd person feminine singular — wrong person, gender, and number.', ar: 'للمخاطبة المفردة، خطأ في الوجه والعدد.', zh: '人称、性、数都不符。' },
+        },
+      },
+      {
+        id: 'new-fil-04',
+        prompt: 'الأولاد........أمس الساعة العاشرة مساء بعد كتابة الواجبات.',
+        options: [
+          { id: 'a', text: 'نام' },
+          { id: 'b', text: 'ناموا' },
+          { id: 'c', text: 'نامت' },
+          { id: 'd', text: 'ناما' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'الأولاد is masculine human plural, so the past verb takes the wāw of the plural: ناموا.',
+          ar: '"الأولاد" جمع مذكر عاقل، فالفعل الماضي يتصل بواو الجماعة: ناموا.',
+          zh: 'الأولاد 是阳性人类复数，过去式动词加 واو الجماعة：ناموا。',
+        },
+        whyWrong: {
+          a: { en: 'نام is 3rd person masculine singular.', ar: 'مفرد، والفاعل جمع.', zh: '单数，主语是复数。' },
+          c: { en: 'نامت is 3rd person feminine singular.', ar: 'للمؤنث، والفاعل مذكر.', zh: '阴性单数，与阳性复数不符。' },
+          d: { en: 'ناما is dual.', ar: 'مثنى، والفاعل جمع.', zh: '双数，主语是复数。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
+  // 20. المنادى — Vocative
+  // ============================================================
+  {
+    title: {
+      en: 'Vocative — al-Munādā',
+      ar: 'المنادى',
+      zh: '呼语',
+    },
+    questions: [
+      {
+        id: 'new-mun-01',
+        prompt: 'يا أيها......حسبك شرفًا أنك من ورثة الأنبياء.',
+        options: [
+          { id: 'a', text: 'المعلمُ' },
+          { id: 'b', text: 'المعلمَ' },
+          { id: 'c', text: 'المعلمْ' },
+          { id: 'd', text: 'المعلمِ' },
+        ],
+        correctOptionId: 'a',
+        whyCorrect: {
+          en: 'After يا أيها, the noun is mabnī ʿalā al-ḍamm when it is a single definite noun without iḍāfah: المعلمُ.',
+          ar: 'المنادى بعد "يا أيها" يكون مضمومًا إن كان مفردًا معرفة بلا إضافة: المعلمُ.',
+          zh: 'يا أيها 后的呼语，如果是确指单数且无正偏组合，用主格符号：المعلمُ。',
+        },
+        whyWrong: {
+          b: { en: 'المعلمَ is manṣūb — the munādā here takes ḍammah.', ar: 'النصب لا يصح في المنادى هنا.', zh: '呼语此处不能用宾格。' },
+          c: { en: 'Sukūn is not a case ending.', ar: 'السكون لا يصح.', zh: '静符不是格位符号。' },
+          d: { en: 'المعلمِ is majrūr — no preposition here.', ar: 'الجرّ لا يصح.', zh: '没有介词，不能用属格。' },
+        },
+      },
+      {
+        id: 'new-mun-02',
+        prompt: 'يا أيها......استمع لما ينصحك به أستاذك فهو معلمك ومرشدك في رحلة النور.',
+        options: [
+          { id: 'a', text: 'الطالبْ' },
+          { id: 'b', text: 'الطالبُ' },
+          { id: 'c', text: 'الطالبَ' },
+          { id: 'd', text: 'الطالبِ' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'Same rule as above: after يا أيها, a single definite munādā takes ḍammah: الطالبُ.',
+          ar: 'المنادى بعد "يا أيها" مضموم: الطالبُ.',
+          zh: 'يا أيها 后的呼语用主格：الطالبُ。',
+        },
+        whyWrong: {
+          a: { en: 'Sukūn is not a case ending.', ar: 'السكون لا يصح.', zh: '静符不成立。' },
+          c: { en: 'الطالبَ is manṣūb.', ar: 'النصب لا يصح.', zh: '宾格不对。' },
+          d: { en: 'الطالبِ is majrūr.', ar: 'الجرّ لا يصح.', zh: '属格不对。' },
+        },
+      },
+      {
+        id: 'new-mun-03',
+        prompt: 'يا بنت لا .............إلا الحقيقة.',
+        options: [
+          { id: 'a', text: 'قلْ' },
+          { id: 'b', text: 'قولي' },
+          { id: 'c', text: 'تقولين' },
+          { id: 'd', text: 'تقولي' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'The munādā is بنت (feminine singular), so the imperative must be feminine singular: قولي.',
+          ar: 'المنادى "بنت" مؤنث مفرد، فالأمر بالمؤنث المفرد: قولي.',
+          zh: '呼语 بنت 是阴性单数，所以命令式也用阴性单数：قولي。',
+        },
+        whyWrong: {
+          a: { en: 'قلْ is masculine singular imperative — wrong gender.', ar: 'للمذكر، والمنادى مؤنث.', zh: '阳性单数，与阴性呼语不符。' },
+          c: { en: 'تقولين is present tense, not imperative.', ar: 'المضارع لا يصلح.', zh: '现在时不是命令式。' },
+          d: { en: 'تقولي is present-tense manṣūb, not imperative.', ar: 'المضارع المنصوب لا يصلح.', zh: '这是宾格现在时，不是命令式。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
+  // 21. الظروف — Adverbs of time and place
+  // ============================================================
+  {
+    title: {
+      en: 'Adverbs of time and place',
+      ar: 'الظروف',
+      zh: '时空状语',
+    },
+    questions: [
+      {
+        id: 'new-zarf-01',
+        prompt: 'أقرأ القصص العاطفية......',
+        options: [
+          { id: 'a', text: 'ليلًا نهارًا' },
+          { id: 'b', text: 'ليلُ نهارُ' },
+          { id: 'c', text: 'ليلَ نهارَ' },
+          { id: 'd', text: 'ليلٌ نهارٌ' },
+        ],
+        correctOptionId: 'a',
+        whyCorrect: {
+          en: 'ليلًا نهارًا is a pair of accusative adverbs (ظرفا زمان) meaning "by night and by day": both take tanwīn manṣūb.',
+          ar: '"ليلًا نهارًا" ظرفا زمان منصوبان بالتنوين.',
+          zh: 'ليلًا نهارًا 是两个时间状语（宾格带鼻音）：“夜以继日”。',
+        },
+        whyWrong: {
+          b: { en: 'ليلُ نهارُ is marfūʿ without tanwīn — ungrammatical.', ar: 'الرفع بلا تنوين خطأ.', zh: '主格且缺鼻音。' },
+          c: { en: 'ليلَ نهارَ is manṣūb but missing tanwīn.', ar: 'النصب بلا تنوين خطأ.', zh: '宾格但缺鼻音。' },
+          d: { en: 'ليلٌ نهارٌ is marfūʿ — wrong case for a ظرف.', ar: 'الرفع لا يصح للظرف.', zh: '状语不能用主格。' },
+        },
+      },
+      {
+        id: 'new-zarf-02',
+        prompt: 'أستمع إلى الموسيقى ......',
+        options: [
+          { id: 'a', text: 'صباحُ' },
+          { id: 'b', text: 'صباحًا' },
+          { id: 'c', text: 'صباحِ' },
+          { id: 'd', text: 'الصباحُ' },
+        ],
+        correctOptionId: 'b',
+        whyCorrect: {
+          en: 'صباحًا is a ظرف زمان (adverb of time) in manṣūb with tanwīn: "in the morning".',
+          ar: '"صباحًا" ظرف زمان منصوب بالتنوين.',
+          zh: 'صباحًا 是时间状语，用宾格带鼻音：“在早上”。',
+        },
+        whyWrong: {
+          a: { en: 'صباحُ is marfūʿ without tanwīn.', ar: 'الرفع بلا تنوين خطأ.', zh: '主格且缺鼻音。' },
+          c: { en: 'صباحِ is majrūr — no preposition here.', ar: 'الجرّ لا يصح.', zh: '没有介词，不能用属格。' },
+          d: { en: 'الصباحُ is definite and marfūʿ — a ظرف is normally indefinite manṣūb.', ar: 'معرفة ومرفوعة، والظرف نكرة منصوبة.', zh: '确指主格，而状语通常是不定宾格。' },
+        },
+      },
+      {
+        id: 'new-zarf-03',
+        prompt: 'مكثت في القاهرة ......واستمتعت كثيرًا.',
+        options: [
+          { id: 'a', text: 'بِضعةَ شهورٍ' },
+          { id: 'b', text: 'بِضعَ شهورٍ' },
+          { id: 'c', text: 'بِضْعُ شهورٍ' },
+          { id: 'd', text: 'بِضعةُ شهرٍ' },
+        ],
+        correctOptionId: 'a',
+        whyCorrect: {
+          en: 'بضع (3–9) is the first term of an iḍāfah. Since it is a ظرف زمان here (mudda, "for a period of"), it is manṣūb. Because شهور is a plural that acts like a feminine singular for numeral agreement, the number is feminine: بِضعةَ شهورٍ.',
+          ar: '"بِضعةَ" ظرف زمان منصوب، مضاف إلى "شهورٍ" المجرور.',
+          zh: 'بضع 是正偏组合第一项。这里作时间状语（表示持续的时间），用宾格。因为 شهور 是复数且按阴性单数处理，数词用阴性形式：بِضعةَ شهورٍ。',
+        },
+        whyWrong: {
+          b: { en: 'بِضعَ is the masculine form — شهور needs the feminine بِضعةَ.', ar: 'المذكر لا يوافق "شهور".', zh: '阳性形式与 شهور 不符。' },
+          c: { en: 'بِضْعُ is marfūʿ — but a ظرف is manṣūb.', ar: 'الرفع لا يصح للظرف.', zh: '状语要用宾格。' },
+          d: { en: 'شهر should be plural (شهور) after بضع.', ar: 'المفرد لا يصلح بعد "بضع".', zh: 'بضع 后应用复数 شهور。' },
+        },
+      },
+    ],
+  },
+
+  // ============================================================
+  // 22. أسماء التفضيل — Comparatives and superlatives
+  // ============================================================
+  {
+    title: {
+      en: 'Comparatives and superlatives',
+      ar: 'أسماء التفضيل',
+      zh: '比较名词与最高级',
+    },
+    questions: [
+      {
+        id: 'new-tafdil-01',
+        prompt: 'مدينتي ......مدينة في الصين.',
+        options: [
+          { id: 'a', text: 'الأكبر' },
+          { id: 'b', text: 'أكبر' },
+          { id: 'c', text: 'كبيرة' },
+          { id: 'd', text: 'الكبرى' },
+        ],
+        correctOptionId: 'd',
+        whyCorrect: {
+          en: 'The superlative of كبير for a feminine noun is الكبرى (the feminine pattern فُعْلى). مدينتي is feminine, so الكبرى is the correct superlative: "my city is the biggest city in China".',
+          ar: 'أفعل التفضيل في المؤنث يكون على "فُعْلى": الكبرى. و"مدينتي" مؤنثة، فالصواب: الكبرى.',
+          zh: '阴性名词的最高级用 فُعْلى 形式。مدينتي 是阴性，所以用 الكبرى：“我的城市是中国最大的城市”。',
+        },
+        whyWrong: {
+          a: { en: 'الأكبر is the masculine form; مدينتي is feminine.', ar: 'مذكر، والموصوف مؤنث.', zh: '阳性形式，被修饰的是阴性。' },
+          b: { en: 'أكبر is indefinite masculine — no ال, no feminine marking.', ar: 'مذكر نكرة، لا يطابق.', zh: '阳性不定，与语境不符。' },
+          c: { en: 'كبيرة is a plain adjective ("big"), not a superlative.', ar: 'صفة عادية، لا تفضيل فيها.', zh: '普通形容词，不是最高级。' },
+        },
+      },
+      {
+        id: 'new-tafdil-02',
+        prompt: 'عندي إيمان بأن ما سأحققه هذا العام سيكون .......مما حققته من قبل.',
+        options: [
+          { id: 'a', text: 'الأعظم' },
+          { id: 'b', text: 'عظيم' },
+          { id: 'c', text: 'أعظم' },
+          { id: 'd', text: 'من أعظم' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'Before مما, the comparative takes the indefinite form أعظم: سيكون أعظم مما حققته = "will be greater than what I achieved". It is marfūʿ as the khabar of يكون.',
+          ar: '"أعظم" اسم تفضيل نكرة مرفوع خبرًا لـ"يكون"، ويليه "مما" للمقارنة.',
+          zh: '比较级 أعظم 用不定形式，作 يكون 的谓语（主格）；后面的 مما 引出比较对象。',
+        },
+        whyWrong: {
+          a: { en: 'الأعظم is definite superlative; the comparative before مما is indefinite.', ar: '"الأعظم" معرفة، والصواب النكرة.', zh: 'الأعظم 是确指最高级，接 مما 时应用不定比较级。' },
+          b: { en: 'عظيم is a plain adjective ("great") — no comparison, so مما does not fit.', ar: '"عظيم" صفة عادية.', zh: 'عظيم 是普通形容词，不含比较之意。' },
+          d: { en: 'من أعظم duplicates the comparative particle (من … من).', ar: '"من أعظم" تكرّر أداة المقارنة.', zh: 'من أعظم 重复了比较结构。' },
+        },
+      },
+      {
+        id: 'new-tafdil-03',
+        prompt: 'رأينا الرجل ...........قامةً في العالم والذي دخل موسوعة جينيس العام الماضي.',
+        options: [
+          { id: 'a', text: 'أطول' },
+          { id: 'b', text: 'الطويل' },
+          { id: 'c', text: 'الأطول' },
+          { id: 'd', text: 'طويل' },
+        ],
+        correctOptionId: 'c',
+        whyCorrect: {
+          en: 'The superlative "the tallest" is الأطول, acting as a naʿt of الرجل (which is definite). The following قامةً is tamyīz, singular manṣūb.',
+          ar: '"الأطول" اسم تفضيل معرّف، صفة لـ"الرجل"، و"قامةً" تمييز منصوب.',
+          zh: '确指最高级 الأطول 作 الرجل 的形容词；后面的 قامةً 是区分语（宾格单数）。',
+        },
+        whyWrong: {
+          a: { en: 'أطول is indefinite, but الرجل is definite.', ar: 'نكرة، والمنعوت معرفة.', zh: '不定，被修饰的名词却是确指。' },
+          b: { en: 'الطويل is the positive adjective ("tall"), not a superlative.', ar: 'صفة عادية لا تفضيل فيها.', zh: '普通形容词，不含最高级。' },
+          d: { en: 'طويل is indefinite and not a superlative.', ar: 'نكرة ولا تفضيل فيها.', zh: '不定且不是最高级。' },
+        },
+      },
+      {
+        id: 'new-tafdil-04',
+        prompt: 'هاتان الأستاذتان هما ......على الإطلاق في تعليمنا اللغة العربية.',
+        options: [
+          { id: 'a', text: 'فضيلتان' },
+          { id: 'b', text: 'فضليان' },
+          { id: 'c', text: 'أفضلان' },
+          { id: 'd', text: 'الأفضل' },
+        ],
+        correctOptionId: 'd',
+        whyCorrect: {
+          en: 'The exam key uses the fixed superlative الأفضل. Strictly, for a dual feminine subject هما the classical form would be الأفضلان or الفضليان, but neither appears in the option set. The item treats الأفضل as a fixed superlative form used regardless of the dual subject.',
+          ar: 'الصيغة الفصيحة الدقيقة للمثنى المؤنث: "الأفضلان"، لكن الامتحان اعتمد "الأفضل" صيغةً ثابتة.',
+          zh: '严格来说，阴性双数 هما 对应的最高级应是 الأفضلان，但选项里没有。本题按固定用法取 الأفضل。',
+        },
+        whyWrong: {
+          a: { en: 'فضيلتان is a positive adjective ("virtuous") in the feminine dual, not a superlative.', ar: 'صفة عادية لا تفضيل فيها.', zh: '普通形容词“有美德的”，不是最高级。' },
+          b: { en: 'فضليان is a nonstandard spelling of فضيلان.', ar: 'صيغة غير قياسية.', zh: '非标准拼写。' },
+          c: { en: 'أفضلان is not the standard dual form of أفضل.', ar: 'صيغة غير قياسية.', zh: '非标准形式。' },
+        },
+      },
+    ],
+  },
 ]
 
 export function getLessonCount() {
