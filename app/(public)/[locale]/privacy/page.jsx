@@ -45,7 +45,7 @@ export default async function PrivacyPage({ params }) {
           </ul>
 
           <h2>Your rights</h2>
-          <p>You can request a copy of your data, correct any inaccuracies, or ask us to delete your account and all associated data at any time. Email <a href="mailto:privacy@hamztwasl.app">privacy@hamztwasl.app</a>.</p>
+          <p>You can request a copy of your data, correct any inaccuracies, or ask us to delete your account and all associated data at any time. Email <a href="mailto:a.gaafar.junior@gmail.com">a.gaafar.junior@gmail.com</a>.</p>
 
           <h2>Children</h2>
           <p>This service is not directed at children under 13. If you believe a child has created an account, please contact us and we will delete it.</p>

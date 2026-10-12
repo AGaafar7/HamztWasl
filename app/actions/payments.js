@@ -90,7 +90,7 @@ export async function createSubscriptionCheckoutAction() {
   if (!secretKey) throw new Error('XPay is not configured')
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hamztwasl.vercel.app'
-  const amountEgp = Math.round(25 * 50 * 100)  // $25 × USD_TO_EGP × piasters
+  const amountEgp = Math.round(25 * USD_TO_EGP * 100)  // $25 × USD_TO_EGP × piasters
 
   const res = await fetch('https://api.xpay.app/checkout/sessions', {
     method: 'POST',

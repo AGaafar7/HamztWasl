@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getTranscription, normalizeTranscript } from '../../../../lib/assemblyai.js'
 import { reviseTranscript } from '../../../../lib/transcript-revision.js'
+import { createClient } from '@/lib/supabase/server'
 
 /**
  * GET /api/transcribe/[id]
@@ -17,6 +18,21 @@ import { reviseTranscript } from '../../../../lib/transcript-revision.js'
  * errors that are internally inconsistent.
  */
 export async function GET(request, { params }) {
+  const supabase = await createClient()
+const { data: { user } } = await supabase.auth.getUser()
+if (!user) {
+  return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 })
+}
+
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', user.id)
+  .single()
+
+if (profile?.role !== 'instructor' && profile?.role !== 'admin') {
+  return NextResponse.json({ error: 'Forbidden.' }, { status: 403 })
+}
   const { id } = await params
   if (!id) {
     return NextResponse.json({ error: 'Transcript id is required.' }, { status: 400 })

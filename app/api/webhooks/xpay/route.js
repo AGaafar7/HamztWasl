@@ -91,9 +91,6 @@ export async function POST(request) {
   }
 
   // ---- Branch 1: subscription payment ------------------------------
-  // Extends the user's subscription by 30 days. If they're already
-  // subscribed and haven't expired, the days stack on top of the
-  // existing expiry. If they're new or expired, it starts from today.
   if (kind === 'subscription') {
   // Every payment buys exactly 30 days from today. No stacking, no
   // preservation of previous dates. Buying again after a cancel

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { submitTranscription } from '../../../lib/assemblyai.js'
-
+import { createClient } from '@/lib/supabase/server'
 /**
  * POST /api/transcribe
  * Body: { audioUrl: string, languageCode?: string }
@@ -13,6 +13,22 @@ import { submitTranscription } from '../../../lib/assemblyai.js'
  * doesn't source audio for you.
  */
 export async function POST(request) {
+  const supabase = await createClient()
+const { data: { user } } = await supabase.auth.getUser()
+if (!user) {
+  return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 })
+}
+
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', user.id)
+  .single()
+
+if (profile?.role !== 'instructor' && profile?.role !== 'admin') {
+  return NextResponse.json({ error: 'Forbidden.' }, { status: 403 })
+}
+
   let body
   try {
     body = await request.json()

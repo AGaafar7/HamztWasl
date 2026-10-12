@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
 
-const MODEL = 'gemini-3.5-flash'
+const MODEL = 'gemini-3.6-flash'
 const BATCH_SIZE = 30
 
 function isQuotaExceeded(err) {

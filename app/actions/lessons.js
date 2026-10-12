@@ -52,7 +52,35 @@ function validateLessonContent(kind, content) {
       if (!(content.items || []).some((it) => (it.arabic || '').trim())) {
         errors.push('At least one Arabic item is required.')
       }
-      break
+      break 
+    case 'multiplechoice': {
+  const qs = content.questions || []
+  if (qs.length === 0) {
+    errors.push('At least one question is required.')
+    break
+  }
+  for (let i = 0; i < qs.length; i++) {
+    const q = qs[i]
+    const n = i + 1
+    if (!(q.prompt || '').trim()) {
+      errors.push(`Question ${n}: prompt is required.`)
+    }
+    const filled = (q.options || []).filter((o) => (o.text || '').trim()).length
+    if (filled < 2) {
+      errors.push(`Question ${n}: at least 2 options are required.`)
+    }
+    const correctOk =
+      q.correctOptionId &&
+      (q.options || []).find(
+        (o) => o.id === q.correctOptionId && (o.text || '').trim()
+      )
+    if (!correctOk) {
+      errors.push(`Question ${n}: pick a correct option.`)
+    }
+  }
+  break
+    }
+    
     // video: no content validation
   }
 
