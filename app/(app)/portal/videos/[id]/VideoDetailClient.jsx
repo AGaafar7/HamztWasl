@@ -197,10 +197,6 @@ export default function VideoDetailClient({ video, moreVideos }) {
         </div>
       </div>
 
-      <Link href={`/portal/videos/${video.id}/edit`} className="instructor-tools-link">
-        Instructor tools (transcription &amp; timing) →
-      </Link>
-
       {examplesFor && (
         <WordExamplesModal
           word={examplesFor.word}

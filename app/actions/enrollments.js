@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache'
  * a no-op, not an error.
  *
  * PAID courses are intentionally rejected here: paid enrollment only
- * happens via the Paymob webhook (see app/api/webhooks/paymob/route.js).
+ * happens via the Paymob webhook (see app/api/webhooks/xpay/route.js).
  * This guard prevents a student from bypassing checkout by calling the
  * action directly from devtools or a crafted request.
  */
