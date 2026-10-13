@@ -1,0 +1,29 @@
+include,arabic_original,arabic_corrected,transliteration,meaning_en,meaning_zh,title_en,title_ar,title_zh,notes
+yes,سَاعَةٌ,سَاعَةٌ,saa'a,hour / watch,小时/手表,Hour (singular),سَاعَةٌ,小时,
+yes,سَاعَاتٌ,سَاعَاتٌ,saa'aat,hours / watches (plural of سَاعَة),小时/手表（复数）,Hours (plural),سَاعَاتٌ,小时（复数）,
+yes,يَوْمٌ,يَوْمٌ,yawm,day,天,Day (singular),يَوْمٌ,天,
+yes,أَيَّامٌ,أَيَّامٌ,ayyaam,days (plural of يَوْم),天（复数）,Days (plural),أَيَّامٌ,天（复数）,
+yes,الْيَوْمُ,الْيَوْمُ,al-yawm,today,今天,Today,الْيَوْمُ,今天,
+yes,أُسْبُوعٌ,أُسْبُوعٌ,usbuu',week,星期,Week,أُسْبُوعٌ,星期,
+yes,أَسَابِيعُ,أَسَابِيعُ,asaabii',weeks (plural of أُسْبُوع),星期（复数）,Weeks,أَسَابِيعُ,星期（复数）,
+yes,أَمْسِ,أَمْسِ,amsi,yesterday,昨天,Yesterday,أَمْسِ,昨天,
+yes,الْغَدُ,الْغَدُ,al-ghad,tomorrow (definite),明天,Tomorrow,الْغَدُ,明天,
+yes,غَدًا,غَدًا,ghadan,tomorrow (adverbial),明天（副词）,Tomorrow (adverbial),غَدًا,明天,
+yes,يَوْمُ السَّبْتِ,يَوْمُ السَّبْتِ,yawmu as-sabt,Saturday,星期六,Saturday,يَوْمُ السَّبْتِ,星期六,
+yes,يَوْمُ الأحدِ,يَوْمُ الْأَحَدِ,yawmu al-ahad,Sunday,星期日,Sunday,يَوْمُ الْأَحَدِ,星期日,added hamza
+yes,يَوْمُ الأِنْنَيْنِ,يَوْمُ الاثْنَيْنِ,yawmu al-ithnayn,Monday,星期一,Monday,يَوْمُ الاثْنَيْنِ,星期一,typo: الأِنْنَيْنِ → الاثْنَيْنِ
+yes,يَوْمُ الثُّلاثَاءِ,يَوْمُ الثُّلَاثَاءِ,yawmu ath-thulaathaa',Tuesday,星期二,Tuesday,يَوْمُ الثُّلَاثَاءِ,星期二,added shaddah on ل
+yes,يَوْمُ الأَرْبِعَاءِ,يَوْمُ الْأَرْبِعَاءِ,yawmu al-arbi'aa',Wednesday,星期三,Wednesday,يَوْمُ الْأَرْبِعَاءِ,星期三,
+yes,يَوْمُ الْخَمِیسِ,يَوْمُ الْخَمِيسِ,yawmu al-khamiis,Thursday,星期四,Thursday,يَوْمُ الْخَمِيسِ,星期四,used Arabic ي
+yes,يَوْمُ الْجُمْعَةِ,يَوْمُ الْجُمْعَةِ,yawmu al-jum'a,Friday,星期五,Friday,يَوْمُ الْجُمْعَةِ,星期五,
+yes,نَهَارُكَ سَعِيدٌ,نَهَارُكَ سَعِيدٌ,nahaaruka sa'iid,have a nice day,祝你白天愉快,Have a nice day,نَهَارُكَ سَعِيدٌ,祝你白天愉快,
+yes,لَیْلَی,لَيْلَى,laylaa,Layla (name),莱拉（人名）,Layla,لَيْلَى,莱拉,used Arabic ى
+yes,أَحَدٌ,أَحَدٌ,ahad,one (male),一个（阳）,One (male),أَحَدٌ,一个,
+yes,إحْدَى,إِحْدَى,ihdaa,one (female),一个（阴）,One (female),إِحْدَى,一个,added hamza
+yes,لَيْسَ,لَيْسَ,laysa,is not (male),不是（阳）,Is not (male),لَيْسَ,不是,
+yes,لَيْسَتْ,لَيْسَتْ,laysat,is not (female),不是（阴）,Is not (female),لَيْسَتْ,不是,
+yes,الآنَ,الْآنَ,al-aan,now,现在,Now,الْآنَ,现在,added hamza+maddah
+yes,عَرَبِيٌّ,عَرَبِيٌّ,'arabiyy,Arab / Arabic (male),阿拉伯的（阳）,Arab (male),عَرَبِيٌّ,阿拉伯的,
+yes,عَرَبيَّةٌ,عَرَبِيَّةٌ,'arabiyya,Arab / Arabic (female),阿拉伯的（阴）,Arab (female),عَرَبِيَّةٌ,阿拉伯的,added kasrah under ب
+yes,فَقَطْ,فَقَطْ,faqat,only,只,Only,فَقَطْ,只,
+yes,طَبْعًا,طَبْعًا,tab'an,of course,当然,Of course,طَبْعًا,当然,

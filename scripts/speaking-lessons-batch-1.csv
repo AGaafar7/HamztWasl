@@ -1,0 +1,19 @@
+include,arabic_original,arabic_corrected,transliteration,meaning_en,meaning_zh,title_en,title_ar,title_zh,notes
+yes,حُجْرَةُ الدَّرْسِ,حُجْرَةُ الدَّرْسِ,hujratu al-dars,classroom,教室,Classroom,حُجْرَةُ الدَّرْسِ,教室,
+yes,مَكْتَبُ الْكُلِيَّة,مَكْتَبُ الْكُلِّيَّةِ,maktabu al-kulliyya,college office,学院办公室,College office,مَكْتَبُ الْكُلِّيَّةِ,学院办公室,added shaddah and kasrah ending
+yes,غُرْفَةُ النَّوْمِ,غُرْفَةُ النَّوْمِ,ghurfatu an-nawm,bedroom,卧室,Bedroom,غُرْفَةُ النَّوْمِ,卧室,
+yes,سَريرٌ,سَرِيرٌ,sariir,bed,床,Bed (singular),سَرِيرٌ,床,
+yes,أسرَّةٌ,أَسِرَّةٌ,asirra,beds (plural of سَرِير),床（复数）,Beds (plural),أَسِرَّةٌ,床（复数）,
+yes,مَكْتَبٌ,مَكْتَبٌ,maktab,desk / office,书桌/办公室,Desk (singular),مَكْتَبٌ,书桌,
+yes,مَكَاتبُ,مَكَاتِبُ,makaatib,desks (plural of مَكْتَب),书桌（复数）,Desks (plural),مَكَاتِبُ,书桌（复数）,added kasrah after ت
+yes,حَقيبَةٌ,حَقِيبَةٌ,haqiiba,bag / briefcase,包/公文包,Bag (singular),حَقِيبَةٌ,包,
+yes,حَقَائبُ,حَقَائِبُ,haqaa'ib,bags (plural of حَقِيبَة),包（复数）,Bags (plural),حَقَائِبُ,包（复数）,
+yes,مَطْعَمُ,مَطْعَمٌ,mat'am,restaurant,餐厅,Restaurant (singular),مَطْعَمٌ,餐厅,added tanwīn on singular
+yes,مَطَاعِمُ,مَطَاعِمُ,mataa'im,restaurants (plural of مَطْعَم),餐厅（复数）,Restaurants (plural),مَطَاعِمُ,餐厅（复数）,
+yes,مَائدَةٌ,مَائِدَةٌ,maa'ida,table / dining table,餐桌,Table (singular),مَائِدَةٌ,餐桌,
+yes,مَوَائدُ,مَوَائِدُ,mawaa'id,tables (plural of مَائِدَة),餐桌（复数）,Tables (plural),مَوَائِدُ,餐桌（复数）,
+yes,مَقْعَدٌ,مَقْعَدٌ,maq'ad,seat / chair,座位,Seat (singular),مَقْعَدٌ,座位,
+yes,مَفَاعدُ,مَقَاعِدُ,maqaa'id,seats (plural of مَقْعَد),座位（复数）,Seats (plural),مَقَاعِدُ,座位（复数）,typo: مَفَاعدُ → مَقَاعِدُ
+yes,كُمْبيُوتَرْ,كُمْبْيُوتَرٌ,kumbiyuutar,computer,电脑,Computer,كُمْبْيُوتَرٌ,电脑,
+yes,كُمْبيوتَرَاتٌ,كُمْبْيُوتَرَاتٌ,kumbiyuutaraat,computers,电脑（复数）,Computers,كُمْبْيُوتَرَاتٌ,电脑（复数）,
+yes,مطعم الطلبة,مَطْعَمُ الطَّلَبَةِ,mat'amu at-talaba,students' cafeteria,学生食堂,Students' cafeteria,مَطْعَمُ الطَّلَبَةِ,学生食堂,

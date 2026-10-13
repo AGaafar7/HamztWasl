@@ -15,11 +15,14 @@ export default function LessonLibraryList({
   const completedSet = useMemo(() => new Set(completedIds), [completedIds])
 
   if (!lessons || lessons.length === 0) return null
+  const showArabicTitle = from === 'speaking'
+
 
   return (
     <div className="lesson-library">
       {lessons.map((lesson) => {
-        const title = gloss(lesson.content?.title, lang) || 'Untitled lesson'
+        const titleEn = gloss(lesson.content?.title, lang) || 'Untitled lesson'
+        const titleAr = lesson.content?.title?.ar || ''
         const source = lesson.courseId
           ? gloss(lesson.courseTitle, lang) || 'Course lesson'
           : 'Standalone lesson'
@@ -42,7 +45,16 @@ export default function LessonLibraryList({
           >
             <div className="lesson-library-body">
               <span className="lesson-library-source">{source}</span>
-              <h3 className="lesson-library-title">{title}</h3>
+                {showArabicTitle && titleAr ? (
+                <>
+                  <h3 className="lesson-library-title arabic" dir="rtl">
+                    {titleAr}
+                  </h3>
+                  <span className="lesson-library-subtitle">{titleEn}</span>
+                </>
+              ) : (
+                <h3 className="lesson-library-title">{titleEn}</h3>
+              )}
             </div>
             {done ? (
               <span className="lesson-library-check">✓</span>

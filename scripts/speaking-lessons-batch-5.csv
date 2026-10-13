@@ -1,0 +1,41 @@
+include,arabic_original,arabic_corrected,transliteration,meaning_en,meaning_zh,title_en,title_ar,title_zh,notes
+yes,أَهْلاً وَسَهْلاً,أَهْلًا وَسَهْلًا,ahlan wa sahlan,welcome,欢迎,Welcome,أَهْلًا وَسَهْلًا,欢迎,
+yes,أَهْلا بِكَ,أَهْلًا بِكَ,ahlan bik,welcome (to you),欢迎你,Welcome to you,أَهْلًا بِكَ,欢迎你,
+yes,السَّلَاَمُ عَلَيْكُمْ,السَّلَامُ عَلَيْكُمْ,as-salaamu 'alaykum,peace be upon you,愿平安降临于你,Peace be upon you,السَّلَامُ عَلَيْكُمْ,愿平安降临于你,
+yes,وَعَلَيْكُمُ السَّلَامُ,وَعَلَيْكُمُ السَّلَامُ,wa 'alaykumu as-salaam,and peace be upon you too,也愿你平安,And peace be upon you,وَعَلَيْكُمُ السَّلَامُ,也愿你平安,
+yes,إِلَى اللِّقَاءِ,إِلَى اللِّقَاءِ,ila al-liqaa',see you later,再见,See you later,إِلَى اللِّقَاءِ,再见,
+yes,مَعَ السَّلَاَمَةِ,مَعَ السَّلَامَةِ,ma'a as-salaama,goodbye,再见,Goodbye,مَعَ السَّلَامَةِ,再见,
+yes,شُكْرًا,شُكْرًا,shukran,thank you,谢谢,Thank you,شُكْرًا,谢谢,
+yes,عَفْوًا,عَفْوًا,'afwan,you're welcome / pardon me,不客气,You're welcome,عَفْوًا,不客气,
+yes,مَسَاءَ الْخَيْرِ,مَسَاءَ الْخَيْرِ,masaa' al-khayr,good evening,晚上好,Good evening,مَسَاءَ الْخَيْرِ,晚上好,
+yes,لَوْ سَمحْتَ,لَوْ سَمَحْتَ,law samaht,please / excuse me,请/对不起,Please,لَوْ سَمَحْتَ,请,
+yes,شُكْرًا جزِيلاً,شُكْرًا جَزِيلًا,shukran jaziilan,thank you very much,非常感谢,Thank you very much,شُكْرًا جَزِيلًا,非常感谢,
+yes,جُدُرٌ وجُدْرَانٌ,جُدُرٌ وَجُدْرَانٌ,judur wa judraan,walls (plural of جِدَار),墙壁（复数）,Walls,جُدُرٌ وَجُدْرَانٌ,墙壁,plural forms
+yes,جدَارٌ,جِدَارٌ,jidaar,wall,墙,Wall (singular),جِدَارٌ,墙,
+yes,وَرَاءَ,وَرَاءَ,waraa',behind,在……后面,Behind,وَرَاءَ,后面,
+yes,أمّامَ,أَمَامَ,amaam,in front of,在……前面,In front of,أَمَامَ,前面,single mīm
+yes,بِیْنَ,بَيْنَ,bayna,between,在……之间,Between,بَيْنَ,之间,used Arabic ي
+yes,قُرْبَ,قُرْبَ,qurba,near,在……附近,Near,قُرْبَ,附近,
+yes,عَلَى,عَلَى,'alaa,on / upon,在……上面,On,عَلَى,上面,
+yes,تلْفُونٌ,تِلْفُونٌ,tilfuun,telephone,电话,Telephone (singular),تِلْفُونٌ,电话,added kasrah
+yes,تلْفُونَاتٌ,تِلْفُونَاتٌ,tilfuunaat,telephones,电话（复数）,Telephones (plural),تِلْفُونَاتٌ,电话（复数）,
+yes,دُرْجٌ,دُرْجٌ,durj,drawer,抽屉,Drawer (singular),دُرْجٌ,抽屉,
+yes,أُدرَاجٌ,أَدْرَاجٌ,adraaj,drawers (plural of دُرْج),抽屉（复数）,Drawers (plural),أَدْرَاجٌ,抽屉（复数）,standard plural is أدراج
+yes,مَجَلَّةٌ,مَجَلَّةٌ,majalla,magazine,杂志,Magazine (singular),مَجَلَّةٌ,杂志,
+yes,مَجَلاتٌ,مَجَلَّاتٌ,majallaat,magazines (plural of مَجَلَّة),杂志（复数）,Magazines (plural),مَجَلَّاتٌ,杂志（复数）,added shaddah
+yes,رَفٌّ,رَفٌّ,raff,shelf,架子,Shelf (singular),رَفٌّ,架子,
+yes,رُقُوفْ,رُفُوفٌ,rufuuf,shelves (plural of رَفّ),架子（复数）,Shelves (plural),رُفُوفٌ,架子（复数）,typo: رُقُوفْ → رُفُوفٌ
+yes,حَديقَةٌ,حَدِيقَةٌ,hadeeqa,garden,花园,Garden (singular),حَدِيقَةٌ,花园,used Arabic ي
+yes,حَدَائِقُ,حَدَائِقُ,hadaa'iq,gardens (plural of حَدِيقَة),花园（复数）,Gardens (plural),حَدَائِقُ,花园（复数）,
+yes,مَكْتَبَةً,مَكْتَبَةٌ,maktaba,library / bookstore,图书馆/书店,Library (singular),مَكْتَبَةٌ,图书馆,singular ends in ةٌ
+yes,مَكَاتِبُ,مَكَاتِبُ,makaatib,libraries (alternate plural),图书馆（复数）,Libraries (alternate),مَكَاتِبُ,图书馆（复数）,
+yes,مَكْتُبَاتٌ,مَكْتَبَاتٌ,maktabaat,libraries / bookstores (plural of مَكْتَبَة),图书馆（复数）,Libraries (standard),مَكْتَبَاتٌ,图书馆（复数）,standard plural
+yes,مَسْكَزٌ,مَسْكَنٌ,maskan,residence / dwelling,住所,Residence (singular),مَسْكَنٌ,住所,typo: مَسْكَزٌ → مَسْكَنٌ
+yes,مَسَاكِنُ,مَسَاكِنٌ,masaakin,residences (plural of مَسْكَن),住所（复数）,Residences (plural),مَسَاكِنٌ,住所（复数）,
+yes,سُوقٌ,سُوقٌ,suuq,market,市场,Market (singular),سُوقٌ,市场,
+yes,مُوَظّفٌ,مُوَظَّفٌ,muwazzaf,employee (male),职员（阳）,Employee (male),مُوَظَّفٌ,职员,added shaddah on ف
+yes,مُوَظَّفَةٌ,مُوَظَّفَةٌ,muwazzafa,employee (female),职员（阴）,Employee (female),مُوَظَّفَةٌ,职员（女）,added shaddah on ف
+yes,طُلاّبٌ,طُلَّابٌ,tullaab,students (plural of طَالِب),学生（复数）,Students (plural),طُلَّابٌ,学生（复数）,added shaddah
+yes,طَلَبَةٌ,طَلَبَةٌ,talaba,students (alternate plural),学生（复数）,Students (alternate),طَلَبَةٌ,学生（复数）,
+yes,طَالِبَةٌ,طَالِبَةٌ,taaliba,student (female),学生（阴）,Student (female),طَالِبَةٌ,学生（女）,
+yes,طَالِبَاتٌ,طَالِبَاتٌ,taalibaat,students (female plural),学生（女复数）,Students (female plural),طَالِبَاتٌ,学生（女复数）,

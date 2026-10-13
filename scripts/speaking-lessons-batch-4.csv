@@ -1,0 +1,41 @@
+include,arabic_original,arabic_corrected,transliteration,meaning_en,meaning_zh,title_en,title_ar,title_zh,notes
+yes,كَریمَةُ,كَرِيمَةُ,kariima,Karima (name),卡里玛（人名）,Karima,كَرِيمَةُ,卡里玛,used Arabic ي
+yes,مُهَنْدسٌ,مُهَنْدِسٌ,muhandis,engineer,工程师,Engineer,مُهَنْدِسٌ,工程师,added kasrah
+yes,قَلمٌ,قَلَمٌ,qalam,pen,笔,Pen,قَلَمٌ,笔,added vowel
+yes,مُفيدَةٌ,مُفِيدَةٌ,mufiida,useful (female),有用的（阴）,Useful,مُفِيدَةٌ,有用的,added kasrah
+yes,كثيرٌ,كَثِيرٌ,kathiir,much / many,很多,Many,كَثِيرٌ,很多,used Arabic ي
+yes,جَامعَةٌ جَميلَةٌ,جَامِعَةٌ جَمِيلَةٌ,jaami'a jamiila,a beautiful university,一所美丽的大学,A beautiful university,جَامِعَةٌ جَمِيلَةٌ,美丽的大学,added kasrah; phrase
+yes,كَيْفَ حَالُكَ ؟,كَيْفَ حَالُكَ؟,kayfa haaluk,how are you?,你好吗？,How are you?,كَيْفَ حَالُكَ؟,你好吗,tightened spacing; phrase
+yes,الأُسْتَاذُ حَافظٌ,الْأُسْتَاذُ حَافِظٌ,al-ustaadh haafiz,The professor is Hafiz,教授是哈菲兹,The professor is Hafiz,الْأُسْتَاذُ حَافِظٌ,教授是哈菲兹,split; phrase
+yes,أُسْتَاذٌ مُمْتَازٌ.,أُسْتَاذٌ مُمْتَازٌ.,ustaadh mumtaaz,an excellent professor,一位优秀的教授,An excellent professor,أُسْتَاذٌ مُمْتَازٌ.,优秀的教授,split; phrase
+yes,سَمیحةُ,سَمِيحَةُ,samiiha,Samiha (name),萨米哈（人名）,Samiha,سَمِيحَةُ,萨米哈,used Arabic ي
+yes,صَدیقٌ,صَدِيقٌ,sadiiq,friend,朋友,Friend,صَدِيقٌ,朋友,used Arabic ي
+yes,صُورَةٌ,صُورَةٌ,suura,photo / picture,照片,Photo,صُورَةٌ,照片,
+yes,جَمِيلٌ,جَمِيلٌ,jamiil,beautiful,美丽的,Beautiful,جَمِيلٌ,美丽的,
+yes,مُرِيحٌ,مُرِيحٌ,muriih,comfortable / restful,舒适的,Comfortable,مُرِيحٌ,舒适的,
+yes,حَافظُ,حَافِظٌ,haafiz,Hafiz (name),哈菲兹（人名）,Hafiz,حَافِظٌ,哈菲兹,
+yes,أسْتَاذٌ,أُسْتَاذٌ,ustaadh,professor / teacher,教授,Professor,أُسْتَاذٌ,教授,
+yes,دَفْترٌ,دَفْتَرٌ,daftar,notebook,笔记本,Notebook,دَفْتَرٌ,笔记本,
+yes,جَديدٌ,جَدِيدٌ,jadiid,new,新的,New,جَدِيدٌ,新的,
+yes,مُمْتَازٌ,مُمْتَازٌ,mumtaaz,excellent,优秀的,Excellent,مُمْتَازٌ,优秀的,
+yes,هندُ,هِندٌ,hind,Hind (name),辛德（人名）,Hind,هِندٌ,辛德,
+yes,مُدَرِّسٌ,مُدَرِّسٌ,mudarris,teacher,老师,Teacher,مُدَرِّسٌ,老师,
+yes,اسْمّ,اسْمٌ,ism,name,名字,Name,اسْمٌ,名字,tanwīn not shaddah
+yes,حَريطَةٌ,خَرِيطَةٌ,khariita,map,地图,Map,خَرِيطَةٌ,地图,ح → خ
+yes,كَبیرٌ,كَبِيرٌ,kabiir,big,大的,Big,كَبِيرٌ,大的,used Arabic ي
+yes,گریم,كَرِيمٌ,kariim,Karim (name) / generous,卡里姆（人名）,Karim,كَرِيمٌ,卡里姆,گ → ك
+yes,طَبيبٌ,طَبِيبٌ,tabiib,doctor,医生,Doctor,طَبِيبٌ,医生,used Arabic ي
+yes,گتابٌ,كِتَابٌ,kitaab,book,书,Book,كِتَابٌ,书,گ → ك
+yes,غرْفَةٌ,غُرْفَةٌ,ghurfa,room,房间,Room,غُرْفَةٌ,房间,added ḍammah on غ
+yes,صَغيرٌ,صَغِيرٌ,saghiir,small,小的,Small,صَغِيرٌ,小的,used Arabic ي
+yes,طَالبٌ,طَالِبٌ,taalib,student (male),学生（阳）,Student (male),طَالِبٌ,学生,added vowel
+yes,زَمِيلٌ,زَمِيلٌ,zamiil,colleague,同事,Colleague,زَمِيلٌ,同事,
+yes,صَحيفةٌ,صَحِيفَةٌ,sahiifa,newspaper,报纸,Newspaper,صَحِيفَةٌ,报纸,used Arabic ي
+yes,جيِّدٌ,جَيِّدٌ,jayyid,good,好的,Good,جَيِّدٌ,好的,used Arabic ي
+yes,بيْتٌ مُرِیحٌ,بَيْتٌ مُرِيحٌ,bayt muriih,a comfortable house,一所舒适的房子,A comfortable house,بَيْتٌ مُرِيحٌ,舒适的房子,phrase
+yes,أَنا بَخيْرِ,أَنَا بِخَيْرٍ,ana bikhayr,I am fine,我很好,I am fine,أَنَا بِخَيْرٍ,我很好,phrase
+yes,صَدیقٌ حَديدٌ,صَدِيقٌ جَدِيدٌ,sadiiq jadiid,a new friend,一位新朋友,A new friend,صَدِيقٌ جَدِيدٌ,新朋友,phrase
+yes,خَريطَةُ بَكينَ,خَرِيطَةُ بِكِينَ,khariitat bikiin,the map of Beijing,北京地图,Map of Beijing,خَرِيطَةُ بِكِينَ,北京地图,phrase
+yes,كتّابٌ مُفيدٌ,كِتَابٌ مُفِيدٌ,kitaab mufiid,a useful book,一本有用的书,A useful book,كِتَابٌ مُفِيدٌ,有用的书,phrase
+yes,فُرْصَةٌ سَعِيدَةٌ,فُرْصَةٌ سَعِيدَةٌ,fursa sa'iida,happy occasion,愉快的时刻,Happy occasion,فُرْصَةٌ سَعِيدَةٌ,愉快的时刻,phrase
+yes,جَامِعَتُهُمْ كَبِيرَةٌ,جَامِعَتُهُمْ كَبِيرَةٌ,jaami'atuhum kabiira,their university is big,他们的大学很大,Their university is big,جَامِعَتُهُمْ كَبِيرَةٌ,他们的大学很大,phrase
