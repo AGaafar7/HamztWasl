@@ -12,7 +12,7 @@ const AUTH_PAGES = ['/login', '/register']
 // [locale] tree and have their own routing:
 //   /auth/*  — the OAuth handshake, needs to run for signed-out users
 //   /api/*   — API routes, no layout, no locale
-const LOCALE_EXEMPT_PREFIXES = ['/auth', '/api']
+const LOCALE_EXEMPT_PREFIXES = ['/auth', '/api', '/harfbuzzjs', '/fonts']
 
 // Locales served by app/(public)/[locale]/.
 // Add a new locale here AND in i18n/metadata.js's LOCALES array;
@@ -88,6 +88,6 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|images/|.*\\.(?:svg|png|jpg|jpeg|webp|gif|ico)$).*)',
+  '/((?!_next/static|_next/image|favicon.ico|images/|.*\\.(?:svg|png|jpg|jpeg|webp|gif|ico|wasm|ttf|otf|woff|woff2|mp3|mp4|webm|json|txt|xml|css|js)$).*)',
   ],
 }
