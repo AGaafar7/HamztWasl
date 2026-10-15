@@ -2,6 +2,24 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+
+/**
+ * Strips Arabic ḥarakāt (short vowels), shadda, sukūn, and tanwīn from a
+ * word, leaving the consonant skeleton and any hamza intact.
+ *
+ * Removes:
+ *   U+064B..U+0652 — tanwīn (ً ٌ ٍ), ḥarakāt (َ ُ ِ), shadda (ّ), sukūn (ْ)
+ *
+ * Keeps:
+ *   hamza (أ إ آ), tāʾ marbūṭah (ة), and all base letters
+ *
+ * Used only for the handwriting canvas — the vowel marks don't animate
+ * cleanly as stroke outlines, so the pen animation shows the skeleton.
+ */
+function stripHarakat(arabic) {
+  return (arabic || '').replace(/[\u064B-\u0652]/g, '').trim()
+}
+
 /**
  * Dynamic Arabic handwriting animation.
  *
@@ -50,8 +68,9 @@ export default function ArabicHandwriting({
         const hbFont = hb.createFont(face)
 
         // 5. Shape the word
+        const displayWord = stripHarakat(word) || word
         const buffer = hb.createBuffer()
-        buffer.addText(word)
+        buffer.addText(displayWord)
         buffer.guessSegmentProperties()
         hb.shape(hbFont, buffer)
         const glyphs = buffer.json()
