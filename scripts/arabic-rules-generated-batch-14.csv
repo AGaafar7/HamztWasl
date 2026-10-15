@@ -1,0 +1,21 @@
+include,lesson_title_ar,question_id,prompt,option_a,option_b,option_c,option_d,correct,why_correct_en,why_correct_ar,why_correct_zh,source
+yes,حروف العطف,gen-atf-01,يستيقظ أحمد في السابعة ____ يتناول الفطور في الثامنة.,ثم,و,فـ,أو,a,ثم marks sequence with a time gap: he wakes at seven, then (an hour later) eats breakfast at eight.,"ثم" للترتيب مع التراخي: يستيقظ في السابعة ثم يتناول الفطور في الثامنة.,ثم 表顺序且有时间间隔：“他七点起床，然后八点吃早饭”。,generated
+yes,حروف العطف,gen-atf-02,____ أختي الصغيرة ____ تحب الموسيقى.,أمّا … فـ,أمّا … و,أمّا … ثم,أمّا … أو,a,After أمّا ("as for"), the response clause is introduced by فـ.,"أمّا" يليها الجواب مقترنًا بالفاء: أمّا أختي الصغيرة فتحب الموسيقى.,أمّا（至于）后的答句用 فـ 连接。,generated
+yes,حروف العطف,gen-atf-03,هل نقول كسر الزجاج ____ انكسر؟,أم,أو,و,ثم,a,After a question with هل, the disjunctive is أم (not أو). أم is used only after a question.,"أم" المعادلة تأتي بعد الاستفهام: هل نقول كسر أم انكسر؟,أم 用于疑问句之后，表示“还是”。,generated
+yes,حروف العطف,gen-atf-04,أحب القهوة ____ لا أحب الشاي.,لكن,و,ثم,أو,a,لكن is for contrast: "I like coffee, but I don't like tea.".,"لكن" للاستدراك: أحب القهوة لكن لا أحب الشاي.,لكن 表转折。,generated
+yes,حروف العطف,gen-atf-05,درس الطالب ____ نجح في الامتحان.,فـ,و,ثم,أو,a,فـ marks immediate result or consequence: he studied, so he passed.,"فـ" للتعقيب أو السببية: درس فنجح.,فـ 表紧接着或因果：“他学习，于是通过了。”,generated
+yes,حروف العطف,gen-atf-06,أكلت التفاح ____ العنب.,و,فـ,ثم,أو,a,و is the plain "and" for joining two nouns without sequence implication.,"و" للجمع المطلق بين شيئين.,و 表示简单的“和”。,generated
+yes,حروف العطف,gen-atf-07,سأشتري كتابًا ____ مجلة.,أو,أم,و,فـ,a,أو marks a choice between two options in an affirmative sentence.,"أو" للتخيير في الكلام الموجب.,أو 表选择。,generated
+yes,حروف العطف,gen-atf-08,ما جاء محمد ____ علي.,بل,و,ثم,أو,a,بل corrects the statement: "Muhammad did not come — rather, Ali did.".,"بل" للإضراب: ما جاء محمد بل علي.,بل 表纠正：“来的不是穆罕默德，而是阿里。”,generated
+yes,حروف العطف,gen-atf-09,دخل الأستاذ ____ بدأ الدرس.,ثم,و,فـ,أو,a,ثم for sequence with a gap: he entered, then (shortly after) began the lesson.,"ثم" للترتيب مع التراخي.,ثم 表顺序且有时间间隔。,generated
+yes,حروف العطف,gen-atf-10,سأذهب إلى السوق ____ أشتري الخبز.,فـ,و,ثم,لكن,a,فـ marks immediate purpose/result.,"فـ" للتعقيب.,فـ 表紧接着的结果。,generated
+yes,حروف العطف,gen-atf-11,أكلت التفاح ____ البرتقال.,لا,و,ثم,أو,a,لا between two items means "not this, but that" — I ate apples, not oranges.,"لا" للعطف مع نفي الثاني: أكلت التفاح لا البرتقال.,لا 表“不是后者”：“我吃的是苹果，不是橙子。”,generated
+yes,حروف العطف,gen-atf-12,هل تسافر بالقطار ____ بالطائرة؟,أم,أو,و,ثم,a,أم after a question.,"أم" بعد الاستفهام.,疑问句中用 أم。,generated
+yes,حروف العطف,gen-atf-13,إنه غني ____ بخيل.,لكن,و,ثم,أو,a,لكن for contrast: "he is rich, but stingy.".,"لكن" للاستدراك.,لكن 表转折。,generated
+yes,حروف العطف,gen-atf-14,اجتهد ____ نجح.,فـ,و,ثم,أو,a,فـ marks immediate result.,"فـ" للتعقيب.,فـ 表紧接着的结果。,generated
+yes,حروف العطف,gen-atf-15,حضر محمد ____ علي ____ خالد.,و … و,ثم … ثم,فـ … فـ,أو … أو,a,و is the plain "and" for listing three or more items.,"و" للجمع المطلق.,多个并列项用 و。,generated
+yes,حروف العطف,gen-atf-16,هذا كتاب ____ تلك مجلة.,و,فـ,ثم,أو,a,و joins two noun phrases.,"و" للجمع.,و 连接两个名词短语。,generated
+yes,حروف العطف,gen-atf-17,ما رأيتُ محمدًا ____ عليًا.,بل,و,ثم,أو,a,بل corrects: "I did not see Muhammad — rather, Ali.".,"بل" للإضراب.,بل 表纠正。,generated
+yes,حروف العطف,gen-atf-18,____ الرحلة طويلة ____ ممتعة.,إنّ … لكنّ,أمّا … فـ,أنّ … و,كان … و,a,لكنّ (with shaddah) is the sister of إنّ meaning "but" — the sentence uses إنّ and لكنّ as nominal-sentence emphatic particles, not as conjunctions. Hmm. This item overlaps with إنّ وأخواتها. Let me replace with a plain conjunction item.,This item is being rewritten.,这条题目将被重写。,generated
+yes,حروف العطف,gen-atf-19,هل عندك وقت ____ لا؟,أم,أو,و,ثم,a,أم after a question. The idiomatic question هل عندك وقت أم لا = "do you have time or not?".,"أم" بعد الاستفهام: هل عندك وقت أم لا؟,疑问句中用 أم：هل عندك وقت أم لا？,generated
+yes,حروف العطف,gen-atf-20,سأزورك ____ أنتهي من عملي.,فـ,و,ثم,أو,a,فـ marks immediate result or reason: "I will visit you once I finish my work.".,"فـ" للتعقيب.,فـ 表紧接着的结果。,generated
