@@ -264,6 +264,14 @@ pricing: {
       comingSoonNote: 'More courses and a full dashboard are on the way — this catalog is a preview until our course platform goes live.',
       lessonsLabel: 'lessons',
       myPortal: 'My Portal',
+       startCourse: 'Start course',
+      reviewFromStart: 'Review from the start',
+      continueLesson: 'Continue — Lesson',
+      readyToBegin: 'Ready to begin?',
+      courseContent: 'Course content',
+      ofCompleted: 'of',
+      completedText: 'completed',
+      billing: 'Billing',
     },
     learn: {
       sidebar: {
@@ -665,6 +673,14 @@ pricing: {
       comingSoonNote: 'المزيد من الدورات ولوحة تحكم كاملة قادمة قريبًا — هذا الكتالوج معاينة مبدئية حتى إطلاق منصة الدورات الكاملة.',
       lessonsLabel: 'درسًا',
       myPortal: 'لوحتي',
+         startCourse: 'ابدأ الدورة',
+      reviewFromStart: 'مراجعة من البداية',
+      continueLesson: 'متابعة — الدرس',
+      readyToBegin: 'هل أنت مستعد للبدء؟',
+      courseContent: 'محتوى الدورة',
+      ofCompleted: 'من',
+      completedText: 'مكتمل',
+      billing: 'الفواتير',
     },
     learn: {
       sidebar: {
@@ -1040,6 +1056,14 @@ pricing: {
       comingSoonNote: '更多课程和完整的学习面板即将上线——在正式课程平台发布之前，这里是预览目录。',
       lessonsLabel: '节课',
       myPortal: '我的学习面板',
+            startCourse: '开始课程',
+      reviewFromStart: '从头复习',
+      continueLesson: '继续 — 课程',
+      readyToBegin: '准备好开始了吗？',
+      courseContent: '课程内容',
+      ofCompleted: '/',
+      completedText: '已完成',
+      billing: '账单',
     },
     learn: {
       sidebar: {

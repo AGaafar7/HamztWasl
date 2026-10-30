@@ -119,12 +119,12 @@ export default function CourseDetailClient({ course, letters, lessons, completed
   const resumeIndex = nextIndex === -1 ? 0 : nextIndex
   const resumeLesson = lessons[resumeIndex]
 
-  const ctaLabel =
+    const ctaLabel =
     done === 0
-      ? 'Start course'
+      ? p.startCourse
       : done === lessons.length
-      ? 'Review from the start'
-      : `Continue — Lesson ${resumeIndex + 1}`
+      ? p.reviewFromStart
+      : `${p.continueLesson} ${resumeIndex + 1}`
 
   return (
     <div className="course-detail">
@@ -141,7 +141,7 @@ export default function CourseDetailClient({ course, letters, lessons, completed
         <div className="course-progress-info">
           <div className="course-progress-head">
             <span className="course-progress-label">
-              {done > 0 ? p.progressLabel : 'Ready to begin?'}
+              {done > 0 ? p.progressLabel : p.readyToBegin}
             </span>
             <span className="course-progress-value">
               {done} / {lessons.length} · {pct}%
@@ -166,9 +166,9 @@ export default function CourseDetailClient({ course, letters, lessons, completed
 
       <div className="course-lessons-section">
         <div className="course-lessons-head">
-          <h2>Course content</h2>
+          <h2>{p.courseContent}</h2>
           <span className="course-lessons-count">
-            {done} of {lessons.length} completed
+            {done} {p.ofCompleted} {lessons.length} {p.completedText}
           </span>
         </div>
 

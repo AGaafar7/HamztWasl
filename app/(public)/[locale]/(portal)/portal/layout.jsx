@@ -31,9 +31,9 @@ export default function PortalLayout({ children }) {
           <Link href="/portal/dictionary" className={linkClass('/portal/dictionary')}>
             <span className="sidebar-dot" /> {s.dictionary}
           </Link>
-          <Link href="/portal/billing" className={linkClass('/portal/billing')}>
-  <span className="sidebar-dot" /> Billing
-</Link>
+          <Link href={`/${lang}/portal/billing`} className={linkClass(`/${lang}/portal/billing`)}>
+            <span className="sidebar-dot" /> {t.portal.billing}
+          </Link>
         </div>
 
         <div className="sidebar-group">
