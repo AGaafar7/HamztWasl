@@ -54,6 +54,8 @@ export default function Navbar() {
     }
   }
 
+  const homeHref = lang === 'en' ? '/' : `/${lang}`
+
 
   const isInstructor = profile?.role === 'instructor' || profile?.role === 'admin'
   const portalHref = isInstructor ? '/instructor' : '/portal'
@@ -61,7 +63,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="wrap navbar-inner">
-        <Link href="/" className="logo" onClick={close}>
+        <Link href={homeHref} className="logo" onClick={close}>
           <div className="logo-mark">ء</div>
           <div className="logo-text">
             <span className="en">Hamzat Wasl</span>
@@ -70,9 +72,9 @@ export default function Navbar() {
         </Link>
 
         <nav className={`nav-links ${open ? 'open' : ''}`}>
-          <a href="/#courses" onClick={close}>{t.nav.courses}</a>
-          <a href="/#path" onClick={close}>{t.nav.path}</a>
-          <a href="/#stories" onClick={close}>{t.nav.stories}</a>
+          <a href={`${homeHref}#courses`} onClick={close}>{t.nav.courses}</a>
+          <a href={`${homeHref}#path`} onClick={close}>{t.nav.path}</a>
+          <a href={`${homeHref}#stories`} onClick={close}>{t.nav.stories}</a>
           <div className="nav-links-mobile-actions">
             {!loading && (user ? (
               <>
