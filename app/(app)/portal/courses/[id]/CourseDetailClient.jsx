@@ -187,10 +187,17 @@ export default function CourseDetailClient({ course, letters, lessons, completed
                 <span className="lesson-row-num">
                   {isDone ? '✓' : i + 1}
                 </span>
-                <div className="lesson-row-body">
+                                <div className="lesson-row-body">
                   <span className="lesson-row-kind">
                     {KIND_LABEL[lesson.kind] || lesson.kind}
                   </span>
+                  {lesson.kind === 'multiplechoice' &&
+                    Array.isArray(lesson.content?.questions) &&
+                    lesson.content.questions.length > 0 && (
+                      <span className="lesson-row-count">
+                        {lesson.content.questions.length} Q
+                      </span>
+                    )}
                   <span className="lesson-row-title">{lessonTitle}</span>
                 </div>
                 <span className="lesson-row-end">

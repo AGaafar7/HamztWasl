@@ -3973,6 +3973,21 @@ padding: 24px 22px 22px;
 }
 .lesson-row-item.lesson-done .lesson-row-end { color: var(--green); }
 
+.lesson-row-count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  color: var(--grey);
+  background: var(--bg-soft);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-block-start: 2px;
+  margin-inline-start: 8px;
+}
+
 @media (max-width: 560px) {
   .lesson-row-item { padding: 14px 16px; gap: 12px; }
   .lesson-row-title { font-size: 14px; }

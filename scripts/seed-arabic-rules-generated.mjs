@@ -111,9 +111,7 @@ function rowToQuestion(row) {
   if (!['a', 'b', 'c', 'd'].includes(correct)) return null
   if (!options.find((o) => o.id === correct)) return null
 
-  // Build a minimal whyCorrect explanation (English only from CSV).
-  // The lesson renderer shows whatever we put here; the CSV provides
-  // the English explanation and, if present, the Arabic and Chinese.
+  // Build a minimal whyCorrect explanation.
   const whyCorrect = {
     en: (row.why_correct_en || '').trim(),
     ar: (row.why_correct_ar || '').trim(),
@@ -122,11 +120,14 @@ function rowToQuestion(row) {
 
   return {
     id: (row.question_id || '').trim(),
+    // NEW: Store the question type. Defaults to 'fill-in-the-blank'
+    // so all previous batches keep working without CSV changes.
+    type: (row.question_type || 'fill-in-the-blank').trim(),
     prompt: (row.prompt || '').trim(),
     options,
     correctOptionId: correct,
     whyCorrect,
-    whyWrong: {},  // no per-option wrong explanations in the CSVs
+    whyWrong: {},
   }
 }
 
