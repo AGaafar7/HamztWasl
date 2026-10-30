@@ -41,9 +41,17 @@ export async function middleware(request) {
   const firstSeg = segments[0]
   const hasLocalePrefix = LOCALES.includes(firstSeg)
 
-  if (!isProtected && !isAuthPage && !isLocaleExempt && !hasLocalePrefix) {
+    if (!isProtected && !isAuthPage && !isLocaleExempt && !hasLocalePrefix) {
     const url = request.nextUrl.clone()
-    url.pathname = `/${DEFAULT_LOCALE}${pathname === '/' ? '' : pathname}`
+    
+    // Check if the user is coming from a specific locale page (e.g., they were on /ar and clicked a link)
+    const referer = request.headers.get('referer') || ''
+    let targetLocale = DEFAULT_LOCALE
+    
+    if (referer.includes('/ar/') || referer.endsWith('/ar')) targetLocale = 'ar'
+    else if (referer.includes('/zh/') || referer.endsWith('/zh')) targetLocale = 'zh'
+    
+    url.pathname = `/${targetLocale}${pathname === '/' ? '' : pathname}`
     return NextResponse.rewrite(url)
   }
 

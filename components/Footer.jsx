@@ -43,21 +43,22 @@ export default function Footer() {
           <div>
             <h4>{f.support}</h4>
             <ul>
-              <li><Link href="/terms">{f.supportLinks[0]}</Link></li>
-              <li><Link href="/terms">{f.supportLinks[1]}</Link></li>
-              <li><Link href="/refund-policy">{f.supportLinks[2]}</Link></li>
-              <li><Link href="/contact">{f.supportLinks[3]}</Link></li>
-              <li><a href="/pricing">{f.supportLinks[4]}</a></li>
+              <li><Link href={lang === 'en' ? '/terms' : `/${lang}/terms`}>{f.supportLinks[1]}</Link></li>
+              <li><Link href={lang === 'en' ? '/refund-policy' : `/${lang}/refund-policy`}>{f.supportLinks[2]}</Link></li>
+              <li><Link href={lang === 'en' ? '/contact' : `/${lang}/contact`}>{f.supportLinks[3]}</Link></li>
+              <li><Link href={lang === 'en' ? '/pricing' : `/${lang}/pricing`}>{f.supportLinks[4]}</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="footer-bottom">
+              <div className="footer-bottom">
           <div className="footer-legal">
-  <a href="/terms">Terms</a>
-  <span>·</span>
-  <a href="/privacy">Privacy</a>
-</div>
+            <Link href={lang === 'en' ? '/terms' : `/${lang}/terms`}>{f.supportLinks[1]}</Link>
+            <span>·</span>
+            <Link href={lang === 'en' ? '/privacy' : `/${lang}/privacy`}>Privacy</Link>
+            <span>·</span>
+            <Link href={lang === 'en' ? '/refund-policy' : `/${lang}/refund-policy`}>{f.supportLinks[2]}</Link>
+          </div>
           <span>{f.rights}</span>
           <span>{f.made}</span>
         </div>

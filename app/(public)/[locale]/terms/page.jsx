@@ -17,11 +17,8 @@ export default async function TermsPage({ params }) {
   const { locale } = await params
   if (!LOCALES.includes(locale)) notFound()
 
-  // Look up the locale safely, falling back to English if needed
   const t = translations[locale] || translations.en
   const content = t.legal.terms
-
-  // Format the date according to the locale
   const dateLocale = locale === 'ar' ? 'ar-EG' : locale === 'zh' ? 'zh-CN' : 'en-US'
   const formattedDate = new Date().toLocaleDateString(dateLocale)
 
