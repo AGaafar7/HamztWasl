@@ -12,7 +12,7 @@ import { formatEgp } from '@/lib/currency.js'
 
 const TABS = ['all', 'free', 'paid', 'inProgress']
 
-export default function PortalCoursesClient({ courses: initialCourses }) {
+export default function PortalCoursesClient({ courses: initialCourses, locale = 'en' }) {
   const { t, lang } = useLanguage()
   const p = t.portal
   const { profile, signOut } = useAuth()
@@ -22,9 +22,11 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
   const [error, setError] = useState(null)
   const [, startTransition] = useTransition()
 
+  const localePrefix = locale === 'en' ? '' : `/${locale}`
+
   const handleLogout = async () => {
     await signOut()
-    router.push('/')
+    router.push(localePrefix || '/')
     router.refresh()
   }
 
@@ -141,7 +143,7 @@ export default function PortalCoursesClient({ courses: initialCourses }) {
                     </div>
 
                     {c.enrolled ? (
-                      <Link href={`/portal/courses/${c.id}`} className="btn btn-primary btn-small">
+                      <Link href={`${localePrefix}/portal/courses/${c.id}`} className="btn btn-primary btn-small">
                         {(c.progress ?? 0) > 0 ? p.continueBtn : p.startCourse}
                       </Link>
                     ) : (

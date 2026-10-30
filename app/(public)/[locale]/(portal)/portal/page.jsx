@@ -1,10 +1,11 @@
-// app/portal/page.jsx
+// app/(public)/[locale]/(portal)/portal/page.jsx
 import { fetchCourses } from '@/lib/queries/courses'
 import { fetchEnrolledCourseIds, fetchCompletedCountMap } from '@/lib/queries/user'
 import { requireUser } from '@/lib/supabase/server'
 import PortalCoursesClient from './PortalCoursesClient'
 
-export default async function PortalCoursesPage() {
+export default async function PortalCoursesPage({ params }) {
+  const { locale } = await params
   const [{ supabase }, courses, enrolledIds, completedMap] = await Promise.all([
     requireUser(),
     fetchCourses(),
@@ -33,5 +34,5 @@ export default async function PortalCoursesPage() {
     return { ...c, enrolled, progress }
   })
 
-  return <PortalCoursesClient courses={merged} />
+  return <PortalCoursesClient courses={merged} locale={locale} />
 }
