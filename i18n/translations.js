@@ -45,6 +45,51 @@ export const translations = {
   addressLabel: 'Address',
 addressHint: 'Visits by appointment only.',
 },
+    legal: {
+      terms: {
+        title: 'Terms of Service',
+        lastUpdated: 'Last updated',
+        sections: [
+          { title: '1. Acceptance of terms', body: 'By creating an account or using this service, you agree to these terms. If you do not agree, please do not use the service.' },
+          { title: '2. Your account', body: 'You are responsible for maintaining the confidentiality of your login credentials and for all activity that occurs under your account.' },
+          { title: '3. Content and courses', body: 'Course content, video links, transcripts, and audio are provided for personal, non-commercial educational use. Some content is sourced from publicly available third-party platforms (e.g. YouTube) and remains the property of its original owners.' },
+          { title: '4. Instructor accounts', body: 'Instructors are responsible for the accuracy and legality of the content they publish. We reserve the right to remove any course that violates these terms or applicable law.' },
+          { title: '5. Payments', body: 'Paid courses are currently in preview. When payments go live, additional terms will apply and will be presented at purchase.' },
+          { title: '6. Acceptable use', body: 'You agree not to misuse the service — including attempting to access other users\' accounts, scraping content at scale, or uploading unlawful material.' },
+          { title: '7. Termination', body: 'You may delete your account at any time. We may suspend or terminate accounts that violate these terms.' },
+          { title: '8. Disclaimer', body: 'The service is provided "as is" without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from use of the service.' },
+          { title: '9. Changes', body: 'We may update these terms from time to time. Continued use after changes constitutes acceptance of the updated terms.' },
+          { title: '10. Contact', body: 'Questions? Email a.gaafar.junior@gmail.com.' }
+        ]
+      },
+      privacy: {
+        title: 'Privacy Policy',
+        lastUpdated: 'Last updated',
+        sections: [
+          { title: 'What we collect', body: 'Account information: your email address, display name, and (if you sign in with Google or Apple) the basic profile those providers share. We never see or store your password in plain text — Supabase handles authentication.' },
+          { title: 'Learning activity', body: 'Which courses you enroll in, which lessons you complete, your practice scores, and which videos you favorite. This is used solely to show you your progress.' },
+          { title: 'Audio for pronunciation practice', body: 'When you use Speaking Practice, your recording is sent to our speech-to-text provider to be transcribed, then immediately discarded. We do not store audio recordings.' },
+          { title: 'What we do not collect', body: 'We do not use advertising trackers, we do not sell your data to third parties, and we do not fingerprint your device.' },
+          { title: 'Third-party services we use', body: 'Supabase (database, auth, storage), Google / Apple (optional sign-in), Hakim (TTS and STT), Google Gemini (reading grading), AssemblyAI (instructor audio transcription), YouTube (video playback), Vercel (hosting).' },
+          { title: 'Your rights', body: 'You can request a copy of your data, correct any inaccuracies, or ask us to delete your account and all associated data at any time. Email a.gaafar.junior@gmail.com.' },
+          { title: 'Children', body: 'This service is not directed at children under 13. If you believe a child has created an account, please contact us and we will delete it.' },
+          { title: 'Changes', body: 'We may update this policy. Material changes will be announced in-app before they take effect.' }
+        ]
+      },
+      refund: {
+        title: 'Refund Policy',
+        lastUpdated: 'Last updated',
+        sections: [
+          { title: '1. All purchases are non-refundable', body: 'All payments made on Hamzat Wasl are final and non-refundable. This applies to one-time course purchases, the monthly practice subscription, and any future paid product. By completing a purchase, you acknowledge that you have read the description and will not receive a refund for change of mind or unused subscription time.' },
+          { title: '2. Cancellation of subscription', body: 'You may cancel your practice subscription at any time from the Billing page. Cancellation takes effect immediately. Access ends the moment you cancel, you will not be charged again, and amounts already paid are not prorated or credited.' },
+          { title: '3. Narrow exceptions', body: 'We may issue a refund for duplicate charges, unauthorized charges (reported to your bank), or sustained service failure. To request a refund, email a.gaafar.junior@gmail.com within 14 days of the charge.' },
+          { title: '4. Processing of approved refunds', body: 'Approved refunds are issued to the original payment method. Processing takes 5–14 business days depending on your bank.' },
+          { title: '5. Chargebacks', body: 'Please contact us before filing a chargeback. Filing a chargeback without contacting us may result in account suspension.' },
+          { title: '6. Changes to this policy', body: 'We may update this Refund Policy from time to time. Changes will not apply retroactively.' },
+          { title: '7. Contact', body: 'Questions about this policy? Email a.gaafar.junior@gmail.com.' }
+        ]
+      }
+    },
 pricing: {
   eyebrow: 'Pricing',
   title: 'Simple, honest pricing',
@@ -401,7 +446,51 @@ topics: {
   addressLabel: 'العنوان',
 addressHint: 'الزيارات بموعد مسبق فقط.',
 },
-
+legal: {
+  terms: {
+    title: 'شروط الخدمة',
+    lastUpdated: 'آخر تحديث',
+    sections: [
+      { title: '1. القبول بالشروط', body: 'بإنشائك لحساب أو استخدامك لهذه الخدمة، فإنك توافق على هذه الشروط. إذا كنت لا توافق عليها، يُرجى عدم استخدام الخدمة.' },
+      { title: '2. حسابك', body: 'أنت مسؤول عن الحفاظ على سرية بيانات اعتماد الدخول الخاصة بك وعن جميع الأنشطة التي تتم تحت حسابك.' },
+      { title: '3. المحتوى والدورات التدريبية', body: 'تُقدَّم محتويات الدورات والروابط المرئية والنصوص والتسجيلات الصوتية للاستخدام التعليمي الشخصي وغير التجاري. يتم الحصول على بعض المحتويات من منصات خارجية متاحة للعامة (مثل YouTube) وتبقى ملكاً لأصحابها الأصليين.' },
+      { title: '4. حسابات المحاضرين', body: 'المحاضرون هم المسؤولون عن صحة وقانونية المحتوى الذي ينشرونه. ونحتفظ بالحق في إزالة أي دورة تدريبية تنتهك هذه الشروط أو القوانين المعمول بها.' },
+      { title: '5. المدفوعات', body: 'الدورات المدفوعة حالياً في مرحلة المعاينة. عند تفعيل المدفوعات رسمياً، ستُطبَّق شروط إضافية وسيتم عرضها عند الشراء.' },
+      { title: '6. الاستخدام المقبول', body: 'تتعهد بعدم إساءة استخدام الخدمة — بما في ذلك محاولة الوصول إلى حسابات المستخدمين الآخرين، أو كشط المحتوى للجمع الآلي بأسلوب موسع، أو تحميل مواد غير قانونية.' },
+      { title: '7. إنهاء الخدمة', body: 'يمكنك حذف حسابك في أي وقت. ويحق لنا تعليق أو إنهاء الحسابات التي تنتهك هذه الشروط.' },
+      { title: '8. إخلاء المسؤولية', body: 'تُقدَّم الخدمة "كما هي" دون أي ضمانات من أي نوع. ونحن غير مسؤولين عن أي أضرار غير مباشرة أو عرضية أو تبعية تنشأ عن استخدام الخدمة.' },
+      { title: '9. التغييرات', body: 'قد نقوم بتحديث هذه الشروط من وقت لآخر. ويُعتبر استمرارك في استخدام الخدمة بعد إجراء التغييرات قبولاً للشروط المُحدَّثة.' },
+      { title: '10. التواصل', body: 'لديك أسئلة؟ أرسل بريداً إلكترونياً إلى a.gaafar.junior@gmail.com.' }
+    ]
+  },
+  privacy: {
+    title: 'سياسة الخصوصية',
+    lastUpdated: 'آخر تحديث',
+    sections: [
+      { title: 'ما نجمعه', body: 'معلومات الحساب: عنوان بريدك الإلكتروني، واسم العرض، و(في حال تسجيل الدخول عبر Google أو Apple) الملف الشخصي الأساسي الذي تشاركه تلك الخدمات. نحن لا نطلع على كلمة المرور الخاصة بك أو نخزنها بنص صريح مطلقاً — تتولى Supabase إدارة عملية المصادقة.' },
+      { title: 'النشاط التعليمي', body: 'الدورات التي تسجل فيها، والدروس التي تكملها، ودرجات التدريب، والفيديوهات المضافة إلى المفضلة. تُستخدم هذه البيانات فقط لإظهار تقدمك التعليمي.' },
+      { title: 'الصوت لممارسة النطق', body: 'عند استخدام ممارسة التحدث، يُرسل تسجيلك الصوتي إلى مزود خدمة تحويل الصوت إلى نص لتفريغه، ثم يُتلف فوراً. نحن لا نخزن التسجيلات الصوتية.' },
+      { title: 'ما لا نجمعه', body: 'لا نستخدم أدوات تتبع الإعلانات، ولا نبيع بياناتك لأطراف خارجية، ولا نجمع البصمات الرقمية لجهازك.' },
+      { title: 'الخدمات الخارجية التي نستخدمها', body: 'Supabase (قواعد البيانات، المصادقة، التخزين)، Google / Apple (تسجيل الدخول الاختياري)، Hakim (تحويل النص إلى صوت والعكس)، Google Gemini (تقييم القراءة)، AssemblyAI (تفريغ صوت المحاضرين)، YouTube (تشغيل الفيديو)، Vercel (الاستضافة).' },
+      { title: 'حقوقك', body: 'يمكنك طلب نسخة من بياناتك، أو تصحيح أي أخطاء، أو طلب حذف حسابك وجميع البيانات المرتبطة به في أي وقت. أرسل بريداً إلكترونياً إلى a.gaafar.junior@gmail.com.' },
+      { title: 'الأطفال', body: 'هذه الخدمة غير موجهة للأطفال دون سن 13 عاماً. إذا كنت تعتقد أن طفلاً قد أنشأ حساباً، يُرجى التواصل معنا وسنقوم بحذفه.' },
+      { title: 'التغييرات', body: 'قد نقوم بتحديث هذه السياسة. سيتم الإعلان عن التغييرات الجوهرية داخل التطبيق قبل دخلولها قيد التنفيذ.' }
+    ]
+  },
+  refund: {
+    title: 'سياسة الاسترداد',
+    lastUpdated: 'آخر تحديث',
+    sections: [
+      { title: '1. جميع المشتريات غير قابلة للاسترداد', body: 'جميع المدفوعات التي تتم على حمزة وصل نهائية وغير قابلة للاسترداد. ينطبق هذا على شراء الدورات لمرة واحدة، والاشتراك الشهري للتدريب، وأي منتج مدفوع مستقبلي. بإتمامك لعملية الشراء، فإنك تقر بأنك قرأت الوصف ولن تسترد أموالك بسبب تغيير رأيك أو عدم استخدام وقت الاشتراك.' },
+      { title: '2. إلغاء الاشتراك', body: 'يمكنك إلغاء اشتراك التدريب الخاص بك في أي وقت من صفحة الفواتير. يسري الإلغاء فوراً. تنتهي صلاحية الوصول لحظة الإلغاء، ولن يتم تحصيل مبالغ إضافية منك، كما لا تُرد المبالغ المدفوعة سابقاً ولا تُحسب كربح مؤجل.' },
+      { title: '3. استثناءات ضيقة', body: 'قد نصدر استرداداً مالياً في حالات المبالغ المخصومة بالخطأ (مكررة)، أو المعاملات غير المصرح بها (المُبلّغ عنها للمصرف الذي تتعامل معه)، أو العطل المستمر في الخدمة. لطلب الاسترداد، أرسل بريداً إلكترونياً إلى a.gaafar.junior@gmail.com خلال 14 يوماً من تاريخ الخصم.' },
+      { title: '4. معالجة طلبات الاسترداد المقبولة', body: 'تُعاد المبالغ المستردة المعتمدة إلى طريقة الدفع الأصلية. تستغرق المعالجة من 5 إلى 14 يوم عمل اعتماداً على البنك الذي تتعامل معه.' },
+      { title: '5. نزاعات الخصم (Chargebacks)', body: 'يُرجى التواصل معنا قبل تقديم طلب استرداد مدفوعات من خلال البنك. قد يؤدي تقديم طلب استرداد عبر البنك دون التواصل معنا إلى تعليق الحساب.' },
+      { title: '6. التغييرات على هذه السياسة', body: 'قد نقوم بتحديث سياسة الاسترداد هذه من وقت لآخر. لن تُطبق التغييرات بأثر رجعي.' },
+      { title: '7. التواصل', body: 'لديك أسئلة حول هذه السياسة؟ أرسل بريداً إلكترونياً إلى a.gaafar.junior@gmail.com.' }
+    ]
+  }
+},
 pricing: {
   eyebrow: 'الأسعار',
   title: 'أسعار واضحة وبسيطة',
@@ -740,6 +829,51 @@ topics: {
   note: '如需媒体、合作或其他未在此列出的咨询，电子邮件是联系到对应负责人最快的方式。',
   addressLabel: '地址',
 addressHint: '仅限预约到访。',
+},
+legal: {
+  terms: {
+    title: '服务条款',
+    lastUpdated: '最后更新',
+    sections: [
+      { title: '1. 接受条款', body: '创建账户或使用本服务即表示您同意本条款。如果您不同意，请勿使用本服务。' },
+      { title: '2. 您的账户', body: '您有责任妥善保管登录凭证的保密性，并对您账户下发生的所有活动承担责任。' },
+      { title: '3. 内容与课程', body: '课程内容、视频链接、逐字稿和音频仅供个人非商业性教育目的使用。部分内容来自公开的第三方平台（例如 YouTube），版权归原作者所有。' },
+      { title: '4. 教师账户', body: '教师需对其发布内容的准确性和合法性负责。我们保留删除任何违反本条款或适用法律的课程的权利。' },
+      { title: '5. 支付', body: '付费课程目前处于预览阶段。支付功能正式上线后，将适用附加条款并在购买时向您展示。' },
+      { title: '6. 合理使用', body: '您同意不滥用本服务 — 包括尝试访问其他用户的账户、大规模抓取内容或上传违法材料。' },
+      { title: '7. 终止服务', body: '您可以随时注销账户。对于违反本条款的账户，我们可能会暂停或终止其使用权限。' },
+      { title: '8. 免责声明', body: '本服务按“现状”提供，不提供任何形式的保证。我们不对因使用本服务而产生的任何间接、附带或后果性损害承担责任。' },
+      { title: '9. 条款变更', body: '我们可能会不定期更新本条款。变更发布后继续使用本服务即视为您接受更新后的条款。' },
+      { title: '10. 联系方式', body: '如有疑问，请发送电子邮件至 a.gaafar.junior@gmail.com。' }
+    ]
+  },
+  privacy: {
+    title: '隐私政策',
+    lastUpdated: '最后更新',
+    sections: [
+      { title: '我们收集的信息', body: '账户信息：您的电子邮箱地址、显示名称，以及（如果您通过 Google 或 Apple 登录）这些提供商共享的基础个人资料。我们绝不会以明文形式查看或存储您的密码 — 身份验证由 Supabase 处理。' },
+      { title: '学习活动', body: '您报名的课程、完成的课时、练习得分以及您收藏的视频。这些数据仅用于向您展示学习进度。' },
+      { title: '发音练习音频', body: '当您使用口语练习功能时，您的录音会被发送至我们的语音转文字服务商进行转录，随后立即销毁。我们不存储音频录音。' },
+      { title: '我们不收集的信息', body: '我们不使用广告追踪器，不向第三方出售您的数据，也不对您的设备进行指纹识别。' },
+      { title: '我们使用的第三方服务', body: 'Supabase（数据库、身份验证、存储）、Google / Apple（可选登录）、Hakim（TTS 文本转语音及 STT 语音转文本）、Google Gemini（阅读评分）、AssemblyAI（教师音频转录）、YouTube（视频播放）、Vercel（托管）。' },
+      { title: '您的权利', body: '您有权随时获取您的数据副本、更正任何不实信息，或要求我们删除您的账户及所有相关数据。请发送电子邮件至 a.gaafar.junior@gmail.com。' },
+      { title: '未成年人保護', body: '本服务不面向 13 岁以下的儿童。如果您认为有儿童创建了账户，请联系我们，我们将予以删除。' },
+      { title: '政策变更', body: '我们可能会更新本政策。重大变更将在生效前于应用内予以公告。' }
+    ]
+  },
+  refund: {
+    title: '退款政策',
+    lastUpdated: '最后更新',
+    sections: [
+      { title: '1. 所有购买项目均不可退款', body: '在 Hamzat Wasl 上完成的所有付款均为最终付款且不可退款。这适用于一次性课程购买、每月练习订阅以及未来任何付费产品。完成购买即表示您已阅读相关说明，且同意不会因改变主意或未使用订阅时长而获得退款。' },
+      { title: '2. 取消订阅', body: '您可以随时在“账单”页面取消练习订阅。取消操作立即生效。取消后访问权限即刻终止，系统不会再次扣费，且已支付的金额概不退还或折算。' },
+      { title: '3. 狭义例外情况', body: '针对重复扣费、未经授权的扣费（已向您的开户银行报告）或持续的服务故障，我们可能会予以退款。如需申请退款，请在扣费后 14 天内发送电子邮件至 a.gaafar.junior@gmail.com。' },
+      { title: '4. 获批退款的处理', body: '批准的退款将原路退回至您的初始支付方式。处理时间视您的开户银行而定，通常需要 5 至 14 个工作日。' },
+      { title: '5. 拒付 / 退单', body: '在向银行发起退单申请前，请先与我们联系。未经事先联系直接发起退单可能会导致您的账户被封禁。' },
+      { title: '6. 本政策的变更', body: '我们可能会不定期更新本退款政策。更新内容不具有追溯力。' },
+      { title: '7. 联系方式', body: '对本政策有疑问？请发送电子邮件至 a.gaafar.junior@gmail.com。' }
+    ]
+  }
 },
 
 pricing: {
