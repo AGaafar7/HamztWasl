@@ -4,7 +4,7 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
 import Link from 'next/link'
 
 export default function Footer() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const f = t.footer
 
   return (
