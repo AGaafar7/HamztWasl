@@ -19,7 +19,12 @@ function LoginForm() {
   const a = t.auth.login
   const { signIn, signInWithOAuth } = useAuth()
   const searchParams = useSearchParams()
-  const next = searchParams.get('next') || '/portal'
+    const pathSegments = typeof window !== 'undefined'
+    ? window.location.pathname.split('/').filter(Boolean)
+    : []
+  const locale = ['en', 'ar', 'zh'].includes(pathSegments[0]) ? pathSegments[0] : 'en'
+  const defaultNext = locale === 'en' ? '/portal' : `/${locale}/portal`
+  const next = searchParams.get('next') || defaultNext
   const errorParam = searchParams.get('error')
 
   const [email, setEmail] = useState('')
@@ -40,8 +45,10 @@ function LoginForm() {
     setLoading(true)
     try {
       const { profile } = await signIn({ email, password })
+      const instructorNext = locale === 'en' ? '/instructor' : `/${locale}/instructor`
+      const portalNext = locale === 'en' ? '/portal' : `/${locale}/portal`
       const dest =
-        profile?.role === 'instructor' && next === '/portal' ? '/instructor' : next
+        profile?.role === 'instructor' && next === portalNext ? instructorNext : next
       // Hard navigation — guarantees the middleware sees the new cookie.
       window.location.href = dest
     } catch (err) {
@@ -117,8 +124,11 @@ function LoginForm() {
             </button>
           </form>
 
-          <p className="auth-switch">
-            {a.noAccount} <Link href="/register">{a.createOne}</Link>
+                    <p className="auth-switch">
+            {a.noAccount}{' '}
+            <Link href={locale === 'en' ? '/register' : `/${locale}/register`}>
+              {a.createOne}
+            </Link>
           </p>
         </div>
       </div>

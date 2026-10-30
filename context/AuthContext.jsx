@@ -86,13 +86,18 @@ export function AuthProvider({ children }) {
   }
 
   /** provider: 'google' | 'apple'. Redirects away from the page. */
-  const signInWithOAuth = async (provider, nextPath = '/portal') => {
+    const signInWithOAuth = async (provider, nextPath = '/portal') => {
     const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    // The auth callback now lives under [locale]. Extract the locale from
+    // the current URL so the callback redirects back to the right place.
+    const path = window.location.pathname
+    const firstSeg = path.split('/').filter(Boolean)[0]
+    const locale = ['en', 'ar', 'zh'].includes(firstSeg) ? firstSeg : 'en'
+    const callbackUrl = `${origin}/${locale}/auth/callback?next=${encodeURIComponent(nextPath)}`
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: {
-        redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
-      },
+      options: { redirectTo: callbackUrl },
     })
     if (error) throw error
   }

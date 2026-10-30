@@ -19,11 +19,6 @@ function randomSuffix() {
   return Math.random().toString(36).slice(2, 6)
 }
 
-/**
- * Creates a videos row plus its full transcript (lines + words), all in
- * one server action. `lines` is the output shape from AssemblyAI's
- * normalizeTranscript(): { time, startSec, endSec, arabic, words:[...] }.
- */
 export async function createVideoWithTranscriptAction(videoData, lines) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -33,7 +28,6 @@ export async function createVideoWithTranscriptAction(videoData, lines) {
   if (!titleEn) throw new Error('English title is required')
   if (!videoData.youtubeId) throw new Error('YouTube URL is required')
 
-  // Generate a unique id from the title.
   let baseId = slugify(titleEn) || `video-${Date.now()}`
   let id = baseId
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -45,7 +39,6 @@ export async function createVideoWithTranscriptAction(videoData, lines) {
 
   const watchUrl = `https://www.youtube.com/watch?v=${videoData.youtubeId}`
 
-  // 1. Insert the videos row.
   const { error: videoErr } = await supabase.from('videos').insert({
     id,
     youtube_id: videoData.youtubeId,
@@ -61,7 +54,6 @@ export async function createVideoWithTranscriptAction(videoData, lines) {
   })
   if (videoErr) throw videoErr
 
-  // 2. Insert transcript lines, capture their generated ids.
   if (lines && lines.length > 0) {
     const lineRows = lines.map((line, i) => ({
       video_id: id,
@@ -79,12 +71,10 @@ export async function createVideoWithTranscriptAction(videoData, lines) {
       .select('id, sort_order')
     if (lineErr) throw lineErr
 
-    // Map sort_order → uuid so we know which words go with which line.
     const lineIdByOrder = Object.fromEntries(
       insertedLines.map((r) => [r.sort_order, r.id])
     )
 
-    // 3. Flatten and insert all words.
     const wordRows = []
     lines.forEach((line, i) => {
       if (!line.words?.length) return
@@ -110,8 +100,7 @@ export async function createVideoWithTranscriptAction(videoData, lines) {
     }
   }
 
-  revalidatePath('/instructor/videos')
-  revalidatePath('/portal/videos')
+  revalidatePath('/', 'layout')
   return { id }
 }
 
@@ -143,7 +132,6 @@ export async function deleteVideoAction(videoId) {
     .from('videos').delete().eq('id', videoId)
   if (error) throw error
 
-  revalidatePath('/instructor/videos')
-  revalidatePath('/portal/videos')
+  revalidatePath('/', 'layout')
   return { ok: true }
 }

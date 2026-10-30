@@ -1,5 +1,6 @@
 import '../../globals.css'
 import { Manrope, Inter, Cairo } from 'next/font/google'
+import Providers from '@/components/Providers.jsx'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -19,9 +20,6 @@ const cairo = Cairo({
   variable: '--font-cairo',
   display: 'swap',
 })
-import Providers from '@/components/Providers.jsx'
-import Navbar from '@/components/Navbar.jsx'
-import Footer from '@/components/Footer.jsx'
 
 export const metadata = {
   metadataBase: new URL('https://hamztwasl.app'),
@@ -39,8 +37,6 @@ export const metadata = {
   },
 }
 
-// Locale → BCP-47 / dir mapping. Add new locales here and in
-// middleware.js's LOCALES array; nothing else needs to change.
 const LOCALE_META = {
   en: { htmlLang: 'en', dir: 'ltr' },
   ar: { htmlLang: 'ar', dir: 'rtl' },
@@ -51,7 +47,7 @@ export function generateStaticParams() {
   return Object.keys(LOCALE_META).map((locale) => ({ locale }))
 }
 
-export default async function PublicLayout({ children, params }) {
+export default async function LocaleRootLayout({ children, params }) {
   const { locale } = await params
   const meta = LOCALE_META[locale] || LOCALE_META.en
 
@@ -63,9 +59,7 @@ export default async function PublicLayout({ children, params }) {
     >
       <body>
         <Providers initialLocale={locale}>
-          <Navbar />
           {children}
-          <Footer />
         </Providers>
       </body>
     </html>

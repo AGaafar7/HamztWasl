@@ -19,11 +19,6 @@ function randomSuffix() {
   return Math.random().toString(36).slice(2, 6)
 }
 
-/**
- * Create a course owned by the current instructor. Returns { id } on success.
- * Course always starts as 'draft' — publishing is a separate action so you
- * can save work-in-progress without it appearing in the catalog.
- */
 export async function createCourseAction(form) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -32,13 +27,9 @@ export async function createCourseAction(form) {
   const titleEn = (form.titleEn || '').trim()
   if (!titleEn) throw new Error('English title is required')
 
-  // Derive a URL-safe id from the title. Arabic/Chinese-only titles get a
-  // generic fallback.
   let baseId = slugify(titleEn) || `course-${Date.now()}`
   let id = baseId
 
-  // The courses table uses a human-readable text id. If the slug collides,
-  // append a short suffix and try once more.
   for (let attempt = 0; attempt < 2; attempt++) {
     const { data: existing } = await supabase
       .from('courses')
@@ -75,8 +66,7 @@ export async function createCourseAction(form) {
 
   if (error) throw error
 
-  revalidatePath('/instructor/courses')
-  revalidatePath('/instructor')
+  revalidatePath('/', 'layout')
   return { id }
 }
 
@@ -109,14 +99,11 @@ export async function updateCourseAction(id, form) {
       },
     })
     .eq('id', id)
-    .eq('instructor_id', user.id)   // belt and suspenders; RLS already enforces
+    .eq('instructor_id', user.id)
 
   if (error) throw error
 
-  revalidatePath('/instructor/courses')
-  revalidatePath(`/instructor/courses/${id}`)
-  revalidatePath('/instructor')
-  revalidatePath('/portal')
+  revalidatePath('/', 'layout')
   return { ok: true }
 }
 
@@ -133,10 +120,7 @@ export async function publishCourseAction(id, publish) {
 
   if (error) throw error
 
-  revalidatePath('/instructor/courses')
-  revalidatePath(`/instructor/courses/${id}`)
-  revalidatePath('/instructor')
-  revalidatePath('/portal')
+  revalidatePath('/', 'layout')
   return { ok: true }
 }
 
@@ -153,8 +137,6 @@ export async function deleteCourseAction(id) {
 
   if (error) throw error
 
-  revalidatePath('/instructor/courses')
-  revalidatePath('/instructor')
-  revalidatePath('/portal')
+  revalidatePath('/', 'layout')
   return { ok: true }
 }

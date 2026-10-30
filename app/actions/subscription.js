@@ -1,13 +1,9 @@
+// app/actions/subscription.js
 'use server'
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '../../lib/supabase/server'
 
-/**
- * Cancels the subscription. Clears the expiry date and locks practice
- * access immediately. Cancel is final — the user cannot undo it, and
- * must subscribe again (paying $25) to restore access.
- */
 export async function cancelSubscriptionAction() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -23,10 +19,6 @@ export async function cancelSubscriptionAction() {
 
   if (error) throw error
 
-  revalidatePath('/portal/billing')
-  revalidatePath('/portal/listening')
-  revalidatePath('/portal/reading')
-  revalidatePath('/portal/speaking')
-  revalidatePath('/portal/writing')
+  revalidatePath('/', 'layout')
   return { ok: true }
 }

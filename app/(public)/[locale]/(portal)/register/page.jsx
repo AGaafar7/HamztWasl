@@ -12,6 +12,16 @@ export default function RegisterPage() {
   const { signUp, signInWithOAuth } = useAuth()
   const router = useRouter()
 
+  // Lift the locale prefix so it's available everywhere in this component.
+  const pathLocale =
+    typeof window !== 'undefined'
+      ? window.location.pathname.split('/').filter(Boolean)[0] || 'en'
+      : 'en'
+  const prefix =
+    ['en', 'ar', 'zh'].includes(pathLocale) && pathLocale !== 'en'
+      ? `/${pathLocale}`
+      : ''
+
   const [role, setRole] = useState('student')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -35,7 +45,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       await signUp({ email, password, fullName: name, role })
-      window.location.href = role === 'instructor' ? '/instructor' : '/portal'
+      window.location.href = role === 'instructor' ? `${prefix}/instructor` : `${prefix}/portal`
     } catch (err) {
       setError(err.message || 'Registration failed')
     } finally {
@@ -43,13 +53,13 @@ export default function RegisterPage() {
     }
   }
 
-  const onOAuth = async (provider) => {
+    const onOAuth = async (provider) => {
     setError('')
     setOauthLoading(provider)
     try {
-      // OAuth users always land as students — role choice is only
-      // available via email signup.
-      await signInWithOAuth(provider, '/portal')
+      const pathLocale = window.location.pathname.split('/').filter(Boolean)[0] || 'en'
+      const localePrefix = ['en', 'ar', 'zh'].includes(pathLocale) && pathLocale !== 'en' ? `/${pathLocale}` : ''
+      await signInWithOAuth(provider, `${localePrefix}/portal`)
     } catch (err) {
       setError(err.message || 'Registration failed')
       setOauthLoading(null)
@@ -159,13 +169,15 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="auth-demo-note">
+                    <p className="auth-demo-note">
             By creating an account, you agree to our{' '}
-            <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.
+            <Link href={prefix ? `${prefix}/terms` : '/terms'}>Terms</Link> and{' '}
+            <Link href={prefix ? `${prefix}/privacy` : '/privacy'}>Privacy Policy</Link>.
           </p>
 
           <p className="auth-switch">
-            {a.haveAccount} <Link href="/login">{a.signIn}</Link>
+            {a.haveAccount}{' '}
+            <Link href={prefix ? `${prefix}/login` : '/login'}>{a.signIn}</Link>
           </p>
         </div>
       </div>

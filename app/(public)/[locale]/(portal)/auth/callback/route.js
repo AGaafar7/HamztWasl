@@ -3,19 +3,27 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
 export async function GET(request) {
-  const { searchParams, origin } = new URL(request.url)
+  const url = new URL(request.url)
+  const { searchParams, origin } = url
   const code = searchParams.get('code')
   const errorParam = searchParams.get('error')
-  const next = searchParams.get('next') ?? '/portal'
+  
+  // Extract locale from the pathname (e.g. /ar/auth/callback -> ar)
+  const segments = url.pathname.split('/').filter(Boolean)
+  const locale = ['en', 'ar', 'zh'].includes(segments[0]) ? segments[0] : 'en'
+  const defaultNext = locale === 'en' ? '/portal' : `/${locale}/portal`
+  const next = searchParams.get('next') ?? defaultNext
 
   // Google / Apple sometimes bounce back with an error before we even get a code.
+   const loginPath = locale === 'en' ? '/login' : `/${locale}/login`
+
   if (errorParam) {
     console.error('OAuth error from provider:', errorParam)
-    return NextResponse.redirect(`${origin}/login?error=${errorParam}`)
+    return NextResponse.redirect(`${origin}${loginPath}?error=${errorParam}`)
   }
 
   if (!code) {
-    return NextResponse.redirect(`${origin}/login?error=missing_code`)
+    return NextResponse.redirect(`${origin}${loginPath}?error=missing_code`)
   }
 
   try {
@@ -26,12 +34,12 @@ export async function GET(request) {
 
     if (error) {
       console.error('Auth callback exchange failed:', error.message)
-      return NextResponse.redirect(`${origin}/login?error=auth_failed`)
+      return NextResponse.redirect(`${origin}${loginPath}?error=auth_failed`)
     }
 
     const user = data?.user
     if (!user) {
-      return NextResponse.redirect(`${origin}/login?error=no_user`)
+      return NextResponse.redirect(`${origin}${loginPath}?error=no_user`)
     }
 
     // 2. One DB query for the role. Wrapped so a transient failure can't
@@ -48,14 +56,16 @@ export async function GET(request) {
       console.error('Profile lookup failed, defaulting to student:', e)
     }
 
+        const portalNext = locale === 'en' ? '/portal' : `/${locale}/portal`
+    const instructorNext = locale === 'en' ? '/instructor' : `/${locale}/instructor`
     const dest =
-      next === '/portal' && (role === 'instructor' || role === 'admin')
-        ? '/instructor'
+      next === portalNext && (role === 'instructor' || role === 'admin')
+        ? instructorNext
         : next
 
     return NextResponse.redirect(`${origin}${dest}`)
   } catch (err) {
     console.error('Auth callback unexpected error:', err)
-    return NextResponse.redirect(`${origin}/login?error=callback_failed`)
+    return NextResponse.redirect(`${origin}${loginPath}?error=callback_failed`)
   }
 }

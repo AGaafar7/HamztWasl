@@ -23,29 +23,13 @@ export default function Navbar() {
 
   const LOCALES = ['en', 'ar', 'zh']
 
-  const switchLanguage = (code) => {
+    const switchLanguage = (code) => {
     if (code === lang) return
-
     const segments = (pathname || '/').split('/').filter(Boolean)
     const hasLocale = LOCALES.includes(segments[0])
     const rest = hasLocale ? segments.slice(1) : segments
-
-    // The portal, instructor area, login, and register live OUTSIDE the
-    // [locale] tree (app/(app)/...). They have no localized URL, so from
-    // those pages the switcher sends you to the public home of the chosen
-    // language, which is the best available destination.
-    const isAppPage =
-      rest[0] === 'portal' ||
-      rest[0] === 'instructor' ||
-      rest[0] === 'login' ||
-      rest[0] === 'register'
-
-    if (isAppPage) {
-      router.push(code === 'en' ? '/' : `/${code}`)
-      return
-    }
-
-    // Public page — swap the locale prefix in place.
+    
+    // Just swap the locale prefix for ALL pages now
     const tail = rest.join('/')
     if (code === 'en') {
       router.push(tail ? `/${tail}` : '/')
@@ -58,7 +42,8 @@ export default function Navbar() {
 
 
   const isInstructor = profile?.role === 'instructor' || profile?.role === 'admin'
-  const portalHref = isInstructor ? '/instructor' : '/portal'
+  const portalBase = isInstructor ? '/instructor' : '/portal'
+  const portalHref = lang === 'en' ? portalBase : `/${lang}${portalBase}`
 
   return (
     <header className="navbar">
@@ -85,8 +70,8 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/login" className="nav-login" onClick={close}>{t.nav.login}</Link>
-                <Link href="/register" className="btn btn-primary nav-cta" onClick={close}>{t.nav.cta}</Link>
+                <Link href={lang === 'en' ? '/login' : `/${lang}/login`} className="nav-login" onClick={close}>{t.nav.login}</Link>
+                <Link href={lang === 'en' ? '/register' : `/${lang}/register`} className="btn btn-primary nav-cta" onClick={close}>{t.nav.cta}</Link>
               </>
             ))}
           </div>
@@ -117,8 +102,8 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="nav-login">{t.nav.login}</Link>
-              <Link href="/register" className="btn btn-primary nav-cta">{t.nav.cta}</Link>
+              <Link href={lang === 'en' ? '/login' : `/${lang}/login`} className="nav-login">{t.nav.login}</Link>
+              <Link href={lang === 'en' ? '/register' : `/${lang}/register`} className="btn btn-primary nav-cta">{t.nav.cta}</Link>
             </>
           ))}
 

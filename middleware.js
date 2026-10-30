@@ -2,8 +2,9 @@
 import { NextResponse } from 'next/server'
 import { updateSession } from './lib/supabase/middleware.js'
 
-// Routes that require a logged-in user.
-const PROTECTED_PREFIXES = ['/portal', '/instructor']
+// The portal now lives inside the locale tree. These are the paths
+// *without* the locale prefix (e.g. checking '/portal', not '/ar/portal')
+const PROTECTED_PATHS = ['/portal', '/instructor', '/login', '/register']
 
 // Routes that logged-in users should be redirected away from.
 const AUTH_PAGES = ['/login', '/register']
@@ -24,27 +25,24 @@ export async function middleware(request) {
   const { response, user, supabase } = await updateSession(request)
   const { pathname } = request.nextUrl
 
-  const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p))
-  const isAuthPage = AUTH_PAGES.includes(pathname)
-  const isLocaleExempt = LOCALE_EXEMPT_PREFIXES.some((p) =>
-    pathname.startsWith(p)
-  )
-
-  // Rewrite bare public paths to the default locale, so:
-  //   /            → internally /en
-  //   /terms       → internally /en/terms
-  //   /privacy     → internally /en/privacy
-  // The browser URL stays bare. Paths that already start with /ar or /zh
-  // are left alone, as are /auth/*, /api/*, /login, /register, /portal/*,
-  // and /instructor/*.
   const segments = pathname.split('/').filter(Boolean)
   const firstSeg = segments[0]
   const hasLocalePrefix = LOCALES.includes(firstSeg)
+  
+  // Determine the path without the locale (e.g. '/ar/portal' -> '/portal')
+  const pathWithoutLocale = hasLocalePrefix 
+    ? '/' + segments.slice(1).join('/') 
+    : pathname
 
-    if (!isProtected && !isAuthPage && !isLocaleExempt && !hasLocalePrefix) {
+  const isProtected = PROTECTED_PATHS.some((p) => pathWithoutLocale.startsWith(p))
+  const isAuthPage = AUTH_PAGES.some((p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(p + '/'))
+  const isLocaleExempt = LOCALE_EXEMPT_PREFIXES.some((p) => pathname.startsWith(p))
+
+  // 1. Handle paths that are missing a locale entirely
+  if (!isLocaleExempt && !hasLocalePrefix) {
     const url = request.nextUrl.clone()
     
-    // Check if the user is coming from a specific locale page (e.g., they were on /ar and clicked a link)
+    // Check if the user is coming from a specific locale page
     const referer = request.headers.get('referer') || ''
     let targetLocale = DEFAULT_LOCALE
     
@@ -52,18 +50,23 @@ export async function middleware(request) {
     else if (referer.includes('/zh/') || referer.endsWith('/zh')) targetLocale = 'zh'
     
     url.pathname = `/${targetLocale}${pathname === '/' ? '' : pathname}`
-    return NextResponse.rewrite(url)
+    return NextResponse.redirect(url)
   }
 
-  // ---- Auth gates (unchanged from before) ----
+  // Extract the current locale so we can use it in redirects below
+  const localePrefix = hasLocalePrefix ? `/${firstSeg}` : ''
 
+  // ---- Auth gates ----
+
+  // 2. If it's a protected route and user is not logged in, go to localized login
   if (isProtected && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = `${localePrefix}/login`
     url.searchParams.set('next', pathname)
     return NextResponse.redirect(url)
   }
 
+  // 3. If it's an auth page and user is already logged in, redirect to correct portal
   if (isAuthPage && user) {
     const { data: profile } = await supabase
       .from('profiles')
@@ -72,12 +75,15 @@ export async function middleware(request) {
       .single()
 
     const url = request.nextUrl.clone()
-    url.pathname = profile?.role === 'instructor' ? '/instructor' : '/portal'
+    url.pathname = profile?.role === 'instructor' 
+      ? `${localePrefix}/instructor` 
+      : `${localePrefix}/portal`
     url.search = ''
     return NextResponse.redirect(url)
   }
 
-  if (pathname.startsWith('/instructor') && user) {
+  // 4. If accessing instructor routes but role is not instructor/admin, go to portal
+  if (pathWithoutLocale.startsWith('/instructor') && user) {
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
@@ -86,7 +92,7 @@ export async function middleware(request) {
 
     if (profile?.role !== 'instructor' && profile?.role !== 'admin') {
       const url = request.nextUrl.clone()
-      url.pathname = '/portal'
+      url.pathname = `${localePrefix}/portal`
       return NextResponse.redirect(url)
     }
   }
