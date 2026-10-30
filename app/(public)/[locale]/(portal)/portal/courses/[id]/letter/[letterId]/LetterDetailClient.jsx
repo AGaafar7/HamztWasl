@@ -27,13 +27,16 @@ export default function LetterDetailClient({
 }) {
   const { t, lang } = useLanguage()
   const L = t.learn.letter
+  
+  // FIX: Define the locale prefix so links stay in the current language
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
+
   const [dialect, setDialect] = useState('msa')
   const [completed, setCompleted] = useState(initialCompleted)
   const [imageFailed, setImageFailed] = useState(false)
   const [, startTransition] = useTransition()
   const [replayKey, setReplayKey] = useState(0)
 
-  // Example-word canvases — driven by clicking example word cards.
   const [activeExampleWord, setActiveExampleWord] = useState(
     letter.examples?.[0] || {
       word: letter.arabic,
@@ -42,8 +45,6 @@ export default function LetterDetailClient({
     }
   )
 
-  // Vocabulary-list canvas — driven by clicking vocab items. Fully independent
-  // of activeExampleWord.
   const [activeVocabWord, setActiveVocabWord] = useState(
     letter.vocabulary?.[0] || null
   )
@@ -83,7 +84,7 @@ export default function LetterDetailClient({
 
   return (
     <div className="letter-detail">
-      <Link href={`/portal/courses/${courseId}`} className="back-link">
+      <Link href={`${localePrefix}/portal/courses/${courseId}`} className="back-link">
         ← {L.backToCourse}
       </Link>
 
@@ -158,7 +159,7 @@ export default function LetterDetailClient({
         </div>
       </div>
 
-      {/* ---------- Example words (original position) ---------- */}
+      {/* ---------- Example words ---------- */}
       <div className="letter-examples">
         <h3>{L.exampleWords}</h3>
         <div className="examples-grid">
@@ -201,30 +202,26 @@ export default function LetterDetailClient({
       {/* ---------- Example-word canvases (see + write) ---------- */}
       <div className="letter-canvases-row">
         <div className="letter-canvas-col">
-  <h3>See it written</h3>
-  <p className="letter-canvas-hint">
-    Watch the word being written right to left.
-  </p>
-  <ArabicHandwriting
-    word={activeExampleWord?.word || letter.arabic}
-    height={260}
-    durationMs={2200}
-    autoPlayKey={`${activeExampleWord?.word || letter.arabic}-${replayKey}`}
-  />
-  <button
-    type="button"
-    className="btn btn-ghost btn-small"
-    style={{ marginTop: 8 }}
-    onClick={() => setReplayKey((k) => k + 1)}
-  >
-    ↻ Replay
-  </button>
-</div>
+          <h3>{L.seeItWritten}</h3>
+          <p className="letter-canvas-hint">{L.seeItWrittenDesc}</p>
+          <ArabicHandwriting
+            word={activeExampleWord?.word || letter.arabic}
+            height={260}
+            durationMs={2200}
+            autoPlayKey={`${activeExampleWord?.word || letter.arabic}-${replayKey}`}
+          />
+          <button
+            type="button"
+            className="btn btn-ghost btn-small"
+            style={{ marginTop: 8 }}
+            onClick={() => setReplayKey((k) => k + 1)}
+          >
+            ↻ {L.replay}
+          </button>
+        </div>
         <div className="letter-canvas-col">
-          <h3>Write it yourself</h3>
-          <p className="letter-canvas-hint">
-            Trace over the guide with your finger or stylus.
-          </p>
+          <h3>{L.writeItYourself}</h3>
+          <p className="letter-canvas-hint">{L.writeItYourselfDesc}</p>
           <TracingCanvas
             guide={activeExampleWord?.word || letter.arabic}
             height={260}
@@ -236,7 +233,7 @@ export default function LetterDetailClient({
       {letter.vocabulary?.length > 0 && (
         <div className="letter-vocab-row">
           <div className="letter-vocab-col">
-            <h3>More words with {letter.arabic}</h3>
+            <h3>{L.moreWords} {letter.arabic}</h3>
             <div className="letter-vocab-list">
               {letter.vocabulary.map((v) => {
                 const isActive = activeVocabWord?.arabic === v.arabic
@@ -276,9 +273,9 @@ export default function LetterDetailClient({
             </div>
           </div>
           <div className="letter-vocab-canvas-col">
-            <h3>Write it</h3>
+            <h3>{L.writeIt}</h3>
             <p className="letter-canvas-hint">
-              Currently showing:{' '}
+              {L.currentlyShowing}{' '}
               <span className="arabic">{activeVocabWord?.arabic || '—'}</span>
             </p>
             <TracingCanvas
@@ -292,7 +289,7 @@ export default function LetterDetailClient({
       {/* ---------- Expressions ---------- */}
       {letter.expressions?.length > 0 && (
         <div className="letter-expressions">
-          <h3>Expressions with {letter.arabic}</h3>
+          <h3>{L.expressions} {letter.arabic}</h3>
           <div className="letter-expression-list">
             {letter.expressions.map((e) => (
               <div className="letter-expression-item" key={e.id}>
@@ -319,7 +316,7 @@ export default function LetterDetailClient({
       <div className="letter-navigation">
         {prevLetter && (
           <Link
-            href={`/portal/courses/${courseId}/letter/${prevLetter.id}`}
+            href={`${localePrefix}/portal/courses/${courseId}/letter/${prevLetter.id}`}
             className="btn btn-ghost"
           >
             ← {prevLetter.name}
@@ -327,7 +324,7 @@ export default function LetterDetailClient({
         )}
         {nextLetter && (
           <Link
-            href={`/portal/courses/${courseId}/letter/${nextLetter.id}`}
+            href={`${localePrefix}/portal/courses/${courseId}/letter/${nextLetter.id}`}
             className="btn btn-ghost"
           >
             {nextLetter.name} →

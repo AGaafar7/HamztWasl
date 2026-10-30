@@ -9,18 +9,22 @@ import { updateProfileAction, updatePasswordAction } from '@/app/actions/profile
 import AvatarUploader from '@/components/AvatarUploader'
 
 const TABS = [
-  { id: 'account', label: 'Account' },
-  { id: 'progress', label: 'Progress' },
-  { id: 'security', label: 'Security' },
+  { id: 'account', labelKey: 'account' },
+  { id: 'progress', labelKey: 'progress' },
+  { id: 'security', labelKey: 'security' },
 ]
 
 export default function ProfileClient({ profile, data }) {
-  const { lang } = useLanguage()
+  const { t, lang } = useLanguage()
   const { refreshProfile } = useAuth()
   const [tab, setTab] = useState('account')
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
   const [, startTransition] = useTransition()
+
+  const p = t.portal.profile
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
+  const dateLocale = lang === 'ar' ? 'ar-EG' : lang === 'zh' ? 'zh-CN' : 'en-US'
 
   const [form, setForm] = useState({
     fullName: profile?.full_name || '',
@@ -47,7 +51,7 @@ export default function ProfileClient({ profile, data }) {
   }
 
   const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString('en-US', {
+    ? new Date(profile.created_at).toLocaleDateString(dateLocale, {
         month: 'long',
         year: 'numeric',
       })
@@ -57,44 +61,44 @@ export default function ProfileClient({ profile, data }) {
 
   return (
     <section className="profile-page">
-            <div className="profile-hero">
+      <div className="profile-hero">
         <AvatarUploader
           currentUrl={profile?.avatar_url || ''}
           fullName={form.fullName}
         />
         <div className="profile-hero-body">
-          <h1 className="profile-hero-name">{form.fullName || 'Student'}</h1>
+          <h1 className="profile-hero-name">{form.fullName || p.studentFallback}</h1>
           <p className="profile-hero-email">{profile?.email}</p>
-          <p className="profile-hero-since">Member since {memberSince}</p>
+          <p className="profile-hero-since">{p.memberSince} {memberSince}</p>
         </div>
       </div>
 
       <div className="profile-stats">
         <div className="profile-stat">
           <span className="profile-stat-value">{data.enrolledCount}</span>
-          <span className="profile-stat-label">Courses enrolled</span>
+          <span className="profile-stat-label">{p.stats.enrolled}</span>
         </div>
         <div className="profile-stat">
           <span className="profile-stat-value">{data.completedLessonsCount}</span>
-          <span className="profile-stat-label">Lessons completed</span>
+          <span className="profile-stat-label">{p.stats.lessons}</span>
         </div>
         <div className="profile-stat">
           <span className="profile-stat-value">{data.finishedCount}</span>
-          <span className="profile-stat-label">Courses finished</span>
+          <span className="profile-stat-label">{p.stats.finished}</span>
         </div>
       </div>
 
       <div className="profile-tabs" role="tablist">
-        {TABS.map((t) => (
+        {TABS.map((tabItem) => (
           <button
-            key={t.id}
+            key={tabItem.id}
             type="button"
             role="tab"
-            aria-selected={tab === t.id}
-            className={`profile-tab ${tab === t.id ? 'active' : ''}`}
-            onClick={() => setTab(t.id)}
+            aria-selected={tab === tabItem.id}
+            className={`profile-tab ${tab === tabItem.id ? 'active' : ''}`}
+            onClick={() => setTab(tabItem.id)}
           >
-            {t.label}
+            {p.tabs[tabItem.labelKey]}
           </button>
         ))}
       </div>
@@ -102,27 +106,23 @@ export default function ProfileClient({ profile, data }) {
       <div className="profile-body">
         {tab === 'account' && (
           <div className="profile-section">
-            <h3 className="profile-section-title">Account details</h3>
-            <p className="profile-section-desc">
-              How your name appears across the site.
-            </p>
+            <h3 className="profile-section-title">{p.accountDetails}</h3>
+            <p className="profile-section-desc">{p.accountDesc}</p>
 
             <div className="form-group">
-              <label className="form-label">Full name</label>
+              <label className="form-label">{p.fullName}</label>
               <input
                 className="form-input"
                 value={form.fullName}
                 onChange={(e) => update('fullName', e.target.value)}
-                placeholder="Your name"
+                placeholder={p.fullName}
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label">Email</label>
+              <label className="form-label">{p.email}</label>
               <input className="form-input" value={profile?.email || ''} disabled />
-              <p className="profile-field-hint">
-                Email is managed by your sign-in provider and can't be changed here.
-              </p>
+              <p className="profile-field-hint">{p.emailHint}</p>
             </div>
 
             {error && <p className="form-error">{error}</p>}
@@ -132,59 +132,69 @@ export default function ProfileClient({ profile, data }) {
               className={`btn btn-primary ${saved ? 'save-btn state-saved' : ''}`}
               onClick={onSaveProfile}
             >
-              {saved ? '✅ Saved!' : 'Save changes'}
+              {saved ? p.saved : p.saveChanges}
             </button>
           </div>
         )}
 
         {tab === 'progress' && (
-          <ProgressTab data={data} lang={lang} />
+          <ProgressTab data={data} lang={lang} localePrefix={localePrefix} />
         )}
 
         {tab === 'security' && (
-          <SecurityTab />
+          <SecurityTab p={p.securityTab} />
         )}
       </div>
     </section>
   )
 }
 
-function ProgressTab({ data, lang }) {
+function ProgressTab({ data, lang, localePrefix }) {
+  const { t } = useLanguage()
+  const pt = t.portal.profile.progressTab
+
   return (
     <>
       <div className="profile-section">
-        <h3 className="profile-section-title">Completed courses</h3>
-        <p className="profile-section-desc">
-          Courses you've finished from start to finish.
-        </p>
+        <h3 className="profile-section-title">{pt.finishedTitle}</h3>
+        <p className="profile-section-desc">{pt.finishedDesc}</p>
 
         {data.finished.length === 0 ? (
           <p className="portal-empty" style={{ padding: '20px 0' }}>
-            Complete a course to see it here.
+            {pt.emptyFinished}
           </p>
         ) : (
           <div className="profile-course-list">
             {data.finished.map((c) => (
-              <CourseMini key={c.id} course={c} lang={lang} done />
+              <CourseMini
+                key={c.id}
+                course={c}
+                lang={lang}
+                localePrefix={localePrefix}
+                done
+              />
             ))}
           </div>
         )}
       </div>
 
       <div className="profile-section">
-        <h3 className="profile-section-title">In progress</h3>
-        <p className="profile-section-desc">
-          Courses you've started but haven't finished yet.
-        </p>
+        <h3 className="profile-section-title">{pt.inProgressTitle}</h3>
+        <p className="profile-section-desc">{pt.inProgressDesc}</p>
 
         {data.inProgress.length === 0 ? (
           <p className="portal-empty" style={{ padding: '20px 0' }}>
-            You haven't enrolled in any courses yet.
+            {pt.emptyInProgress}
           </p>
         ) : (
           <div className="profile-course-list">
             {data.inProgress.map((c) => (
-              <CourseMini key={c.id} course={c} lang={lang} />
+              <CourseMini
+                key={c.id}
+                course={c}
+                lang={lang}
+                localePrefix={localePrefix}
+              />
             ))}
           </div>
         )}
@@ -193,10 +203,10 @@ function ProgressTab({ data, lang }) {
   )
 }
 
-function CourseMini({ course, lang, done }) {
+function CourseMini({ course, lang, localePrefix, done }) {
   return (
     <Link
-      href={`/portal/courses/${course.id}`}
+      href={`${localePrefix}/portal/courses/${course.id}`}
       className={`profile-course ${done ? 'profile-course-done' : ''}`}
     >
       <div className={`profile-course-thumb ${course.theme}`}>
@@ -222,7 +232,7 @@ function CourseMini({ course, lang, done }) {
   )
 }
 
-function SecurityTab() {
+function SecurityTab({ p }) {
   const [pw, setPw] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
@@ -255,13 +265,11 @@ function SecurityTab() {
 
   return (
     <div className="profile-section">
-      <h3 className="profile-section-title">Change password</h3>
-      <p className="profile-section-desc">
-        Choose a new password for your account.
-      </p>
+      <h3 className="profile-section-title">{p.title}</h3>
+      <p className="profile-section-desc">{p.desc}</p>
 
       <div className="form-group">
-        <label className="form-label">New password</label>
+        <label className="form-label">{p.newPassword}</label>
         <input
           type="password"
           className="form-input"
@@ -272,7 +280,7 @@ function SecurityTab() {
       </div>
 
       <div className="form-group">
-        <label className="form-label">Confirm new password</label>
+        <label className="form-label">{p.confirmPassword}</label>
         <input
           type="password"
           className="form-input"
@@ -289,7 +297,7 @@ function SecurityTab() {
         className={`btn btn-primary ${saved ? 'save-btn state-saved' : ''}`}
         onClick={onSubmit}
       >
-        {saved ? '✅ Password updated' : 'Update password'}
+        {saved ? p.updated : p.updateBtn}
       </button>
     </div>
   )
