@@ -5384,15 +5384,14 @@ padding: 24px 22px 22px;
    while scrolling through questions. */
 .mc-lesson-progress {
   position: sticky;
-  top: 76px;
-  z-index: 5;
-  background: rgba(251, 246, 235, 0.96);
-  backdrop-filter: blur(8px);
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: 12px 0 14px;
+  margin-bottom: 16px;
   border-bottom: 1px solid var(--line);
-  padding: 14px 0;
-  margin: 0 -40px 24px; /* bleed out to the card edges */
-  padding-inline: 40px;
 }
+
 @media (max-width: 640px) {
   .mc-lesson-progress {
     margin-inline: -24px;
@@ -5412,10 +5411,18 @@ padding: 24px 22px 22px;
   color: var(--navy-ink);
 }
 .mc-lesson-progress-label {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--grey);
-  font-size: 11.5px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--navy-ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.mc-lesson-progress-sub {
+  font-weight: 600;
+  color: var(--green);
 }
 .mc-lesson-progress-score {
   color: var(--green);
@@ -5426,11 +5433,12 @@ padding: 24px 22px 22px;
   background: var(--bg-soft);
   border-radius: 999px;
   overflow: hidden;
+  margin-bottom: 8px;
 }
 .mc-lesson-progress-fill {
   height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--orange));
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--green), #5ec98e);
   transition: width 0.35s ease;
 }
 
