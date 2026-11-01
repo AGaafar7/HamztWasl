@@ -4,8 +4,9 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
 import Link from 'next/link'
 
 export default function Hero() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const h = t.hero
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
 
   return (
     <section className="hero" id="top">
@@ -19,7 +20,7 @@ export default function Hero() {
           </h1>
           <p className="lede">{h.lede}</p>
           <div className="hero-actions">
-            <Link href="/register" className="btn btn-primary">{h.ctaPrimary}</Link>
+            <Link href={`${localePrefix}/register`} className="btn btn-primary">{h.ctaPrimary}</Link>
             <Link href="#path" className="btn btn-ghost">{h.ctaGhost}</Link>
           </div>
           <div className="hero-trust">

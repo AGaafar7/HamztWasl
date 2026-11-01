@@ -55,7 +55,7 @@ export default function Footer() {
           <div className="footer-legal">
             <Link href={lang === 'en' ? '/terms' : `/${lang}/terms`}>{f.supportLinks[1]}</Link>
             <span>·</span>
-            <Link href={lang === 'en' ? '/privacy' : `/${lang}/privacy`}>Privacy</Link>
+            <Link href={lang === 'en' ? '/privacy' : `/${lang}/privacy`}>{f.supportLinks[5] || 'Privacy'}</Link>
             <span>·</span>
             <Link href={lang === 'en' ? '/refund-policy' : `/${lang}/refund-policy`}>{f.supportLinks[2]}</Link>
           </div>

@@ -30,9 +30,10 @@ export default function LessonLibraryList({
         // If the caller says we're showing these as free practice content,
         // always open the standalone route — even for lessons that live
         // inside a free course. Otherwise honour the lesson's real home.
+        const localePrefix = lang === 'en' ? '' : `/${lang}`
         const base = (openStandalone || !lesson.courseId)
-          ? `/portal/lessons/${lesson.id}`
-          : `/portal/courses/${lesson.courseId}/lessons/${lesson.id}`
+          ? `${localePrefix}/portal/lessons/${lesson.id}`
+          : `${localePrefix}/portal/courses/${lesson.courseId}/lessons/${lesson.id}`
         const href = from ? `${base}?from=${from}` : base
 
         const done = completedSet.has(lesson.id)

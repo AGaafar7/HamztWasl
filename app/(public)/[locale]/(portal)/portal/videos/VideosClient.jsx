@@ -13,6 +13,7 @@ const DIALECTS = ['msa', 'egyptian', 'levantine', 'gulf', 'darija']
 export default function VideosClient({ videos, initialFavorites }) {
   const { t, lang } = useLanguage()
   const v = t.learn.videos
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
   const [levelFilter, setLevelFilter] = useState([])
   const [dialectFilter, setDialectFilter] = useState([])
   const [topicFilter, setTopicFilter] = useState([])
@@ -148,7 +149,7 @@ export default function VideosClient({ videos, initialFavorites }) {
         <div className="video-grid">
           {filtered.map((vid) => (
             <Link
-              href={`/portal/videos/${vid.id}`}
+              href={`${localePrefix}/portal/videos/${vid.id}`}
               className="video-card"
               key={vid.id}
               style={{ backgroundImage: `url(${youtubeThumbnail(vid.youtubeId)})` }}

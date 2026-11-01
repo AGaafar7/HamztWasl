@@ -9,6 +9,7 @@ export default function Courses() {
   const { t, lang } = useLanguage()
   const c = t.coursesSection
   const preview = getCourses(lang).slice(0, 3)
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
 
   return (
     <section className="section" id="courses">
@@ -50,7 +51,7 @@ export default function Courses() {
         </div>
 
         <div className="courses-cta">
-          <Link href="/portal" className="btn btn-ghost">{c.viewAll}</Link>
+          <Link href={`${localePrefix}/portal`} className="btn btn-ghost">{c.viewAll}</Link>
         </div>
       </div>
     </section>

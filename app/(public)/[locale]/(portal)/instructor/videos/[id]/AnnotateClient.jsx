@@ -14,6 +14,7 @@ import { updateWordAction } from '@/app/actions/video-admin'
  */
 export default function AnnotateClient({ video }) {
   const { lang } = useLanguage()
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
   const { mountRef, playerRef } = useYouTubePlayer(video.youtubeId)
 
   // Flatten transcript to one linear list of words.
@@ -271,7 +272,7 @@ export default function AnnotateClient({ video }) {
 
   return (
     <section>
-      <Link href="/instructor/videos" className="back-link">← Back to videos</Link>
+      <Link href={`${localePrefix}/instructor/videos`} className="back-link">← Back to videos</Link>
 
       <div className="portal-header">
         <div>
@@ -280,7 +281,7 @@ export default function AnnotateClient({ video }) {
             {annotatedCount} of {wordsState.length} words annotated · {progressPct}%
           </p>
         </div>
-        <Link href={`/portal/videos/${video.id}`} className="btn btn-ghost btn-small">
+        <Link href={`${localePrefix}/portal/videos/${video.id}`} className="btn btn-ghost btn-small">
           Preview as student →
         </Link>
       </div>

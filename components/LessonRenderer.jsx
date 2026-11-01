@@ -62,23 +62,7 @@ function similarity(a, b) {
 }
 /* ---------------------------------------------------------------- */
 
-const KIND_LABEL = {
-  text: 'Text',
-  tested: 'Tested',
-  video: 'Video',
-  listening: 'Listening',
-  reading: 'Reading',
-  speaking: 'Speaking',
-  writing: 'Writing',
-  multiplechoice: 'Multiple Choice',
-}
 
-const PRACTICE_LABEL = {
-  listening: 'Listening Practice',
-  reading: 'Reading Practice',
-  speaking: 'Speaking Practice',
-  writing: 'Writing Practice',
-}
 
 export default function LessonRenderer({
   course = null,
@@ -93,10 +77,27 @@ export default function LessonRenderer({
   const [completed, setCompleted] = useState(initialCompleted)
   const [, startTransition] = useTransition()
 
+  const KIND_LABEL = {
+    text: t.lessonKinds.text,
+    tested: t.lessonKinds.tested,
+    video: t.lessonKinds.video,
+    listening: t.lessonKinds.listening,
+    reading: t.lessonKinds.reading,
+    speaking: t.lessonKinds.speaking,
+    writing: t.lessonKinds.writing,
+    multiplechoice: t.lessonKinds.multiplechoice,
+  }
+
+  const PRACTICE_LABEL = {
+    listening: t.learn.listening.title,
+    reading: t.learn.reading.eyebrow,
+    speaking: t.learn.speaking.eyebrow,
+    writing: t.learn.writing.eyebrow,
+  }
+
   const title =
     gloss(lesson.content?.title, lang) ||
-    (siblings ? `Lesson ${siblings.index + 1}` : 'Lesson')
-
+    (siblings ? `${t.portal.lesson} ${siblings.index + 1}` : t.portal.lesson)
   const onToggleComplete = () => {
     const next = !completed
     setCompleted(next)
@@ -110,17 +111,18 @@ export default function LessonRenderer({
     })
   }
 
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
   const backHref = course
-  ? `/portal/courses/${course.id}`
-  : from && PRACTICE_LABEL[from]
-    ? `/portal/${from}`
-    : '/portal'
+    ? `${localePrefix}/portal/courses/${course.id}`
+    : from && PRACTICE_LABEL[from]
+      ? `${localePrefix}/portal/${from}`
+      : `${localePrefix}/portal`
 
-const backLabel = course
-  ? gloss(course.title, lang)
-  : from && PRACTICE_LABEL[from]
-    ? `Back to ${PRACTICE_LABEL[from]}`
-    : 'Back to portal'
+  const backLabel = course
+    ? gloss(course.title, lang)
+    : from && PRACTICE_LABEL[from]
+      ? `${t.portal.backTo} ${PRACTICE_LABEL[from]}`
+      : t.portal.backToPortal
 
   const progressPct =
     siblings && siblings.total
@@ -131,9 +133,9 @@ const backLabel = course
     <section className="lesson-page">
       <div className="lesson-page-topbar">
         <Link href={backHref} className="back-link">← {backLabel}</Link>
-        {siblings && (
+               {siblings && (
           <span className="lesson-page-position">
-            Lesson {siblings.index + 1} of {siblings.total}
+            {t.portal.lesson} {siblings.index + 1} {t.portal.of} {siblings.total}
           </span>
         )}
       </div>
@@ -171,22 +173,22 @@ const backLabel = course
 
       <div className="lesson-page-foot">
         <div className="lesson-page-nav">
-          {siblings?.prev ? (
+                   {siblings?.prev ? (
             <Link
-              href={`/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
+              href={`${localePrefix}/portal/courses/${course.id}/lessons/${siblings.prev.id}`}
               className="btn btn-ghost btn-small"
             >
-              ← Previous
+              ← {t.portal.previous}
             </Link>
           ) : (
             <span />
           )}
           {siblings?.next && (
             <Link
-              href={`/portal/courses/${course.id}/lessons/${siblings.next.id}`}
+              href={`${localePrefix}/portal/courses/${course.id}/lessons/${siblings.next.id}`}
               className="btn btn-ghost btn-small"
             >
-              Next →
+              {t.portal.next} →
             </Link>
           )}
         </div>
@@ -204,7 +206,7 @@ const backLabel = course
             className={`btn ${completed ? 'btn-ghost' : 'btn-primary'}`}
             onClick={onToggleComplete}
           >
-            {completed ? '✓ Completed — tap to undo' : 'Mark as complete'}
+          {completed ? t.portal.completedUndo : t.portal.markComplete}
           </button>
         </div>
       
@@ -217,10 +219,11 @@ const backLabel = course
    Text
    ============================================================ */
 function TextLesson({ lesson }) {
+  const { t } = useLanguage()
   const body = lesson.content?.body?.ar || lesson.content?.body?.en || ''
 
   if (!body) {
-    return <p className="portal-empty">This lesson has no content yet.</p>
+    return <p className="portal-empty">{t.portal.noContent}</p>
   }
 
   return (
@@ -234,7 +237,7 @@ function TextLesson({ lesson }) {
    Tested — interactive quiz with Gemini grading
    ============================================================ */
 function TestedLesson({ lesson }) {
-  const { lang } = useLanguage()
+  const { t } = useLanguage()
   const c = lesson.content || {}
   const body = c.body?.ar || c.body?.en || ''
   const questions = c.questions || []
@@ -252,7 +255,7 @@ function TestedLesson({ lesson }) {
           {body}
         </div>
       )}
-        <p className="portal-empty">This lesson has no questions yet.</p>
+      <p className="portal-empty">{t.portal.noQuestions}</p>
       </div>
     )
   }
@@ -300,7 +303,7 @@ function TestedLesson({ lesson }) {
       )}
 
       <div className="lesson-questions">
-        <h3>Questions</h3>
+        <h3>{t.portal.questions}</h3>
         {questions.map((q, i) => {
           const result = results[q.id]
           const isCorrect = result?.correct === true
@@ -312,12 +315,12 @@ function TestedLesson({ lesson }) {
               key={q.id || i}
             >
               <div className="quiz-card-head">
-                <span className="quiz-card-num">Question {i + 1}</span>
+                <span className="quiz-card-num">{t.portal.question} {i + 1}</span>
                 {isCorrect && (
-                  <span className="quiz-badge quiz-badge-correct">✓ Correct</span>
+                  <span className="quiz-badge quiz-badge-correct">{t.portal.correctBadge}</span>
                 )}
                 {isWrong && (
-                  <span className="quiz-badge quiz-badge-wrong">Try again</span>
+                  <span className="quiz-badge quiz-badge-wrong">{t.portal.tryAgain}</span>
                 )}
               </div>
 
@@ -327,7 +330,7 @@ function TestedLesson({ lesson }) {
                 className="form-input quiz-input arabic"
                 dir="rtl"
                 rows="3"
-                placeholder="اكتب إجابتك هنا…"
+                placeholder={t.portal.writeAnswer}
                 value={answers[q.id] || ''}
                 onChange={(e) =>
                   setAnswers((s) => ({ ...s, [q.id]: e.target.value }))
@@ -342,14 +345,14 @@ function TestedLesson({ lesson }) {
                   onClick={() => onCheck(q)}
                   disabled={!answers[q.id]?.trim() || loading[q.id] || isCorrect}
                 >
-                  {loading[q.id] ? 'Checking…' : 'Check answer'}
+                {loading[q.id] ? t.portal.checking : t.portal.checkAnswer}
                 </button>
                 <button
                   type="button"
                   className="btn btn-ghost btn-small"
                   onClick={() => onReveal(q.id)}
                 >
-                  {isRevealed ? 'Hide reference' : 'Show reference answer'}
+                {isRevealed ? t.portal.hideReference : t.portal.showReference}
                 </button>
               </div>
 
@@ -361,7 +364,7 @@ function TestedLesson({ lesson }) {
 
               {isRevealed && (
                 <div className="quiz-reference">
-                  <span className="quiz-reference-label">Reference answer</span>
+                  <span className="quiz-reference-label">{t.portal.referenceAnswer}</span>
                   <p className="quiz-reference-text arabic" dir="rtl">{q.answer}</p>
                   {q.hint && <p className="quiz-hint">Hint: {q.hint}</p>}
                 </div>
@@ -379,11 +382,11 @@ function TestedLesson({ lesson }) {
    Multiple Choice — with attempt-gating and Why explanations
    ============================================================ */
 function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
-  const { lang } = useLanguage()
+  const { t, lang } = useLanguage()
+  const mc = t.learn.multipleChoice
   const c = lesson.content || {}
   const questions = c.questions || []
 
-  // Initialize from persisted data so refreshes don't lose progress
   const [picked, setPicked] = useState(() => {
     const init = {}
     for (const [qid, a] of Object.entries(persistedAttempts || {})) {
@@ -420,15 +423,21 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
   const [saving, setSaving] = useState({})
 
   if (questions.length === 0) {
-    return <p className="portal-empty">This lesson has no questions yet.</p>
+    return <p className="portal-empty">{t.portal.noQuestions}</p>
   }
+
+  const total = questions.length
+  const answeredCount = Object.keys(picked).length
+  const correctCount = Object.keys(correct).length
+  const incorrectQuestions = questions.filter((q) => revealed[q.id] && !correct[q.id])
+  const allDone = answeredCount === total
+  const progressPct = total ? Math.round((answeredCount / total) * 100) : 0
 
   const onSubmit = async (q) => {
     const pickId = picked[q.id]
     if (!pickId) return
     const isCorrect = pickId === q.correctOptionId
 
-    // Optimistic update first
     if (isCorrect) {
       setCorrect((s) => ({ ...s, [q.id]: true }))
       setRevealed((s) => ({ ...s, [q.id]: true }))
@@ -438,7 +447,6 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
       if (next >= 2) setRevealed((s) => ({ ...s, [q.id]: true }))
     }
 
-    // Persist to the DB. Fire-and-forget; failure doesn't roll back the UI.
     setSaving((s) => ({ ...s, [q.id]: true }))
     try {
       await recordMultipleChoiceAttemptAction({
@@ -456,8 +464,46 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
 
   const toggleWhy = (qid) => setWhyOpen((s) => ({ ...s, [qid]: !s[qid] }))
 
+  const retryWrong = () => {
+    setPicked((s) => {
+      const n = { ...s }
+      for (const q of incorrectQuestions) delete n[q.id]
+      return n
+    })
+    setWrongAttempts((s) => {
+      const n = { ...s }
+      for (const q of incorrectQuestions) delete n[q.id]
+      return n
+    })
+    setRevealed((s) => {
+      const n = { ...s }
+      for (const q of incorrectQuestions) delete n[q.id]
+      return n
+    })
+    const firstRetryId = incorrectQuestions[0]?.id
+    if (firstRetryId) {
+      const el = document.querySelector(`[data-mc-qid="${firstRetryId}"]`)
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   return (
     <div className="lesson-multiplechoice">
+      <div className="mc-lesson-progress">
+        <div className="mc-lesson-progress-track">
+          <div
+            className="mc-lesson-progress-fill"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+        <div className="mc-lesson-progress-label">
+          {answeredCount} / {total} {mc.answered}
+          <span className="mc-lesson-progress-sub">
+            {correctCount} {mc.correct}
+          </span>
+        </div>
+      </div>
+
       <div className="lesson-questions">
         {questions.map((q, i) => {
           const isCorrect = correct[q.id] === true
@@ -469,8 +515,6 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
           const canSubmit =
             !!currentPick && !isCorrect && !isRevealed && !saving[q.id]
           const whyIsOpen = whyOpen[q.id] === true
-
-          // Did this question have a persisted attempt from a previous session?
           const hadPrevious = !!persistedAttempts?.[q.id]
 
           return (
@@ -479,25 +523,26 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
                 isWrongPick && !isCorrect ? 'mc-wrong' : ''
               }`}
               key={q.id || i}
+              data-mc-qid={q.id}
             >
               <div className="mc-card-head">
-                <span className="mc-card-num">Question {i + 1}</span>
+                <span className="mc-card-num">{t.portal.question} {i + 1}</span>
                 {isCorrect && (
-                  <span className="mc-badge mc-badge-correct">✓ Correct</span>
+                  <span className="mc-badge mc-badge-correct">{mc.correctBadge}</span>
                 )}
                 {!isCorrect && isRevealed && (
                   <span className="mc-badge mc-badge-revealed">
-                    Answer revealed
+                    {mc.answerRevealed}
                   </span>
                 )}
                 {!isCorrect && !isRevealed && attempts > 0 && (
                   <span className="mc-badge mc-badge-wrong">
-                    Try again ({2 - attempts} left)
+                    {mc.tryAgain} ({2 - attempts} left)
                   </span>
                 )}
                 {hadPrevious && !isCorrect && !isRevealed && attempts === 0 && (
                   <span className="mc-badge mc-badge-correct">
-                    Previous attempt saved
+                    {mc.previousAttemptSaved}
                   </span>
                 )}
               </div>
@@ -549,19 +594,19 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
                   disabled={!canSubmit}
                 >
                   {saving[q.id]
-                    ? 'Saving…'
+                    ? mc.saving
                     : isCorrect
-                    ? 'Correct'
+                    ? mc.correct
                     : isRevealed
-                    ? 'Answer revealed'
-                    : 'Check answer'}
+                    ? mc.answerRevealed
+                    : mc.checkAnswer}
                 </button>
                 <button
                   type="button"
                   className="btn btn-ghost btn-small"
                   onClick={() => toggleWhy(q.id)}
                 >
-                  {whyIsOpen ? 'Hide why' : 'Why?'}
+                  {whyIsOpen ? mc.hideWhy : mc.why}
                 </button>
               </div>
 
@@ -569,7 +614,7 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
                 <div className="mc-why">
                   {isCorrect ? (
                     <div className="mc-why-block mc-why-good">
-                      <span className="mc-why-label">Why this is correct</span>
+                      <span className="mc-why-label">{mc.whyCorrect}</span>
                       <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                         {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
                       </p>
@@ -577,7 +622,7 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
                   ) : attempts > 0 ? (
                     <>
                       <div className="mc-why-block mc-why-bad">
-                        <span className="mc-why-label">Why your answer is wrong</span>
+                        <span className="mc-why-label">{mc.whyWrong}</span>
                         <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                           {q.whyWrong?.[currentPick]?.[lang] ||
                             q.whyWrong?.[currentPick]?.en ||
@@ -585,9 +630,7 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
                         </p>
                       </div>
                       <div className="mc-why-block mc-why-good">
-                        <span className="mc-why-label">
-                          Why the other answer is correct
-                        </span>
+                        <span className="mc-why-label">{mc.whyOtherCorrect}</span>
                         <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                           {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
                         </p>
@@ -595,7 +638,7 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
                     </>
                   ) : (
                     <div className="mc-why-block">
-                      <span className="mc-why-label">Why this answer is correct</span>
+                      <span className="mc-why-label">{mc.whyCorrect}</span>
                       <p dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                         {q.whyCorrect?.[lang] || q.whyCorrect?.en || ''}
                       </p>
@@ -607,6 +650,41 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
           )
         })}
       </div>
+
+      {allDone && (
+        <div className="mc-lesson-summary">
+          <h3 className="mc-lesson-summary-title">
+            {incorrectQuestions.length === 0
+              ? mc.lessonComplete
+              : mc.lessonReviewed}
+          </h3>
+          <p className="mc-lesson-summary-body">
+            {incorrectQuestions.length === 0
+              ? `${mc.allCorrect} ${total} ${mc.answeredCorrectly}`
+              : `${mc.youAnswered} ${correctCount} ${mc.of} ${total} ${mc.correctly}`}
+          </p>
+          <div className="mc-lesson-summary-actions">
+            {incorrectQuestions.length > 0 ? (
+              <button
+                type="button"
+                className="btn btn-primary btn-small"
+                onClick={retryWrong}
+              >
+                {mc.retryQuestions} {incorrectQuestions.length}{' '}
+                {incorrectQuestions.length === 1 ? mc.question : mc.questions}
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-ghost btn-small"
+                onClick={retryWrong}
+              >
+                {mc.practiceAgain}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -615,13 +693,14 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
    Listening
    ============================================================ */
 function ListeningLesson({ lesson }) {
-  const { lang } = useLanguage()
+  const { t, lang } = useLanguage()
+  const ln = t.learn.listening
   const lines = lesson.content?.lines || []
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState({})
 
   if (lines.length === 0) {
-    return <p className="portal-empty">This lesson has no lines yet.</p>
+    return <p className="portal-empty">{t.portal.noLines}</p>
   }
 
   const onCheck = (lineId, expectedArabic) => {
@@ -637,10 +716,7 @@ function ListeningLesson({ lesson }) {
 
   return (
     <div className="lesson-listen">
-      <p className="lesson-listen-intro">
-        Listen to the audio, then type what you hear in Arabic.
-      </p>
-
+      <p className="lesson-listen-intro">{ln.lede}</p>
       {lines.map((line, i) => {
         const state = checked[line.id]
         const isGood = state?.accuracy >= 70
@@ -648,7 +724,7 @@ function ListeningLesson({ lesson }) {
           <div className="lesson-listen-line" key={line.id || i}>
             <div className="lesson-listen-head">
               <span className="lesson-listen-counter">
-                Line {i + 1} of {lines.length}
+                {t.portal.line} {i + 1} {t.portal.of} {lines.length}
               </span>
             </div>
 
@@ -658,21 +734,17 @@ function ListeningLesson({ lesson }) {
                 className="listen-play-btn"
                 onClick={() => speak(line.arabic)}
               >
-                🔊 Play the line
+              {ln.play}
               </button>
-              <span className="lesson-listen-hint">
-                You can replay as many times as you need
-              </span>
+              <span className="lesson-listen-hint">{t.portal.replayAsNeeded}</span>
             </div>
 
-            <label className="lesson-listen-label">
-              Type what you heard
-            </label>
+            <label className="lesson-listen-label">{ln.yourAnswer}</label>
             <input
               type="text"
               dir="rtl"
               className="form-input arabic lesson-listen-input"
-              placeholder="اكتب هنا…"
+              placeholder={ln.placeholder}
               value={answers[line.id] || ''}
               onChange={(e) =>
                 setAnswers((a) => ({ ...a, [line.id]: e.target.value }))
@@ -686,14 +758,14 @@ function ListeningLesson({ lesson }) {
                 onClick={() => onCheck(line.id, line.arabic)}
                 disabled={!answers[line.id]?.trim()}
               >
-                Check answer
+                                {ln.check}
               </button>
               <button
                 type="button"
                 className="btn btn-ghost"
                 onClick={() => onReveal(line.id)}
               >
-                Show answer
+                {ln.showAnswer}
               </button>
             </div>
 
@@ -701,7 +773,7 @@ function ListeningLesson({ lesson }) {
               <div className={`listen-result ${isGood ? 'good' : 'retry'}`}>
                 <div className="listen-accuracy">
                   {isGood ? '✓ ' : '✕ '}
-                  Accuracy: {state.accuracy}%
+                  {ln.accuracy}: {state.accuracy}%
                 </div>
                 {state.revealed && (
                   <div className="listen-reveal">
@@ -726,6 +798,8 @@ function ListeningLesson({ lesson }) {
    Reading — passage always Arabic, interactive comprehension
    ============================================================ */
 function ReadingLesson({ lesson }) {
+  const { t } = useLanguage()
+  const r = t.learn.reading
   const c = lesson.content || {}
 
   // The student is learning to READ in Arabic, so the passage always
@@ -740,7 +814,7 @@ function ReadingLesson({ lesson }) {
   const [revealed, setRevealed] = useState({})
 
   if (!passage && questions.length === 0) {
-    return <p className="portal-empty">This lesson has no content yet.</p>
+        return <p className="portal-empty">{t.portal.noContent}</p>
   }
 
   const onCheck = async (q) => {
@@ -783,7 +857,7 @@ function ReadingLesson({ lesson }) {
 
       {questions.length > 0 && (
         <div className="lesson-questions">
-          <h3>Comprehension questions</h3>
+          <h3>{r.title}</h3>
           {questions.map((q, i) => {
             const result = results[q.id]
             const isCorrect = result?.correct === true
@@ -795,12 +869,12 @@ function ReadingLesson({ lesson }) {
                 key={q.id || i}
               >
                 <div className="quiz-card-head">
-                  <span className="quiz-card-num">Question {i + 1}</span>
+                                    <span className="quiz-card-num">{r.question} {i + 1}</span>
                   {isCorrect && (
-                    <span className="quiz-badge quiz-badge-correct">✓ Correct</span>
+                  <span className="quiz-badge quiz-badge-correct">{r.correct}</span>
                   )}
                   {isWrong && (
-                    <span className="quiz-badge quiz-badge-wrong">Try again</span>
+                    <span className="quiz-badge quiz-badge-wrong">{r.notQuite}</span>
                   )}
                 </div>
 
@@ -810,7 +884,7 @@ function ReadingLesson({ lesson }) {
                   className="form-input quiz-input arabic"
                   dir="rtl"
                   rows="3"
-                  placeholder="اكتب إجابتك هنا…"
+                  placeholder={r.placeholder}
                   value={answers[q.id] || ''}
                   onChange={(e) =>
                     setAnswers((s) => ({ ...s, [q.id]: e.target.value }))
@@ -825,14 +899,14 @@ function ReadingLesson({ lesson }) {
                     onClick={() => onCheck(q)}
                     disabled={!answers[q.id]?.trim() || loading[q.id] || isCorrect}
                   >
-                    {loading[q.id] ? 'Checking…' : 'Check answer'}
+                    {loading[q.id] ? r.checking : r.submit}
                   </button>
                   <button
                     type="button"
                     className="btn btn-ghost btn-small"
                     onClick={() => onReveal(q.id)}
                   >
-                    {isRevealed ? 'Hide reference' : 'Show reference answer'}
+                                        {isRevealed ? t.portal.hideReference : t.portal.showReference}
                   </button>
                 </div>
 
@@ -844,9 +918,9 @@ function ReadingLesson({ lesson }) {
 
                 {isRevealed && (
                   <div className="quiz-reference">
-                    <span className="quiz-reference-label">Reference answer</span>
+                                        <span className="quiz-reference-label">{t.portal.referenceAnswer}</span>
                     <p className="quiz-reference-text arabic" dir="rtl">{q.answer}</p>
-                    {q.hint && <p className="quiz-hint">Hint: {q.hint}</p>}
+                    {q.hint && <p className="quiz-hint">{t.portal.hint}: {q.hint}</p>}
                   </div>
                 )}
               </div>
@@ -1126,13 +1200,10 @@ function WritingLesson({ lesson }) {
    Video
    ============================================================ */
 function VideoLesson({ lesson, videoData }) {
-  const { lang } = useLanguage()
+  const { t, lang } = useLanguage()
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
   if (!videoData) {
-    return (
-      <p className="portal-empty">
-        This lesson points at a video that no longer exists.
-      </p>
-    )
+    return <p className="portal-empty">{t.portal.videoNotFound}</p>
   }
   return (
     <div className="lesson-video">
@@ -1146,11 +1217,11 @@ function VideoLesson({ lesson, videoData }) {
         />
       </div>
       <Link
-        href={`/portal/videos/${videoData.id}`}
+        href={`${localePrefix}/portal/videos/${videoData.id}`}
         className="btn btn-ghost btn-small"
         style={{ marginTop: 16 }}
       >
-        Open full transcript & practice →
+        {t.portal.openFullTranscript} →
       </Link>
     </div>
   )

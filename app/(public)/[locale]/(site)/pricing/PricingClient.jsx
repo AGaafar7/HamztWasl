@@ -6,6 +6,7 @@ import { useLanguage } from '@/i18n/LanguageContext.jsx'
 export default function PricingClient() {
   const { t, lang } = useLanguage()
   const p = t.pricing
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
 
   return (
     <section className="section">
@@ -48,7 +49,7 @@ export default function PricingClient() {
             </ul>
 
             <Link
-              href={`/portal/billing`}
+              href={`${localePrefix}/portal/billing`}
               className="btn btn-primary pricing-cta"
             >
               {p.subscription.cta}
@@ -79,7 +80,7 @@ export default function PricingClient() {
               ))}
             </ul>
 
-            <Link href={`/portal`} className="btn btn-ghost pricing-cta">
+            <Link href={`${localePrefix}/portal`} className="btn btn-ghost pricing-cta">
               {p.courses.cta}
             </Link>
           </article>

@@ -18,6 +18,7 @@ export default function VideoDetailClient({ video, moreVideos }) {
   const { t, lang } = useLanguage()
   const vd = t.learn.videoDetail
   const vLabels = t.learn.videos
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
 
   const [activeWord, setActiveWord] = useState(null)
   const [showFullTranscript, setShowFullTranscript] = useState(false)
@@ -41,8 +42,8 @@ export default function VideoDetailClient({ video, moreVideos }) {
   }, [currentTime, video])
 
   useEffect(() => {
-    router.prefetch?.('/portal/videos')
-  }, [router])
+    router.prefetch?.(`${localePrefix}/portal/videos`)
+  }, [router, localePrefix])
 
   useEffect(() => () => clearTimeout(clickTimerRef.current), [])
 
@@ -119,7 +120,7 @@ export default function VideoDetailClient({ video, moreVideos }) {
 
   return (
     <section>
-      <Link href="/portal/videos" className="back-link">← {vd.back}</Link>
+      <Link href={`${localePrefix}/portal/videos`} className="back-link">← {vd.back}</Link>
 
       <div className="video-detail-head">
         <h1 className="page-title">{gloss(video.title, lang)}</h1>
@@ -186,7 +187,7 @@ export default function VideoDetailClient({ video, moreVideos }) {
         <div className="more-videos-row">
           {moreVideos.map((v) => (
             <Link
-              href={`/portal/videos/${v.id}`}
+              href={`${localePrefix}/portal/videos/${v.id}`}
               className="more-video-card"
               key={v.id}
               style={{ backgroundImage: `url(${youtubeThumbnail(v.youtubeId)})` }}

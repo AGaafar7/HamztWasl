@@ -13,11 +13,13 @@ const KIND_LABEL = {
   reading: 'Reading',
   speaking: 'Speaking',
   writing: 'Writing',
+  multiplechoice: 'Multiple Choice',
 }
 
 export default function CourseDetailClient({ course, letters, lessons, completedKeys }) {
   const { t, lang } = useLanguage()
   const p = t.portal
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
   const completedSet = useMemo(() => new Set(completedKeys || []), [completedKeys])
 
   const title = gloss(course.title, lang)
@@ -75,7 +77,7 @@ export default function CourseDetailClient({ course, letters, lessons, completed
               const isDone = completedSet.has(`letter:${letter.id}`)
               return (
                 <Link
-                  href={`/portal/courses/${course.id}/letter/${letter.id}`}
+                  href={`${localePrefix}/portal/courses/${course.id}/letter/${letter.id}`}
                   key={letter.id}
                   className={`alphabet-card ${isDone ? 'alphabet-card-done' : ''}`}
                 >
@@ -156,7 +158,7 @@ export default function CourseDetailClient({ course, letters, lessons, completed
         </div>
         {resumeLesson && (
           <Link
-            href={`/portal/courses/${course.id}/lessons/${resumeLesson.id}`}
+            href={`${localePrefix}/portal/courses/${course.id}/lessons/${resumeLesson.id}`}
             className="btn btn-primary"
           >
             {ctaLabel} →
@@ -181,7 +183,7 @@ export default function CourseDetailClient({ course, letters, lessons, completed
             return (
               <Link
                 key={lesson.id}
-                href={`/portal/courses/${course.id}/lessons/${lesson.id}`}
+                href={`${localePrefix}/portal/courses/${course.id}/lessons/${lesson.id}`}
                 className={`lesson-row-item ${isDone ? 'lesson-done' : ''} ${isCurrent ? 'lesson-current' : ''}`}
               >
                 <span className="lesson-row-num">

@@ -11,6 +11,8 @@ export default function WordExamplesModal({
   lang,
   loading = false,
 }) {
+  const localePrefix = lang === 'en' ? '' : `/${lang}`
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -35,7 +37,7 @@ export default function WordExamplesModal({
               <div className="modal-examples">
                 {examples.map((ex, i) => (
                   <Link
-                    href={`/portal/videos/${ex.videoId}`}
+                    href={`${localePrefix}/portal/videos/${ex.videoId}`}
                     key={i}
                     className="modal-example"
                     onClick={onClose}
