@@ -157,6 +157,8 @@ export default function LessonRenderer({
           <h1 className="lesson-page-title">{title}</h1>
         </header>
 
+        
+
         <div className="lesson-page-body">
           {lesson.kind === 'text' && <TextLesson lesson={lesson} />}
           {lesson.kind === 'tested' && <TestedLesson lesson={lesson} />}
@@ -489,7 +491,8 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
 
   return (
     <div className="lesson-multiplechoice">
-      <div className="mc-lesson-progress">
+      {/* The sticky progress bar */}
+            <div className="mc-lesson-progress">
         <div className="mc-lesson-progress-track">
           <div
             className="mc-lesson-progress-fill"
@@ -503,7 +506,6 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
           </span>
         </div>
       </div>
-
       <div className="lesson-questions">
         {questions.map((q, i) => {
           const isCorrect = correct[q.id] === true
