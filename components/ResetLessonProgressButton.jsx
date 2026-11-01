@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { resetLessonAction } from '../app/actions/progress'
 
 /**
@@ -15,6 +16,7 @@ import { resetLessonAction } from '../app/actions/progress'
  * initialiser only runs on mount.
  */
 export default function ResetLessonProgressButton({ lessonId, courseId }) {
+  const { t } = useLanguage()
   const [confirming, setConfirming] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -42,7 +44,7 @@ export default function ResetLessonProgressButton({ lessonId, courseId }) {
         className="btn btn-ghost btn-small reset-progress-btn"
         onClick={() => setConfirming(true)}
       >
-        ↻ Reset progress
+        ↻ {t.portal.resetProgress || 'Reset progress'}
       </button>
     )
   }
@@ -50,7 +52,7 @@ export default function ResetLessonProgressButton({ lessonId, courseId }) {
   return (
     <div className="reset-progress-confirm">
       <span className="reset-progress-confirm-text">
-        Reset all answers and unmark this lesson?
+        {t.portal.resetConfirm || 'Reset all answers and unmark this lesson?'}
       </span>
       <button
         type="button"
@@ -58,7 +60,7 @@ export default function ResetLessonProgressButton({ lessonId, courseId }) {
         onClick={doReset}
         disabled={busy}
       >
-        {busy ? 'Resetting…' : 'Yes, reset'}
+        {busy ? (t.portal.resetting || 'Resetting…') : (t.portal.yesReset || 'Yes, reset')}
       </button>
       <button
         type="button"
@@ -66,7 +68,7 @@ export default function ResetLessonProgressButton({ lessonId, courseId }) {
         onClick={() => { setConfirming(false); setError('') }}
         disabled={busy}
       >
-        Cancel
+        {t.portal.cancel || 'Cancel'}
       </button>
       {error && <span className="form-error" style={{ marginTop: 8 }}>{error}</span>}
     </div>
