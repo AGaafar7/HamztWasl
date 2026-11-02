@@ -73,18 +73,18 @@ export default function ProfileClient({ profile, data }) {
         </div>
       </div>
 
-      <div className="profile-stats">
+            <div className="profile-stats">
         <div className="profile-stat">
           <span className="profile-stat-value">{data.enrolledCount}</span>
-          <span className="profile-stat-label">{p.stats.enrolled}</span>
+          <span className="profile-stat-label">{p.stats?.enrolled || 'Courses enrolled'}</span>
         </div>
         <div className="profile-stat">
           <span className="profile-stat-value">{data.completedLessonsCount}</span>
-          <span className="profile-stat-label">{p.stats.lessons}</span>
+          <span className="profile-stat-label">{p.stats?.lessons || 'Lessons completed'}</span>
         </div>
         <div className="profile-stat">
           <span className="profile-stat-value">{data.finishedCount}</span>
-          <span className="profile-stat-label">{p.stats.finished}</span>
+          <span className="profile-stat-label">{p.stats?.finished || 'Courses finished'}</span>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export default function ProfileClient({ profile, data }) {
           </div>
         )}
 
-                {tab === 'progress' && (
+                  {tab === 'progress' && (
           <ProgressTab data={data} lang={lang} localePrefix={localePrefix} t={t} />
         )}
 

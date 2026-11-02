@@ -350,8 +350,6 @@ noItemsYet: 'This lesson has no items to trace yet.',
       ofCompleted: 'of',
       completedText: 'completed',
       billing: 'Billing',
-    },
-        // Inside t.portal, add:
     profile: {
       tabs: { account: 'Account', progress: 'Progress', security: 'Security' },
       accountDetails: 'Account details',
@@ -384,6 +382,7 @@ noItemsYet: 'This lesson has no items to trace yet.',
         updateBtn: 'Update password',
         updated: 'Password updated',
       }
+    },
     },
     learn: {
   multipleChoice: {
@@ -912,8 +911,6 @@ noItemsYet: 'لا توجد عناصر للتتبّع بعد.',
       ofCompleted: 'من',
       completedText: 'مكتمل',
       billing: 'الفواتير',
-    },
-    // Inside t.portal, add:
     profile: {
       tabs: { account: 'الحساب', progress: 'التقدم', security: 'الأمان' },
       accountDetails: 'تفاصيل الحساب',
@@ -946,6 +943,7 @@ noItemsYet: 'لا توجد عناصر للتتبّع بعد.',
         updateBtn: 'تحديث كلمة المرور',
         updated: 'تم تحديث كلمة المرور',
       }
+    },
     },
     learn: {
   multipleChoice: {
@@ -1448,8 +1446,6 @@ noItemsYet: '本课暂无可描摹内容。',
       ofCompleted: '/',
       completedText: '已完成',
       billing: '账单',
-    },
-    // Inside t.portal, add:
     profile: {
       tabs: { account: '账户', progress: '进度', security: '安全' },
       accountDetails: '账户详情',
@@ -1482,6 +1478,7 @@ noItemsYet: '本课暂无可描摹内容。',
         updateBtn: '更新密码',
         updated: '密码已更新',
       }
+      },
     },
     learn: {
       multipleChoice: {
