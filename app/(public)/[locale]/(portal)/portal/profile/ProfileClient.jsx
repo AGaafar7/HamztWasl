@@ -22,7 +22,7 @@ export default function ProfileClient({ profile, data }) {
   const [saved, setSaved] = useState(false)
   const [, startTransition] = useTransition()
 
-  const p = t.portal.profile
+  const p = t.portal.profile || {}
   const localePrefix = lang === 'en' ? '' : `/${lang}`
   const dateLocale = lang === 'ar' ? 'ar-EG' : lang === 'zh' ? 'zh-CN' : 'en-US'
 
@@ -137,21 +137,20 @@ export default function ProfileClient({ profile, data }) {
           </div>
         )}
 
-        {tab === 'progress' && (
-          <ProgressTab data={data} lang={lang} localePrefix={localePrefix} />
+                {tab === 'progress' && (
+          <ProgressTab data={data} lang={lang} localePrefix={localePrefix} t={t} />
         )}
 
         {tab === 'security' && (
-          <SecurityTab p={p.securityTab} />
+          <SecurityTab p={p.securityTab || {}} />
         )}
       </div>
     </section>
   )
 }
 
-function ProgressTab({ data, lang, localePrefix }) {
-  const { t } = useLanguage()
-  const pt = t.portal.profile.progressTab
+function ProgressTab({ data, lang, localePrefix, t }) {
+  const pt = t.portal.profile.progressTab || {}
 
   return (
     <>
