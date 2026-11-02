@@ -554,6 +554,7 @@ topics: {
         noLetters: 'No letters available yet.',
         standaloneLesson: 'Standalone Lesson',
         noSpeakingLessons: 'No speaking lessons yet.',
+        hearIt: 'Hear it',
       },
       letter: {
         backToCourse: 'Back to course',
@@ -1138,6 +1139,7 @@ topics: {
         noLetters: 'لا توجد حروف متاحة بعد.',
         standaloneLesson: 'درس مستقل',
         noSpeakingLessons: 'لا توجد دروس نطق بعد.',
+        hearIt: 'استمع',
       },
       letter: {
         backToCourse: 'العودة إلى الدورة',
@@ -1696,7 +1698,7 @@ topics: {
         noLetters: '暂无可用的字母。',
         standaloneLesson: '独立课程',
         noSpeakingLessons: '暂无口语课程。',
-
+        hearIt: '听到它',
       },
       letter: {
         backToCourse: '返回课程',
