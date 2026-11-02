@@ -1,14 +1,21 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { useLanguage } from '@/i18n/LanguageContext.jsx'
 import { createSubscriptionCheckoutAction } from '@/app/actions/payments'
 import { cancelSubscriptionAction } from '@/app/actions/subscription'
 
 export default function BillingClient({ active, expiresAt, cancelled }) {
+  const { t, lang } = useLanguage()
+  const b = t.portal.billingPage
+
   const [loading, setLoading] = useState(false)
   const [cancelLoading, setCancelLoading] = useState(false)
   const [error, setError] = useState('')
   const [, startTransition] = useTransition()
+
+  // Use the localized date format (e.g., Arabic numerals for 'ar')
+  const dateLocale = lang === 'ar' ? 'ar-EG' : lang === 'zh' ? 'zh-CN' : 'en-US'
 
   const onSubscribe = () => {
     setError('')
@@ -19,16 +26,14 @@ export default function BillingClient({ active, expiresAt, cancelled }) {
         window.location.href = url
       } catch (err) {
         console.error('Subscribe failed:', err)
-        setError('Could not start checkout. Please try again.')
+        setError(b.errCheckout)
         setLoading(false)
       }
     })
   }
 
   const onCancel = () => {
-    if (!confirm(
-      'Cancel your subscription? You will lose access to all practice sections immediately. This cannot be undone.'
-    )) return
+    if (!confirm(b.cancelConfirm)) return
 
     setError('')
     setCancelLoading(true)
@@ -37,7 +42,7 @@ export default function BillingClient({ active, expiresAt, cancelled }) {
         await cancelSubscriptionAction()
       } catch (err) {
         console.error('Cancel failed:', err)
-        setError('Could not cancel. Please try again.')
+        setError(b.errCancel)
       } finally {
         setCancelLoading(false)
       }
@@ -45,7 +50,7 @@ export default function BillingClient({ active, expiresAt, cancelled }) {
   }
 
   const expiresLabel = expiresAt
-    ? new Date(expiresAt).toLocaleDateString('en-US', {
+    ? new Date(expiresAt).toLocaleDateString(dateLocale, {
         month: 'long', day: 'numeric', year: 'numeric',
       })
     : null
@@ -53,35 +58,31 @@ export default function BillingClient({ active, expiresAt, cancelled }) {
   return (
     <section>
       <div className="section-head">
-        <h1 className="page-title">Billing & Subscription</h1>
-        <p>Manage access to the practice sections.</p>
+        <h1 className="page-title">{b.title}</h1>
+        <p>{b.subtitle}</p>
       </div>
 
       <div className="billing-card">
         <div className="billing-status">
           <span className={`billing-badge ${active ? 'active' : 'inactive'}`}>
-            {active ? '✓ Active' : 'Inactive'}
+            {active ? `✓ ${b.statusActive}` : b.statusInactive}
           </span>
           {active && expiresLabel && (
-            <span className="billing-renew">Renews on {expiresLabel}</span>
+            <span className="billing-renew">{b.renewsOn} {expiresLabel}</span>
           )}
           {!active && cancelled && (
-            <span className="billing-renew">Cancelled</span>
+            <span className="billing-renew">{b.cancelled}</span>
           )}
           {!active && !cancelled && expiresLabel && (
-            <span className="billing-renew">Expired on {expiresLabel}</span>
+            <span className="billing-renew">{b.expiredOn} {expiresLabel}</span>
           )}
         </div>
 
         <p className="billing-desc">
-          {active &&
-            'You have full access to Listening, Reading, Speaking, and Writing practice.'}
-          {!active && cancelled &&
-            'Your subscription is cancelled. The practice sections are locked. Subscribe again to restore access.'}
-          {!active && !cancelled && expiresLabel &&
-            'Your subscription has expired. Subscribe again to restore access to all practice sections.'}
-          {!active && !cancelled && !expiresLabel &&
-            'Subscribe to unlock all practice sections. $25 per month.'}
+          {active && b.descActive}
+          {!active && cancelled && b.descCancelled}
+          {!active && !cancelled && expiresLabel && b.descExpired}
+          {!active && !cancelled && !expiresLabel && b.descInactive}
         </p>
 
         {active && (
@@ -91,7 +92,7 @@ export default function BillingClient({ active, expiresAt, cancelled }) {
             onClick={onCancel}
             disabled={cancelLoading}
           >
-            {cancelLoading ? 'Cancelling…' : 'Cancel subscription'}
+            {cancelLoading ? b.cancellingBtn : b.cancelBtn}
           </button>
         )}
 
@@ -103,10 +104,10 @@ export default function BillingClient({ active, expiresAt, cancelled }) {
             disabled={loading}
           >
             {loading
-              ? 'Starting checkout…'
+              ? b.startingCheckout
               : cancelled
-              ? 'Subscribe again — $25 / month'
-              : 'Subscribe — $25 / month'}
+              ? b.subscribeAgainBtn
+              : b.subscribeBtn}
           </button>
         )}
 
