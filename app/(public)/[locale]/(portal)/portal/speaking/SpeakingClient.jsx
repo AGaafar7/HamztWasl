@@ -17,6 +17,7 @@ export default function SpeakingClient({ lessons = [], completedIds = [] }) {
 
       {lessons.length > 0 ? (
         <div className="lesson-library-section">
+          {/* TODO: should fetch the instructor that created this lesson leave for now */}
           <h2 className="lesson-library-heading">From instructor lessons</h2>
           <LessonLibraryList
             lessons={lessons}
@@ -26,7 +27,7 @@ export default function SpeakingClient({ lessons = [], completedIds = [] }) {
           />
         </div>
       ) : (
-        <p className="portal-empty">No speaking lessons yet.</p>
+        <p className="portal-empty">{sp.noSpeakingLessons}</p>
       )}
     </section>
   )

@@ -1056,14 +1056,14 @@ function SpeakingLesson({ lesson }) {
     onClick={() => speak(selected.arabic)}
     style={{ marginTop: 12 }}
   >
-    🔊 Hear it
+    {sp.hearIt}
   </button>
 </div>
 
           <div className="speaking-controls">
             {!recording && !audioBlob && !feedback && (
               <button type="button" className="btn btn-primary" onClick={startRecording}>
-                🎤 Record
+                {sp.record}
               </button>
             )}
             {recording && (

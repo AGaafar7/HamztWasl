@@ -552,6 +552,8 @@ topics: {
         accuracy: 'accuracy',
         micDenied: 'Microphone access denied. Please allow it and try again.',
         noLetters: 'No letters available yet.',
+        standaloneLesson: 'Standalone Lesson',
+        noSpeakingLessons: 'No speaking lessons yet.',
       },
       letter: {
         backToCourse: 'Back to course',
@@ -1134,6 +1136,8 @@ topics: {
         accuracy: 'الدقة',
         micDenied: 'تم رفض الوصول إلى الميكروفون. يرجى السماح به والمحاولة مرة أخرى.',
         noLetters: 'لا توجد حروف متاحة بعد.',
+        standaloneLesson: 'درس مستقل',
+        noSpeakingLessons: 'لا توجد دروس نطق بعد.',
       },
       letter: {
         backToCourse: 'العودة إلى الدورة',
@@ -1690,6 +1694,9 @@ topics: {
         accuracy: '准确率',
         micDenied: '麦克风权限被拒绝。请允许后重试。',
         noLetters: '暂无可用的字母。',
+        standaloneLesson: '独立课程',
+        noSpeakingLessons: '暂无口语课程。',
+
       },
       letter: {
         backToCourse: '返回课程',

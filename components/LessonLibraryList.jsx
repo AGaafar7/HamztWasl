@@ -11,11 +11,12 @@ export default function LessonLibraryList({
   openStandalone = false,
   from = null,          // e.g. 'listening' | 'reading' | 'speaking' | 'writing'
    }) {
-  const { lang } = useLanguage()
+  const { lang, t } = useLanguage()
   const completedSet = useMemo(() => new Set(completedIds), [completedIds])
 
   if (!lessons || lessons.length === 0) return null
   const showArabicTitle = from === 'speaking'
+  const sp = t.learn.speaking
 
 
   return (
@@ -25,7 +26,7 @@ export default function LessonLibraryList({
         const titleAr = lesson.content?.title?.ar || ''
         const source = lesson.courseId
           ? gloss(lesson.courseTitle, lang) || 'Course lesson'
-          : 'Standalone lesson'
+          : sp.standaloneLesson 
         
         // If the caller says we're showing these as free practice content,
         // always open the standalone route — even for lessons that live
