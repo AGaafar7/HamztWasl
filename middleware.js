@@ -4,7 +4,7 @@ import { updateSession } from './lib/supabase/middleware.js'
 
 // The portal now lives inside the locale tree. These are the paths
 // *without* the locale prefix (e.g. checking '/portal', not '/ar/portal')
-const PROTECTED_PATHS = ['/portal', '/instructor', '/login', '/register']
+const PROTECTED_PATHS = ['/portal', '/instructor']
 
 // Routes that logged-in users should be redirected away from.
 const AUTH_PAGES = ['/login', '/register']
@@ -34,8 +34,10 @@ export async function middleware(request) {
     ? '/' + segments.slice(1).join('/') 
     : pathname
 
-  const isProtected = PROTECTED_PATHS.some((p) => pathWithoutLocale.startsWith(p))
-  const isAuthPage = AUTH_PAGES.some((p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(p + '/'))
+    const isAuthPage = AUTH_PAGES.some((p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(p + '/'))
+  const isProtected =
+    !isAuthPage &&
+    PROTECTED_PATHS.some((p) => pathWithoutLocale.startsWith(p))
   const isLocaleExempt = LOCALE_EXEMPT_PREFIXES.some((p) => pathname.startsWith(p))
 
   // 1. Handle paths that are missing a locale entirely
