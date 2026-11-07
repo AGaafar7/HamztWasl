@@ -702,10 +702,29 @@ function ListeningLesson({ lesson }) {
   const sourceUrl = c.sourceUrl || null
   const sourceName = c.sourceName || null
   const sourcePlatform = c.sourcePlatform || null
+  const youtubeId = c.youtubeId || null
 
   const lines = c.lines || []
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState({})
+
+    // ---------- 0. Embedded YouTube player ----------
+  if (youtubeId) {
+    return (
+      <div className="lesson-listen">
+        <p className="lesson-listen-intro">{ln.lede}</p>
+        <div className="video-embed" style={{ marginBottom: 20 }}>
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+            title={gloss(c.title, lang) || 'YouTube video'}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    )
+  }
 
     // ---------- 1. Embedded SoundCloud player ----------
   if (sourcePlatform === 'soundcloud' && sourceUrl) {
