@@ -804,6 +804,9 @@ function ReadingLesson({ lesson }) {
   const r = t.learn.reading
   const c = lesson.content || {}
 
+  const sourceUrl = c.sourceUrl || null
+  const sourceName = c.sourceName || null
+
   // The student is learning to READ in Arabic, so the passage always
   // shows the Arabic version — not the UI language. Fall back to English
   // only if the instructor left the Arabic empty.
@@ -815,7 +818,7 @@ function ReadingLesson({ lesson }) {
   const [loading, setLoading] = useState({})
   const [revealed, setRevealed] = useState({})
 
-  if (!passage && questions.length === 0) {
+  if (!passage && !sourceUrl && questions.length === 0) {
         return <p className="portal-empty">{t.portal.noContent}</p>
   }
 
@@ -851,6 +854,18 @@ function ReadingLesson({ lesson }) {
 
   return (
     <div className="lesson-reading">
+          {sourceUrl && (
+        <div style={{ marginBottom: '24px' }}>
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
+          {sourceName ? `Read on ${sourceName}` : 'Read Full Article'} ↗
+          </a>
+        </div>
+      )}
       {passage && (
         <div className="passage-box arabic" dir="rtl">
           <p>{passage}</p>
