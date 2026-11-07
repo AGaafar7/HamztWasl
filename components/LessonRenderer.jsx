@@ -697,9 +697,83 @@ function MultipleChoiceLesson({ lesson, persistedAttempts = {} }) {
 function ListeningLesson({ lesson }) {
   const { t, lang } = useLanguage()
   const ln = t.learn.listening
-  const lines = lesson.content?.lines || []
+  const c = lesson.content || {}
+  
+  const sourceUrl = c.sourceUrl || null
+  const sourceName = c.sourceName || null
+  const sourcePlatform = c.sourcePlatform || null
+
+  const lines = c.lines || []
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState({})
+
+    // ---------- 1. Embedded SoundCloud player ----------
+  if (sourcePlatform === 'soundcloud' && sourceUrl) {
+    const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(
+      sourceUrl
+    )}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true`
+    return (
+      <div className="lesson-listen">
+        <p className="lesson-listen-intro">{ln.lede}</p>
+        <div style={{ marginBottom: 20 }}>
+          <iframe
+            title={gloss(c.title, lang)}
+            width="100%"
+            height="166"
+            scrolling="no"
+            frameBorder="no"
+            allow="autoplay"
+            src={embedUrl}
+          />
+        </div>
+      </div>
+    )
+  }
+
+    // ---------- 2. Embedded Spotify player ----------
+  if (sourcePlatform === 'spotify' && sourceUrl) {
+    // Convert share URL → embed URL
+    const embedUrl = sourceUrl.replace(
+      /open\.spotify\.com\/(playlist|track|album|episode|show)\//,
+      'open.spotify.com/embed/$1/'
+    )
+    return (
+      <div className="lesson-listen">
+        <p className="lesson-listen-intro">{ln.lede}</p>
+        <div style={{ marginBottom: 20 }}>
+          <iframe
+            title={gloss(c.title, lang)}
+            style={{ borderRadius: 12, border: '1px solid var(--line)' }}
+            src={embedUrl}
+            width="100%"
+            height="380"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    )
+  }
+
+    // ---------- 3. External link (Facebook / Instagram / anything else) ----------
+  if (sourceUrl && lines.length === 0) {
+    return (
+      <div className="lesson-listen">
+        <p className="lesson-listen-intro">{ln.lede}</p>
+        <div style={{ marginBottom: 24 }}>
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
+            🎧 {sourceName ? `Open on ${sourceName}` : 'Open Audio'} ↗
+          </a>
+        </div>
+      </div>
+    )
+  }
 
   if (lines.length === 0) {
     return <p className="portal-empty">{t.portal.noLines}</p>
@@ -1222,6 +1296,9 @@ function VideoLesson({ lesson, videoData }) {
   if (!videoData) {
     return <p className="portal-empty">{t.portal.videoNotFound}</p>
   }
+   const hasTranscript =
+    Array.isArray(videoData.transcript) && videoData.transcript.length > 0
+
   return (
     <div className="lesson-video">
       <div className="video-embed">
@@ -1233,13 +1310,16 @@ function VideoLesson({ lesson, videoData }) {
           allowFullScreen
         />
       </div>
-      <Link
-        href={`${localePrefix}/portal/videos/${videoData.id}`}
-        className="btn btn-ghost btn-small"
-        style={{ marginTop: 16 }}
-      >
-        {t.portal.openFullTranscript} →
-      </Link>
+
+       {hasTranscript && (
+        <Link
+          href={`${localePrefix}/portal/videos/${videoData.id}`}
+          className="btn btn-ghost btn-small"
+          style={{ marginTop: 16 }}
+        >
+          {t.portal.openFullTranscript} →
+        </Link>
+      )}
     </div>
   )
 }
