@@ -708,7 +708,6 @@ function ListeningLesson({ lesson }) {
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState({})
 
-    // ---------- 0. Embedded YouTube player ----------
   if (youtubeId) {
     return (
       <div className="lesson-listen">
@@ -726,7 +725,6 @@ function ListeningLesson({ lesson }) {
     )
   }
 
-    // ---------- 1. Embedded SoundCloud player ----------
   if (sourcePlatform === 'soundcloud' && sourceUrl) {
     const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(
       sourceUrl
@@ -749,7 +747,6 @@ function ListeningLesson({ lesson }) {
     )
   }
 
-    // ---------- 2. Embedded Spotify player ----------
   if (sourcePlatform === 'spotify' && sourceUrl) {
     // Convert share URL → embed URL
     const embedUrl = sourceUrl.replace(
@@ -775,7 +772,6 @@ function ListeningLesson({ lesson }) {
     )
   }
 
-    // ---------- 3. External link (Facebook / Instagram / anything else) ----------
   if (sourceUrl && lines.length === 0) {
     return (
       <div className="lesson-listen">
